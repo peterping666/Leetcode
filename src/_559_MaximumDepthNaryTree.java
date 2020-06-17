@@ -2,7 +2,10 @@ import java.util.List;
 
 public class _559_MaximumDepthNaryTree {
 
-
+    /**
+     * Time O(n)
+     * Space O(h)
+     */
     private int res = 0;
     public int maxDepth(Node root) {
         dfs(root, 1);
