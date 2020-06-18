@@ -1,8 +1,12 @@
 public class _34_FindFirstLastPosition {
 
-    // Time : O(logn)
-    // Space : O(1)
-
+    /**
+     * Time o(logn)
+     * Space O(1)
+     * @param nums
+     * @param target
+     * @return
+     */
     public int[] searchRange(int[] nums, int target) {
         if(nums == null || nums.length == 0) {
             return new int[]{-1,-1};
@@ -54,4 +58,6 @@ public class _34_FindFirstLastPosition {
         }
         return -1;
     }
+
+
 }
