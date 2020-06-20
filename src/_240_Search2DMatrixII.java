@@ -1,22 +1,22 @@
 public class _240_Search2DMatrixII {
+    /**
+     * Time O(m + n)
+     * Space O(1)
+     * @param matrix
+     * @param target
+     * @return
+     */
     public boolean searchMatrix(int[][] matrix, int target) {
-        if(matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0) {
-            return false;
-        }
-
         int m = matrix.length;
+        if(m == 0) return false;
         int n = matrix[0].length;
-        int row = m - 1;
-        int col = 0;
-
-        while(row >= 0 && col < n) {
-            if(matrix[row][col] == target) {
-                return true;
-            }
-            if(matrix[row][col] > target) {
-                row--;
+        int i = m - 1, j = 0;
+        while(i >= 0 && j < n) {
+            if(matrix[i][j] == target) return true;
+            if(matrix[i][j] > target) {
+                i--;
             } else {
-                col++;
+                j++;
             }
         }
         return false;
