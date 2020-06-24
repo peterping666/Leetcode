@@ -7,13 +7,12 @@ public class _47_PermutationsII {
      * @param nums
      * @return
      */
-        public List<List<Integer>> permuteUnique1(int[] nums) {
+    public List<List<Integer>> permuteUnique1(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
         for(int num : nums) {
             path.add(num);
         }
-
         helper(list, path, nums.length, 0);
         return list;
     }
