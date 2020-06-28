@@ -16,6 +16,4 @@ public class _409_LongestPalindrome {
         }
         return ans;
     }
-
-
 }

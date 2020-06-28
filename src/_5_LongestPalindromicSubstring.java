@@ -22,4 +22,29 @@ public class _5_LongestPalindromicSubstring {
             res = s.substring(left + 1, right);
         }
     }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public String longestPalindrome2(String s) {
+        int[] indices = new int[2];
+        for(int i = 0; i < s.length(); i++) {
+            helper2(s, i, i, indices);
+            helper2(s, i, i + 1, indices);
+        }
+        return s.substring(indices[0], indices[1]);
+    }
+
+    private void helper2(String s, int l, int r, int[] indices) {
+        while(l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+            l--;
+            r++;
+        }
+        if(r - l - 1 > indices[1] - indices[0]) {
+            indices[0] = l + 1;
+            indices[1] = r;
+        }
+    }
 }
