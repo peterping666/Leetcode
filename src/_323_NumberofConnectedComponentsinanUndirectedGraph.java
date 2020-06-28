@@ -7,49 +7,33 @@ public class _323_NumberofConnectedComponentsinanUndirectedGraph {
 
     class UnionFind {
         private int[] parent;
-        private int[] size;
-        private int componentsNum;
+        private int componentNum;
 
         UnionFind(int n) {
             parent = new int[n];
-            size = new int[n];
+            componentNum = n;
             for(int i = 0; i < n; i++) {
                 parent[i] = i;
-                size[i] = 1;
-                componentsNum = n;
             }
         }
 
-        public int find(int n) {
-            int root = n;
-            while(root != parent[root]) {
-                root = parent[root];
+        public int find(int i) {
+            if(i != parent[i]) {
+                parent[i] = find(parent[i]);
             }
-            while(parent[n] != root) {
-                int oldParent = parent[n];
-                parent[n] = root;
-                n = parent[oldParent];
-            }
-            return root;
+            return parent[i];
         }
 
-        public boolean union(int setA, int setB) {
-            int rootA = find(setA);
-            int rootB = find(setB);
-            if(rootA == rootB) return false;
-            if(size[rootA] > size[rootB]) {
-                parent[rootB] = rootA;
-                size[rootA] += size[rootB];
-            } else {
-                parent[rootA] = rootB;
-                size[rootB] += size[rootA];
-            }
-            componentsNum--;
-            return true;
+        public void union(int a, int b) {
+            int roota = find(a);
+            int rootb = find(b);
+            if(roota == rootb) return;
+            parent[roota] = rootb;
+            componentNum--;
         }
 
         public int getComponentsNum() {
-            return componentsNum;
+            return componentNum;
         }
     }
 

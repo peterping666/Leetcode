@@ -24,6 +24,23 @@ public class _392_IsSubsequence {
         return pLeft == leftBound;
     }
 
+    /**
+     * Time O(n)
+     * Space O(1)
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isSubsequence2(String s, String t) {
+        if(s.length() > t.length()) return false;
+        int idx = 0;
+        for(int i = 0; i < t.length() && idx < s.length(); i++) {
+            if(s.charAt(idx) == t.charAt(i)) {
+                idx++;
+            }
+        }
+        return idx == s.length();
+    }
 
     //Follow up:
     //If there are lots of incoming S, say S1, S2, ... , Sk where k >= 1B,
@@ -36,7 +53,7 @@ public class _392_IsSubsequence {
      * @param t
      * @return
      */
-    public boolean isSubsequence2(String s, String t) {
+    public boolean isSubsequence3(String s, String t) {
         HashMap<Character, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < t.length(); ++i) {
             if(!map.containsKey(t.charAt(i))) {
