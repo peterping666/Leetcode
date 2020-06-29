@@ -1,19 +1,24 @@
 public class _125_ValidPalindrome {
     /**
-     *
+     * Time O(n)
+     * Space O(1)
      * @param s
      * @return
      */
     public boolean isPalindrome(String s) {
-        for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
-            while (i < j && !Character.isLetterOrDigit(s.charAt(i))) {
-                i++;
+        int l = 0, r = s.length() - 1;
+        while(l < r) {
+            while(l < r && !Character.isLetterOrDigit(s.charAt(l))) {
+                l++;
             }
-            while (i < j && !Character.isLetterOrDigit(s.charAt(j))) {
-                j--;
+            while(l < r && !Character.isLetterOrDigit(s.charAt(r))) {
+                r--;
             }
-            if (i < j && Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j)))
+            if(l < r && Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) {
                 return false;
+            }
+            l++;
+            r--;
         }
         return true;
     }

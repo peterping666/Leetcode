@@ -8,7 +8,7 @@ public class _347_TopKFrequentElements {
      * @param k
      * @return
      */
-    public int[] topKFrequent(int[] nums, int k) {
+    public int[] topKFrequent1(int[] nums, int k) {
         // O(1) time
         if (k == nums.length) {
             return nums;
@@ -49,27 +49,31 @@ public class _347_TopKFrequentElements {
      * @return
      */
     public int[] topKFrequent2(int[] nums, int k) {
-        HashMap<Integer, Integer> freq = new HashMap<>();
-        for(int num : nums) {
-            freq.put(num, freq.getOrDefault(num, 0) + 1);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++) {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
-        int size = Collections.max(freq.values());
-        List<Integer>[] list = new List[size + 1];
-        for(int num : freq.keySet()) {
-            if(list[freq.get(num)] == null) {
-                list[freq.get(num)] = new ArrayList<>();
+        List<Integer>[] lists = new List[nums.length + 1];
+        for(int key : map.keySet()) {
+            int freq = map.get(key);
+            if(lists[freq] == null) {
+                lists[freq] = new ArrayList<>();
             }
-            list[freq.get(num)].add(num);
+            lists[freq].add(key);
         }
-        int[] ans = new int[k];
-        int index = ans.length - 1;
-        for(int i = list.length - 1; i >= 0; i--) {
-            if(list[i] == null) continue;
-            for(int j = 0; j < list[i].size(); j++) {
-                ans[index--] = list[i].get(j);
-                if(index < 0) return ans;
+        int[] res = new int[k];
+        int idx = 0;
+        for(int i = lists.length - 1; i >= 0; i--) {
+            if(lists[i] != null) {
+                List<Integer> list = lists[i];
+                for(int num : list) {
+                    res[idx++] = num;
+                    if(idx == k) {
+                        return res;
+                    }
+                }
             }
         }
-        return ans;
+        return res;
     }
 }
