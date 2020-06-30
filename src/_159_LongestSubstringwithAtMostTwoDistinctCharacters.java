@@ -64,4 +64,24 @@ public class _159_LongestSubstringwithAtMostTwoDistinctCharacters {
         }
         return max_len;
     }
+
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstringTwoDistinct3(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int maxLen = 0;
+        for(int i = 0, j = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            map.put(c, i);
+            if(map.size() == 3) {
+                j = Collections.min(map.values());
+                map.remove(s.charAt(j++));
+            }
+            maxLen = Math.max(maxLen, i - j + 1);
+        }
+        return maxLen;
+    }
 }
