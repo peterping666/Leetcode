@@ -25,7 +25,7 @@ public class _249_GroupShiftedStrings {
         for(int i = 1; i < string.length(); i++) {
             int diff = string.charAt(i) - string.charAt(i-1);
             diff = diff < 0 ? diff + 26 : diff;
-            sb.append(diff + " ");
+            sb.append(diff + "#");
         }
         return sb.toString();
     }
