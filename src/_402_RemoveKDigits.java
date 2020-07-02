@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.Stack;
 
 public class _402_RemoveKDigits {
     /**
@@ -9,32 +9,25 @@ public class _402_RemoveKDigits {
      * @return
      */
     public String removeKdigits(String num, int k) {
-        LinkedList<Character> stack = new LinkedList<Character>();
-
+        Stack<Character> stack = new Stack<>();
         for(char digit : num.toCharArray()) {
-            while(stack.size() > 0 && k > 0 && stack.peekLast() > digit) {
-                stack.removeLast();
-                k -= 1;
+            while(k > 0 && !stack.isEmpty() && digit < stack.peek()) {
+                stack.pop();
+                k--;
             }
-            stack.addLast(digit);
+            stack.push(digit);
         }
-
-        /* remove the remaining digits from the tail. */
-        for(int i=0; i<k; ++i) {
-            stack.removeLast();
+        while(k > 0){
+            stack.pop();
+            k--;
         }
-
-        // build the final string, while removing the leading zeros.
-        StringBuilder ret = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         boolean leadingZero = true;
-        for(char digit: stack) {
+        for(char digit : stack) {
             if(leadingZero && digit == '0') continue;
             leadingZero = false;
-            ret.append(digit);
+            sb.append(digit);
         }
-
-        /* return the final string  */
-        if (ret.length() == 0) return "0";
-        return ret.toString();
+        return sb.length() == 0 ? "0" : sb.toString();
     }
 }
