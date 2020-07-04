@@ -29,19 +29,20 @@ public class _437_PathSum3 {
      * @return
      */
     public int pathSum2(TreeNode root, int sum) {
-        if(root == null) return 0;
         HashMap<Integer, Integer> map = new HashMap<>();
-        map.put(0,1);
+        map.put(0, 1);
         return helper(root, sum, map, 0);
-    }
 
-    private int helper(TreeNode root, int sum, HashMap<Integer, Integer> map, int curSum) {
-        if(root == null) return 0;
-        curSum += root.val;
-        int count = map.getOrDefault(curSum - sum, 0);
-        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
-        count += helper(root.left, sum, map, curSum) + helper(root.right, sum, map, curSum);
-        map.put(curSum, map.getOrDefault(curSum, 0) - 1);
+    }
+    private int helper(TreeNode node, int sum, HashMap<Integer, Integer> map, int pathSum) {
+        if(node == null) {
+            return 0;
+        }
+        pathSum += node.val;
+        int count = map.getOrDefault(pathSum - sum, 0);
+        map.put(pathSum, map.getOrDefault(pathSum, 0) + 1);
+        count += helper(node.left, sum, map, pathSum) + helper(node.right, sum, map, pathSum);
+        map.put(pathSum, map.get(pathSum) - 1);
         return count;
     }
 }

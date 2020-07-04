@@ -6,20 +6,14 @@ public class _559_MaximumDepthNaryTree {
      * Time O(n)
      * Space O(h)
      */
-    private int res = 0;
     public int maxDepth(Node root) {
-        dfs(root, 1);
-        return res;
-    }
-
-    private void dfs(Node root, int depth) {
-        if(root == null) {
-            return;
+        if(root == null) return 0;
+        int depth = 0;
+        List<Node> list = root.children;
+        for(int i = 0; i < list.size(); i++) {
+            depth = Math.max(depth, maxDepth(list.get(i)));
         }
-        res = Math.max(res, depth);
-        for(Node child : root.children) {
-            dfs(child, depth + 1);
-        }
+        return depth + 1;
     }
 
     class Node {
