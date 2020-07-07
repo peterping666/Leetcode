@@ -83,7 +83,77 @@ public class _200_NumberofIslands {
                 }
             }
         }
-
         return num_islands;
+    }
+
+    /**
+     *
+     * @param grid
+     * @return
+     */
+    public int numIslands3(char[][] grid) {
+        if(grid.length == 0) return 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        UnionFind uf = new UnionFind(grid);
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == '1') {
+                    grid[i][j] = '0';
+                    if(i - 1 >= 0 && grid[i-1][j] == '1') {
+                        uf.union(i * n + j, (i-1) * n + j);
+                    }
+                    if(i + 1 < m && grid[i+1][j] == '1') {
+                        uf.union(i * n + j, (i+1) * n + j);
+                    }
+                    if(j - 1 >= 0 && grid[i][j-1] == '1') {
+                        uf.union(i * n + j, i * n + j-1);
+                    }
+                    if(j + 1 < n && grid[i][j+1] == '1') {
+                        uf.union(i * n + j, i * n + j+1);
+                    }
+                }
+            }
+        }
+        return uf.getCount();
+    }
+
+    class UnionFind {
+        private int[] parent;
+        private int count;
+
+        public UnionFind(char[][] grid) {
+            int m = grid.length;
+            int n = grid[0].length;
+            count = 0;
+            parent = new int[m * n];
+            for(int i = 0; i < m; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(grid[i][j] == '1') {
+                        int idx = i * n + j;
+                        parent[idx] = idx;
+                        count++;
+                    }
+                }
+            }
+        }
+        public int find(int num) {
+            if(parent[num] != num) {
+                parent[num] = find(parent[num]);
+            }
+            return parent[num];
+        }
+
+        public void union(int a, int b) {
+            int rootA = find(a);
+            int rootB = find(b);
+            if(rootA == rootB) return;
+            parent[rootA] = rootB;
+            count--;
+        }
+
+        public int getCount() {
+            return count;
+        }
     }
 }
