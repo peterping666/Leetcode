@@ -54,8 +54,20 @@ public class _14_LongestCommonPrefix {
     class Trie {
         private TrieNode root;
 
-        Trie() {
+        public Trie() {
             root = new TrieNode();
+        }
+
+        class TrieNode{
+            TrieNode[] children;
+            boolean isWord;
+            int childrenNum;
+
+            TrieNode() {
+                children = new TrieNode[26];
+                isWord = false;
+                childrenNum = 0;
+            }
         }
 
         public void insert(String word) {
@@ -84,18 +96,6 @@ public class _14_LongestCommonPrefix {
                 }
             }
             return sb.toString();
-        }
-    }
-
-    class TrieNode{
-        TrieNode[] children;
-        boolean isWord;
-        int childrenNum;
-
-        TrieNode() {
-            children = new TrieNode[26];
-            isWord = false;
-            childrenNum = 0;
         }
     }
 }
