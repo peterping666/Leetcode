@@ -25,7 +25,7 @@ public class QuickSort {
         int leftBound = left;
         int rightBound = right - 1;
         while(leftBound <= rightBound) {
-            if(array[leftBound] <= pivot) {
+            if(array[leftBound] < pivot) {
                 leftBound++;
             } else if(array[rightBound] >= pivot) {
                 rightBound--;

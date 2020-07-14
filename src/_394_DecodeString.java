@@ -1,44 +1,42 @@
 import java.util.Stack;
 
 public class _394_DecodeString {
-    /**
-     * Time O(n)
-     * Space O(n)
-     * @param s
-     * @return
-     */
-    public String decodeString(String s) {
-        String res = "";
-        Stack<Integer> countStack = new Stack<>();
-        Stack<String> resStack = new Stack<>();
-        int idx = 0;
-        while (idx < s.length()) {
-            if (Character.isDigit(s.charAt(idx))) {
-                int count = 0;
-                while (Character.isDigit(s.charAt(idx))) {
-                    count = 10 * count + (s.charAt(idx) - '0');
-                    idx++;
+
+    class Solution {
+        /**
+         * Time O(n)
+         * Space O(n)
+         * @param s
+         * @return
+         */
+        public String decodeString(String s) {
+            Stack<Integer> numStack = new Stack<>();
+            Stack<String> strStack = new Stack<>();
+            StringBuilder str = new StringBuilder();
+            for(int i = 0; i < s.length(); i++) {
+                if(Character.isDigit(s.charAt(i))) {
+                    int num = s.charAt(i) - '0';
+                    while(i + 1 < s.length() && Character.isDigit(s.charAt(i+1))) {
+                        i++;
+                        num = num * 10 + s.charAt(i) - '0';
+                    }
+                    numStack.push(num);
+                } else if(s.charAt(i) == '[') {
+                    strStack.push(str.toString());
+                    str.setLength(0);
+                } else if(s.charAt(i) == ']') {
+                    StringBuilder sb = new StringBuilder();
+                    int count = numStack.pop();
+                    for(int j = 0; j < count; j++) {
+                        sb.append(str);
+                    }
+                    str.setLength(0);
+                    str.append(strStack.pop()).append(sb.toString());
+                } else {
+                    str.append(s.charAt(i));
                 }
-                countStack.push(count);
             }
-            else if (s.charAt(idx) == '[') {
-                resStack.push(res);
-                res = "";
-                idx++;
-            }
-            else if (s.charAt(idx) == ']') {
-                StringBuilder temp = new StringBuilder (resStack.pop());
-                int repeatTimes = countStack.pop();
-                for (int i = 0; i < repeatTimes; i++) {
-                    temp.append(res);
-                }
-                res = temp.toString();
-                idx++;
-            }
-            else {
-                res += s.charAt(idx++);
-            }
+            return str.toString();
         }
-        return res;
     }
 }

@@ -8,6 +8,13 @@ public class SegmentTree {
      * @param nums
      * @return
      */
+
+    Node root;
+
+    public SegmentTree(int[] nums) {
+        root = build(0, nums.length - 1, nums);
+    }
+
     public Node build(int i, int j, int[] nums) {
         if(i == j) {
             return new Node(i, j, nums[i]);
