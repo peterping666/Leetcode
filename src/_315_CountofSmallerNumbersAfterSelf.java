@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class _315_CountofSmallerNumbersAfterSelf {
@@ -9,100 +8,111 @@ public class _315_CountofSmallerNumbersAfterSelf {
      * @param nums
      * @return
      */
-    public List<Integer> countSmaller(int[] nums) {
-        int n;
-        if (nums == null || (n = nums.length) == 0) {
-            return new ArrayList<>();
-        }
-
-        // Merge sort indices instead of values
-        int[] indices = new int[n];
-        for (int i = 0; i < n; i++) {
+    public List<Integer> countSmaller1(int[] nums) {
+        int[] counts = new int[nums.length];
+        int[] indices = new int[nums.length];
+        for(int i = 0; i < nums.length; i++) {
             indices[i] = i;
         }
-        int[] tmpIndices = new int[n];
-        int[] counts = new int[n];
-        mergeSort(nums, indices, tmpIndices, counts, 0, n - 1);
-
-        List<Integer> result = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            result.add(counts[i]);
+        mergeSort(nums, indices, counts, new int[nums.length], 0, nums.length - 1);
+        List<Integer> list = new ArrayList<>();
+        for(int num : counts) {
+            list.add(num);
         }
-        return result;
+        return list;
     }
 
-    private void mergeSort(int[] nums, int[] indices, int[] tmpIndices, int[] counts, int left, int right) {
-        if (left >= right) {
+    private void mergeSort(int[] nums, int[] indices, int[] counts, int[] buffer,
+                           int left, int right) {
+        if(left >= right) {
             return;
         }
-        int mid = left + ((right - left) >> 1);
-        mergeSort(nums, indices, tmpIndices, counts, left, mid);
-        mergeSort(nums, indices, tmpIndices, counts, mid + 1, right);
-        merge(nums, indices, tmpIndices, counts, left, mid, right);
+        int mid = left + (right - left) / 2;
+        mergeSort(nums, indices, counts, buffer, left, mid);
+        mergeSort(nums, indices, counts, buffer, mid + 1, right);
+        merge(nums, indices, counts, buffer, left, mid, right);
     }
 
-    private void merge(int[] nums, int[] indices, int[] tmpIndices, int[] counts, int left, int mid, int right) {
+    private void merge(int[] nums, int[] indices, int[] counts, int[] buffer,
+                       int left, int mid, int right) {
+        for(int i = left; i <= right; i++) {
+            buffer[i] = indices[i];
+        }
         int leftIndex = left;
         int rightIndex = mid + 1;
-        int rightCount = 0;
-        int sortedIndex = left;
-        while (leftIndex <= mid && rightIndex <= right) {
-            if (nums[indices[leftIndex]] > nums[indices[rightIndex]]) {
-                tmpIndices[sortedIndex] = indices[rightIndex];
-                // Increase rightCount if left value is bigger than right value
-                rightCount++;
-                rightIndex++;
+        while(leftIndex <= mid && rightIndex <= right) {
+            if(nums[buffer[leftIndex]] > nums[buffer[rightIndex]]) {
+                indices[left++] = buffer[rightIndex++];
             } else {
-                tmpIndices[sortedIndex] = indices[leftIndex];
-                // If left value is smaller, increase the counts by rightCount found so far
-                counts[indices[leftIndex]] += rightCount;
-                leftIndex++;
+                counts[buffer[leftIndex]] += rightIndex - mid - 1;
+                indices[left++] = buffer[leftIndex++];
             }
-            sortedIndex++;
         }
-        while (leftIndex <= mid) {
-            // If there are remaining left values, increase their counts by adding rightCount
-            tmpIndices[sortedIndex] = indices[leftIndex];
-            counts[indices[leftIndex]] += rightCount;
-            leftIndex++;
-            sortedIndex++;
+        while(leftIndex <= mid) {
+            counts[buffer[leftIndex]] += rightIndex - mid - 1;
+            indices[left++] = buffer[leftIndex++];
         }
-        if (rightIndex <= right) {
-            System.arraycopy(indices, rightIndex, tmpIndices, sortedIndex, right - rightIndex + 1);
-        }
-        System.arraycopy(tmpIndices, left, indices, left, right - left + 1);
     }
+
+    /**
+     * Method 2
+     */
     class Solution {
-        /**
-         * Time O(n^2)
-         * Space O(n)
-         * @param nums
-         * @return
-         */
         public List<Integer> countSmaller(int[] nums) {
-            List<Integer> res = new LinkedList<>();
-            List<Integer> list = new ArrayList<>();
-            for(int i = nums.length - 1; i >= 0; i--) {
-                int index = insertIndex(list, nums[i]);
-                res.add(0, index);
-                list.add(index, nums[i]);
+            Pair[] pairs = new Pair[nums.length];
+            for(int i = 0; i < nums.length; i++) {
+                pairs[i] = new Pair(nums[i], i);
             }
-            return res;
+            mergeSort(pairs, 0, nums.length - 1, new Pair[nums.length]);
+            int[] counts = new int[nums.length];
+            for(int i = 0; i < nums.length; i++) {
+                Pair cur = pairs[i];
+                counts[cur.idx] = cur.count;
+            }
+            List<Integer> list = new ArrayList<>();
+            for(int i = 0; i < nums.length; i++) {
+                list.add(counts[i]);
+            }
+            return list;
         }
 
-        private int insertIndex(List<Integer> list, int num) {
-            if(list.size() == 0) return 0;
-            int left = 0;
-            int right = list.size() - 1;
-            while(left <= right) {
-                int mid = left + (right - left) / 2;
-                if(list.get(mid) >= num) {
-                    right = mid - 1;
+        private void mergeSort(Pair[] pairs, int left, int right, Pair[] buffer) {
+            if(left >= right) {
+                return;
+            }
+            int mid = left + (right - left) / 2;
+            mergeSort(pairs, left, mid, buffer);
+            mergeSort(pairs, mid + 1, right, buffer);
+            merge(pairs, left, mid, right, buffer);
+        }
+
+        private void merge(Pair[] pairs, int left, int mid, int right, Pair[] buffer) {
+            System.arraycopy(pairs, left, buffer, left, right - left + 1);
+            int leftIndex = left;
+            int rightIndex = mid + 1;
+            while(leftIndex <= mid && rightIndex <= right) {
+                if(buffer[leftIndex].val <= buffer[rightIndex].val) {
+                    buffer[leftIndex].count += rightIndex - mid - 1;
+                    pairs[left++] = buffer[leftIndex++];
                 } else {
-                    left = mid + 1;
+                    pairs[left++] = buffer[rightIndex++];
                 }
             }
-            return left;
+            while(leftIndex <= mid) {
+                buffer[leftIndex].count += rightIndex - mid - 1;
+                pairs[left++] = buffer[leftIndex++];
+            }
+        }
+    }
+
+    class Pair {
+        int val;
+        int count;
+        int idx;
+        public Pair(int val, int i) {
+            this.val = val;
+            count = 0;
+            idx = i;
         }
     }
 }
