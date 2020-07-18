@@ -24,7 +24,7 @@ public class _316_RemoveDuplicateLetters {
                 stack.push(c);
             }
         }
-        StringBuilder sb = new StringBuilder(stack.size());
+        StringBuilder sb = new StringBuilder();
         for (char c : stack) sb.append(c);
         return sb.toString();
     }
