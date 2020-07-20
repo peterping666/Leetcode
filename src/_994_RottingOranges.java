@@ -20,10 +20,10 @@ public class _994_RottingOranges {
             HashSet<Integer> seen = new HashSet<>();
             queue.offer(-n-1);
             for(int i = 0; i < m; i++) {
-                for(int j = 0; j < n; j++) {
-                    if(grid[i][j] == 1) {
+                for (int j = 0; j < n; j++) {
+                    if (grid[i][j] == 1) {
                         fresh++;
-                    } else if(grid[i][j] == 2) {
+                    } else if (grid[i][j] == 2) {
                         int index = i * n + j;
                         queue.offer(index);
                         seen.add(index);
