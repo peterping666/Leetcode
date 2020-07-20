@@ -19,13 +19,11 @@ public class _128_LongestConsecutiveSequence {
             int res = 0;
             for(int num : nums) {
                 int up = num + 1;
-                while(set.contains(up)) {
-                    set.remove(up);
+                while(set.remove(up)) {
                     up++;
                 }
                 int down = num - 1;
                 while(set.remove(down)) {
-                    set.remove(down);
                     down--;
                 }
                 res = Math.max(res, up - down - 1);
