@@ -14,27 +14,23 @@ public class _47_CheckIfBinaryTreeIsCompleted {
             q.offer(root);
             boolean flag = false;
             while(!q.isEmpty()) {
-                int size = q.size();
-                for(int i = 0; i < size; i++) {
-                    TreeNode cur = q.poll();
-                    if(cur.left == null) {
-                        flag = true;
-                    } else if(flag) {
-                        return false;
-                    } else {
-                        q.offer(cur.left);
-                    }
-                    if(cur.right == null) {
-                        flag = true;
-                    } else if(flag) {
-                        return false;
-                    } else {
-                        q.offer(cur.right);
-                    }
+                TreeNode cur = q.poll();
+                if(cur.left == null) {
+                    flag = true;
+                } else if(flag) {
+                    return false;
+                } else {
+                    q.offer(cur.left);
+                }
+                if(cur.right == null) {
+                    flag = true;
+                } else if(flag) {
+                    return false;
+                } else {
+                    q.offer(cur.right);
                 }
             }
             return true;
         }
     }
-
 }
