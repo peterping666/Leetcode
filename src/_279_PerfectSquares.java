@@ -18,7 +18,7 @@ public class _279_PerfectSquares {
                 }
                 for(int num : perfectNums) {
                     int newNum = cur - num;
-                    if(!seen.containsKey(newNum)) {
+                    if(!seen.containsKey(newNum) && newNum > 0) {
                         q.offer(newNum);
                         seen.put(newNum, seen.get(cur) + 1);
                     }
