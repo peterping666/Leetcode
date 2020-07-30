@@ -15,7 +15,6 @@ public class _56_Bipartite {
 
     public class Solution {
         public boolean isBipartite(List<GraphNode> graph) {
-            // write your solution here
             HashMap<GraphNode, Integer> map = new HashMap<>();
             Queue<GraphNode> q = new LinkedList<>();
             for(GraphNode node : graph) {
