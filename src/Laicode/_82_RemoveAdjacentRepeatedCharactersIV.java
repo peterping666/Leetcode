@@ -5,30 +5,26 @@ import java.util.Deque;
 
 public class _82_RemoveAdjacentRepeatedCharactersIV {
     public class Solution {
-        /**
-         *
-         * @param input
-         * @return
-         */
         public String deDup(String input) {
             if(input == null || input.length() == 0) {
                 return "";
             }
             char[] array = input.toCharArray();
-            int end = 0;
-            for(int i = 1; i < array.length; i++) {
-                if(end == -1 || array[end] != array[i]) {
-                    array[++end] = array[i];
+            int j = 0;
+            for(int i = 0; i < array.length; i++) {
+                if(j == 0 || array[j - 1] != array[i]) {
+                    array[j++] = array[i];
                 } else {
-                    end--;
+                    j--;
                     while(i + 1 < array.length && array[i] == array[i + 1]) {
                         i++;
                     }
                 }
             }
-            return new String(array, 0, end + 1);
+            return new String(array, 0, j);
         }
     }
+
 
     /**
      *
