@@ -1,25 +1,30 @@
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _503_NextGreaterElementII {
-    /**
-     * Time O(n)
-     * Space O(n)
-     * @param nums
-     * @return
-     */
-    public int[] nextGreaterElements(int[] nums) {
-        int[] res = new int[nums.length];
-        Stack<Integer> stack = new Stack<>();
-        Arrays.fill(res, -1);
-        for(int i = 0; i < nums.length * 2; i++) {
-            while(!stack.isEmpty() && nums[stack.peek()] < nums[i % nums.length]) {
-                res[stack.pop()] = nums[i % nums.length];
+    class Solution {
+        /**
+         *
+         * @param nums
+         * @return
+         */
+        public int[] nextGreaterElements(int[] nums) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            int n = nums.length;
+            int[] res = new int[n];
+            for(int i = 0; i < n * 2 - 1; i++) {
+                int num = nums[i % n];
+                while(!stack.isEmpty() && nums[stack.peekFirst()] < num) {
+                    res[stack.pollFirst()] = num;
+                }
+                if (i < n) {
+                    stack.offerFirst(i);
+                }
             }
-            if(i < nums.length) {
-                stack.push(i);
+            while(!stack.isEmpty()) {
+                res[stack.pollFirst()] = -1;
             }
+            return res;
         }
-        return res;
     }
 }
