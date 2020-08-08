@@ -1,4 +1,59 @@
 public class _28_ImplementstrStr {
+    class Solution {
+        public int strStr(String haystack, String needle) {
+            int n = needle.length();
+            if(haystack.length() < n) {
+                return -1;
+            }
+            if(n == 0) {
+                return 0;
+            }
+
+            int prime = 31;
+            int largePrime = 101;
+            int seed = 1;
+            int hash = haystack.charAt(0) % largePrime;
+            int targetHash = needle.charAt(0) % largePrime;
+            for(int i = 1; i < n; i++) {
+                seed = hashing(seed, 0, prime, largePrime);
+                hash = hashing(hash, haystack.charAt(i), prime, largePrime);
+                targetHash = hashing(targetHash, needle.charAt(i), prime, largePrime);
+            }
+
+            if(hash == targetHash && equals(haystack, needle, 0)) {
+                return 0;
+            }
+
+            for(int i = 1; i <= haystack.length() - n; i++) {
+                hash = nonNegtive(hash - seed * haystack.charAt(i - 1) % largePrime, largePrime);
+                hash = hashing(hash, haystack.charAt(i + n - 1), prime, largePrime);
+                if(hash == targetHash && equals(haystack, needle, i)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private int hashing(int hash, int addition, int prime, int largePrime) {
+            return (hash * prime % largePrime + addition) % largePrime;
+        }
+
+        private int nonNegtive(int hash, int largePrime) {
+            if(hash < 0) {
+                hash += largePrime;
+            }
+            return hash;
+        }
+
+        private boolean equals(String large, String small, int start) {
+            for(int i = 0; i < small.length(); i++) {
+                if(large.charAt(i + start) != small.charAt(i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
     /**
      * Time O((N-L)L)
      * Space O(1)
@@ -64,25 +119,30 @@ public class _28_ImplementstrStr {
      * @return
      */
     public int strStr(String haystack, String needle) {
-        int m = haystack.length();
-        int n = needle.length();
-        if(m < n) return -1;
-        if(n == 0) return 0;
-        long nCode = 0;
-        long mCode = 0;
-        long modulus = (long)Math.pow(2,31);
-        for(int i = 0; i < n; i++) {
-            nCode = (nCode * 26 + needle.charAt(i) - 'a') % modulus;
-            mCode = (mCode * 26 + haystack.charAt(i) - 'a') % modulus;
+        int L = needle.length();
+        int n = haystack.length();
+
+        if (L > n) return -1;
+
+        long modulus = (long)Math.pow(2, 31);
+
+        long curHash = 0;
+        long targetHash = 0;
+
+        for (int i = 0; i < L; ++i) {
+            curHash = (curHash * 26 + haystack.charAt(i) - 'a') % modulus;
+            targetHash = (targetHash * 26 + needle.charAt(i) - 'a') % modulus;
         }
-        if(nCode == mCode) return 0;
-        for(int i = n; i < m; i++) {
-            mCode = (mCode * 26 - (haystack.charAt(i - n) - 'a')
-                    * (long)Math.pow(26,n) % modulus
-                    + haystack.charAt(i) - 'a') % modulus;
-            if(mCode == nCode) {
-                return i - n + 1;
-            }
+
+        if (curHash == targetHash) return 0;
+
+        long power = 1;
+        for (int i = 0; i < L; ++i) power = (power * 26) % modulus;
+
+        for (int i = 1; i < n - L + 1; i++) {
+            curHash = (curHash * 26 - (haystack.charAt(i - 1) - 'a') * power
+                    + (haystack.charAt(i + L - 1) - 'a')) % modulus;
+            if (curHash == targetHash) return i;
         }
         return -1;
     }
