@@ -1,5 +1,32 @@
 public class _50_Pow {
 
+    class Solution {
+        public double myPow(double x, int n) {
+            if(n < 0) {
+                if(x == 0) {
+                    throw new IllegalArgumentException("x and n can't both be zero");
+                }
+                return 1 / pow(x, -n);
+            } else {
+                return pow(x, n);
+            }
+        }
+
+        private double pow(double x, int n) {
+            if(n == 0) {
+                return 1;
+            }
+
+            double half = pow(x, n / 2);
+
+            if(n % 2 == 0) {
+                return half * half;
+            } else {
+                return half * half * x;
+            }
+        }
+    }
+
     /**
      * Time O(logn)
      * Space O(logn)
