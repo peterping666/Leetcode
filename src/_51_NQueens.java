@@ -30,7 +30,7 @@ public class _51_NQueens {
     private boolean isValid(int[] queens, int row) {
         for(int i = 0; i < row; i++) {
             if(queens[i] == queens[row]) return false;
-            if(Math.abs(queens[i] - queens[row]) == Math.abs(i - row)) return false;
+            if(Math.abs(queens[i] - queens[row]) == row - i) return false;
         }
         return true;
     }
