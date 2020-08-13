@@ -1,30 +1,37 @@
 public class _5_LongestPalindromicSubstring {
     /**
-     * Time O(n^2)
-     * Space O(1)
+     *
      */
-    String res = "";
-    public String longestPalindrome(String s) {
-        if (s == null || s.length() < 1) return "";
-        for (int i = 0; i < s.length(); i++) {
-            helper(s, i, i);
-            helper(s, i, i + 1);
+    class Solution {
+        public String longestPalindrome(String s) {
+            int start = 0;
+            int maxLen = 0;
+            for(int i = 0; i < s.length(); i++) {
+                int odd = palindrome(s, i, i);
+                if(odd > maxLen) {
+                    maxLen = odd;
+                    start = i - odd / 2;
+                }
+                int even = palindrome(s, i, i + 1);
+                if(even > maxLen) {
+                    maxLen = even;
+                    start = i - even / 2 + 1;
+                }
+            }
+            return s.substring(start, start + maxLen);
         }
-        return res;
-    }
 
-    private void helper(String s, int left, int right) {
-        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
-        }
-        if(right - left - 1 > res.length()) {
-            res = s.substring(left + 1, right);
+        private int palindrome(String s, int left, int right) {
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            }
+            return right - left - 1;
         }
     }
 
     /**
-     *
+     * Time O(n^2)
      * @param s
      * @return
      */

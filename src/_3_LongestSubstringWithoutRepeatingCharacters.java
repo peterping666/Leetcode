@@ -3,6 +3,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class _3_LongestSubstringWithoutRepeatingCharacters {
+    class Solution1 {
+        public int lengthOfLongestSubstring(String s) {
+            int[] count = new int[256];
+            int maxLen = 0;
+            for(int i = 0, j = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                count[c]++;
+                while(count[c] > 1) {
+                    count[s.charAt(j++)]--;
+                }
+                maxLen = Math.max(maxLen, i - j + 1);
+            }
+            return maxLen;
+        }
+    }
+
     /**
      * Time O(n)
      * Space O(n)
