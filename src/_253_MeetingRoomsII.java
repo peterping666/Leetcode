@@ -1,24 +1,24 @@
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class _253_MeetingRoomsII {
     /**
      * Time O(nlogn)
      * Space O(n)
-     * @param intervals
      * @return
      */
-    public int minMeetingRooms(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        for(int[] interval : intervals) {
-            if(heap.isEmpty() || heap.peek()[1] > interval[0]) {
-                heap.offer(interval);
-            } else {
-                heap.poll();
-                heap.offer(interval);
+    class Solution {
+        public int minMeetingRooms(int[][] intervals) {
+            Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+            Queue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+            for(int[] interval : intervals) {
+                if(!minHeap.isEmpty() && minHeap.peek()[1] <= interval[0]) {
+                    minHeap.poll();
+                }
+                minHeap.offer(interval);
             }
+            return minHeap.size();
         }
-        return heap.size();
     }
 }

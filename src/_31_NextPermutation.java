@@ -1,36 +1,41 @@
+import java.util.Arrays;
+
 public class _31_NextPermutation {
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param nums
-     */
-    public void nextPermutation(int[] nums) {
-        int i = nums.length - 2;
-        while (i >= 0 && nums[i + 1] <= nums[i]) {
-            i--;
-        }
-        if (i >= 0) {
-            int j = nums.length - 1;
-            while (j >= 0 && nums[j] <= nums[i]) {
-                j--;
+    class Solution {
+        public void nextPermutation(int[] nums) {
+            int n = nums.length;
+            if(n <= 1) {
+                return;
             }
-            swap(nums, i, j);
+            int index = -1;
+            for(int i = n - 2; i >= 0; i--) {
+                if(nums[i] < nums[i + 1]) {
+                    index = i;
+                    break;
+                }
+            }
+            if(index == -1) {
+                reverse(nums, 0, n - 1);
+                return;
+            }
+            int right = n - 1;
+            while(nums[right] <= nums[index]) {
+                right--;
+            }
+            swap(nums, index, right);
+            Arrays.sort(nums, index + 1, n);
         }
-        reverse(nums, i + 1);
-    }
 
-    private void reverse(int[] nums, int start) {
-        int i = start, j = nums.length - 1;
-        while (i < j) {
-            swap(nums, i, j);
-            i++;
-            j--;
+        private void swap(int[] nums, int left, int right) {
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
         }
-    }
 
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
+        private void reverse(int[] nums, int left, int right) {
+            while(left < right) {
+                swap(nums, left++, right--);
+            }
+        }
     }
 }

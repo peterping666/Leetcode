@@ -1,42 +1,39 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _394_DecodeString {
 
     class Solution {
-        /**
-         * Time O(n)
-         * Space O(n)
-         * @param s
-         * @return
-         */
         public String decodeString(String s) {
-            Stack<Integer> numStack = new Stack<>();
-            Stack<String> strStack = new Stack<>();
-            StringBuilder str = new StringBuilder();
+            Deque<String> prevStr = new ArrayDeque<>();
+            Deque<Integer> count = new ArrayDeque<>();
+            StringBuilder sb = new StringBuilder();
             for(int i = 0; i < s.length(); i++) {
-                if(Character.isDigit(s.charAt(i))) {
-                    int num = s.charAt(i) - '0';
-                    while(i + 1 < s.length() && Character.isDigit(s.charAt(i+1))) {
+                char ch = s.charAt(i);
+                if(Character.isDigit(ch)) {
+                    int val = ch - '0';
+                    while(i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
+                        val = val * 10 + s.charAt(i + 1) - '0';
                         i++;
-                        num = num * 10 + s.charAt(i) - '0';
                     }
-                    numStack.push(num);
-                } else if(s.charAt(i) == '[') {
-                    strStack.push(str.toString());
-                    str.setLength(0);
-                } else if(s.charAt(i) == ']') {
-                    StringBuilder sb = new StringBuilder();
-                    int count = numStack.pop();
-                    for(int j = 0; j < count; j++) {
-                        sb.append(str);
+                    count.offerFirst(val);
+                } else if(ch == '[') {
+                    prevStr.offerFirst(sb.toString());
+                    sb.setLength(0);
+                } else if(ch == ']') {
+                    int counter = count.pollFirst();
+                    StringBuilder tmp = new StringBuilder();
+                    while(counter > 0) {
+                        tmp.append(sb);
+                        counter--;
                     }
-                    str.setLength(0);
-                    str.append(strStack.pop()).append(sb.toString());
+                    sb.setLength(0);
+                    sb.append(prevStr.pollFirst()).append(tmp);
                 } else {
-                    str.append(s.charAt(i));
+                    sb.append(ch);
                 }
             }
-            return str.toString();
+            return sb.toString();
         }
     }
 }

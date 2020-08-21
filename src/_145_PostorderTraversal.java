@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-class PostorderTraversal {
+public class _145_PostorderTraversal {
 
     // Time : O(n)
     // Space : O(h)

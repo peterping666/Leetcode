@@ -2,6 +2,37 @@ import java.util.HashMap;
 
 public class _76_MinimumWindowSubstring {
     /**
+     * Time: O(n)
+     * Space: O(1)
+     */
+    class Solution1 {
+        public String minWindow(String s, String t) {
+            int minLen = Integer.MAX_VALUE;
+            int start = 0;
+            int[] count = new int[256];
+            for(int i = 0; i < t.length(); i++) {
+                count[t.charAt(i)]++;
+            }
+            int counter = t.length();
+            for(int i = 0, j = 0; i < s.length(); i++) {
+                if(--count[s.charAt(i)] >= 0) {
+                    counter--;
+                }
+                while(counter == 0) {
+                    if(minLen > i - j + 1) {
+                        minLen = i - j + 1;
+                        start = j;
+                    }
+                    if(++count[s.charAt(j++)] > 0) {
+                        counter++;
+                    }
+                }
+            }
+            return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+        }
+    }
+
+    /**
      * Time O(n)
      * Space O(n)
      * @param s
@@ -35,34 +66,6 @@ public class _76_MinimumWindowSubstring {
                 map.put(d, map.get(d) + 1);
                 if(map.get(d) > 0) count++;
 
-            }
-        }
-        return len == Integer.MAX_VALUE ? "" : s.substring(from, from + len);
-    }
-
-    /**
-     * Time O(n)
-     * Space O(128)
-     * @param s
-     * @param t
-     * @return
-     */
-    public String minWindow2(String s, String t) {
-        int[] freq = new int[128];
-        for(int i = 0; i < t.length(); i++) {
-            freq[t.charAt(i)]++;
-        }
-        int count = t.length();
-        int len = Integer.MAX_VALUE;
-        int from = 0;
-        for(int i = 0, j = 0; i < s.length(); i++) {
-            if(freq[s.charAt(i)]-- > 0) count--;
-            while(count == 0) {
-                if(len > i - j + 1) {
-                    len = i - j + 1;
-                    from = j;
-                }
-                if(++freq[s.charAt(j++)] > 0) count++;
             }
         }
         return len == Integer.MAX_VALUE ? "" : s.substring(from, from + len);

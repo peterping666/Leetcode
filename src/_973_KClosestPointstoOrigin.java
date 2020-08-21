@@ -1,21 +1,25 @@
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class _973_KClosestPointstoOrigin {
-    class Solution1  {
+    /**
+     * Time: O(nlogk)
+     * Space O(n)
+     */
+    class Solution1 {
         public int[][] kClosest(int[][] points, int K) {
-            PriorityQueue<int[]> heap = new PriorityQueue<>(
-                    (a, b) -> Integer.compare((int)(Math.pow(b[0], 2) + Math.pow(b[1], 2)),
-                            (int) (Math.pow(a[0], 2) + Math.pow(a[1], 2))));
+            Queue<int[]> maxHeap = new PriorityQueue<>((a, b) ->
+                    Integer.compare((b[0] * b[0] + b[1] * b[1]), a[0] * a[0] + a[1] * a[1]));
 
             for(int[] point : points) {
-                heap.offer(point);
-                if(heap.size() > K) {
-                    heap.poll();
+                maxHeap.offer(point);
+                if(maxHeap.size() > K) {
+                    maxHeap.poll();
                 }
             }
             int[][] res = new int[K][2];
             for(int i = 0; i < K; i++) {
-                res[i] = heap.poll();
+                res[i] = maxHeap.poll();
             }
             return res;
         }
@@ -35,7 +39,6 @@ public class _973_KClosestPointstoOrigin {
             if(left >= right) {
                 return;
             }
-
             int pivotIndex = partition(points, left, right);
             if(pivotIndex == K) {
                 return;

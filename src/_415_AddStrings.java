@@ -1,32 +1,26 @@
 public class _415_AddStrings {
-    /**
-     * Time O(n)
-     * Space O(n)
-     * @param num1
-     * @param num2
-     * @return
-     */
-    public String addStrings(String num1, String num2) {
-        StringBuilder sb = new StringBuilder();
-        int i = num1.length() - 1;
-        int j = num2.length() - 1;
-        int carry = 0;
-        while(i >= 0 || j >= 0) {
-            int operand1 = 0;
-            int operand2 = 0;
-            if(i >= 0) {
-                operand1 = num1.charAt(i--) - '0';
+    class Solution {
+        public String addStrings(String num1, String num2) {
+            StringBuilder sb = new StringBuilder();
+            int idx1 = num1.length() - 1;
+            int idx2 = num2.length() - 1;
+            int val = 0;
+            while(idx1 >= 0 || idx2 >= 0) {
+                if(idx1 >= 0) {
+                    val += num1.charAt(idx1) - '0';
+                    idx1--;
+                }
+                if(idx2 >= 0) {
+                    val += num2.charAt(idx2) - '0';
+                    idx2--;
+                }
+                sb.append(val % 10);
+                val /= 10;
             }
-            if(j >= 0) {
-                operand2 = num2.charAt(j--) - '0';
+            if(val != 0) {
+                sb.append(val);
             }
-            int sum = operand1 + operand2 + carry;
-            sb.append(sum % 10);
-            carry = sum / 10;
+            return sb.reverse().toString();
         }
-        if(carry > 0) {
-            sb.append(carry);
-        }
-        return sb.reverse().toString();
     }
 }

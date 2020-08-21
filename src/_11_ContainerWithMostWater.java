@@ -1,20 +1,18 @@
 public class _11_ContainerWithMostWater {
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param height
-     * @return
-     */
-    public int maxArea(int[] height) {
-        int l = 0, r = height.length - 1, maxArea = 0;
-        while(l < r) {
-            maxArea = Math.max(maxArea, Math.min(height[l], height[r]) * (r - l));
-            if(height[l] < height[r]) {
-                l++;
-            } else {
-                r--;
+    class Solution {
+        public int maxArea(int[] height) {
+            int res = 0;
+            int left = 0;
+            int right = height.length - 1;
+            while(left < right) {
+                res = Math.max(res, (right - left) * Math.min(height[left], height[right]));
+                if(height[left] < height[right]) {
+                    left++;
+                } else {
+                    right--;
+                }
             }
+            return res;
         }
-        return maxArea;
     }
 }
