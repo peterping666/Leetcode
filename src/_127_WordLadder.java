@@ -1,38 +1,45 @@
-import javafx.util.Pair;
-
 import java.util.*;
 
 public class _127_WordLadder {
     /**
-     * Time O(m * 26 * n)
-     * Space O(m * 26 * n)
-     * @param beginWord
-     * @param endWord
-     * @param wordList
+     * Time O(m * 26)  m: beginWod.length
+     * Space O(n) n: wordList.size()
      * @return
      */
-    public int ladderLength1(String beginWord, String endWord, List<String> wordList) {
-        HashMap<String, Integer> map = new HashMap<>();
-        HashSet<String> wordSet = new HashSet<>(wordList);
-        Queue<String> queue = new LinkedList<>();
-        map.put(beginWord, 1);
-        queue.offer(beginWord);
-        while(!queue.isEmpty()) {
-            String curWord = queue.poll();
-            for(int i = 0; i < curWord.length(); i++) {
-                char[] curWordChars = curWord.toCharArray();
-                for(char ch = 'a'; ch <= 'z'; ch++) {
-                    curWordChars[i] = ch;
-                    String newWord = new String(curWordChars);
-                    if (wordSet.contains(newWord) && newWord.equals(endWord)) return map.get(curWord) + 1;
-                    if (wordSet.contains(newWord) && !map.containsKey(newWord)) {
-                        map.put(newWord, map.get(curWord) + 1);
-                        queue.offer(newWord);
+    class Solution {
+        public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+            Set<String> words = new HashSet<>(wordList);
+            if(!words.contains(endWord)) {
+                return 0;
+            }
+            Queue<String> queue = new ArrayDeque<>();
+            queue.offer(beginWord);
+            Map<String, Integer> visited = new HashMap<>();
+            visited.put(beginWord, 1);
+
+            while(!queue.isEmpty()) {
+                String cur = queue.poll();
+                char[] curChars = cur.toCharArray();
+                for(int i = 0; i < curChars.length; i++) {
+                    char c = curChars[i];
+                    for(char l = 'a'; l <= 'z'; l++) {
+                        curChars[i] = l;
+                        String newWord = new String(curChars);
+
+                        if(newWord.equals(endWord)) {
+                            return visited.get(cur) + 1;
+                        }
+
+                        if(words.contains(newWord) && !visited.containsKey(newWord)) {
+                            visited.put(newWord, visited.get(cur) + 1);
+                            queue.offer(newWord);
+                        }
                     }
+                    curChars[i] = c;
                 }
             }
+            return 0;
         }
-        return 0;
     }
 
     /**

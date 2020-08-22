@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class _49_GroupAnagrams {
     /**
@@ -34,20 +31,19 @@ public class _49_GroupAnagrams {
     /**
      * Time O(N * LlogL)
      * Space O(N * L)
-     * @param strs
      * @return
      */
-    public List<List<String>> groupAnagrams2(String[] strs) {
-        HashMap<String, List<String>> map = new HashMap<>();
-        for(String str : strs) {
-            char[] charArr = str.toCharArray();
-            Arrays.sort(charArr);
-            String key = String.valueOf(charArr);
-            if(!map.containsKey(key)) {
-                map.put(key, new ArrayList<>());
+    class Solution {
+        public List<List<String>> groupAnagrams(String[] strs) {
+            Map<String, List<String>> map = new HashMap<>();
+            for(String str : strs) {
+                char[] chars = str.toCharArray();
+                Arrays.sort(chars);
+                String sortedStr = new String(chars);
+                map.putIfAbsent(sortedStr, new ArrayList<>());
+                map.get(sortedStr).add(str);
             }
-            map.get(key).add(str);
+            return new ArrayList<>(map.values());
         }
-        return new ArrayList<>(map.values());
     }
 }

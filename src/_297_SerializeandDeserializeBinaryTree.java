@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class _297_SerializeandDeserializeBinaryTree {
@@ -10,19 +10,27 @@ public class _297_SerializeandDeserializeBinaryTree {
      */
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if(root == null) return "#";
+        if(root == null) {
+            return "";
+        }
         StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            TreeNode cur = queue.poll();
-            if(cur == null) {
-                sb.append("#,");
-                continue;
+        Queue<TreeNode> q = new ArrayDeque<>();
+        q.offer(root);
+        sb.append(root.val + " ");
+        while(!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            if(cur.left != null) {
+                q.offer(cur.left);
+                sb.append(cur.left.val + " ");
+            } else {
+                sb.append("# ");
             }
-            sb.append(cur.val + ",");
-            queue.offer(cur.left);
-            queue.offer(cur.right);
+            if(cur.right != null) {
+                q.offer(cur.right);
+                sb.append(cur.right.val + " ");
+            } else {
+                sb.append("# ");
+            }
         }
         return sb.toString();
     }
@@ -35,21 +43,26 @@ public class _297_SerializeandDeserializeBinaryTree {
      */
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if(data.equals("#")) return null;
-        Queue<TreeNode> queue = new LinkedList<>();
-        String[] strs = data.split(",");
+        if(data.length() == 0) {
+            return null;
+        }
+        String[] strs = data.split(" ");
         TreeNode root = new TreeNode(Integer.parseInt(strs[0]));
-        queue.offer(root);
-        for(int i = 1; i < strs.length; i++) {
-            TreeNode cur = queue.poll();
-            if(!strs[i].equals("#")) {
-                cur.left = new TreeNode(Integer.parseInt(strs[i]));
-                queue.offer(cur.left);
+        Queue<TreeNode> q = new ArrayDeque<>();
+        q.offer(root);
+        int index = 1;
+        while(index < strs.length) {
+            TreeNode cur = q.poll();
+            String left = strs[index++];
+            if(!left.equals("#")) {
+                cur.left = new TreeNode(Integer.parseInt(left));
+                q.offer(cur.left);
             }
-            i++;
-            if(!strs[i].equals("#")) {
-                cur.right = new TreeNode(Integer.parseInt(strs[i]));
-                queue.offer(cur.right);
+
+            String right = strs[index++];
+            if(!right.equals("#")) {
+                cur.right = new TreeNode(Integer.parseInt(right));
+                q.offer(cur.right);
             }
         }
         return root;

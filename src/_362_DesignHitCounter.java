@@ -1,13 +1,11 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class _362_DesignHitCounter {
     class HitCounter {
-
-        /** Initialize your data structure here. */
-        Queue<Integer> queue;
+        private Queue<Integer> queue;
         public HitCounter() {
-            queue = new LinkedList<>();
+            queue = new ArrayDeque<>();
         }
 
         /** Record a hit.
@@ -19,7 +17,7 @@ public class _362_DesignHitCounter {
         /** Return the number of hits in the past 5 minutes.
          @param timestamp - The current timestamp (in seconds granularity). */
         public int getHits(int timestamp) {
-            while(!queue.isEmpty() && queue.peek() <= timestamp - 300 ) {
+            while(!queue.isEmpty() && timestamp - queue.peek() >= 300) {
                 queue.poll();
             }
             return queue.size();

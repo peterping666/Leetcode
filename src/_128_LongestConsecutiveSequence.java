@@ -1,34 +1,33 @@
 import java.util.HashSet;
+import java.util.Set;
 
 public class _128_LongestConsecutiveSequence {
+    /**
+     * Time O(n)
+     * Space O(n)
+     */
     class Solution {
-        /**
-         * Time O(n)
-         * Space O(n)
-         * @param nums
-         * @return
-         */
         public int longestConsecutive(int[] nums) {
-            if(nums == null || nums.length == 0) {
-                return 0;
-            }
-            HashSet<Integer> set = new HashSet<>();
+            Set<Integer> set = new HashSet<>();
             for(int num : nums) {
                 set.add(num);
             }
-            int res = 0;
+            int maxLen = 0;
             for(int num : nums) {
-                int up = num + 1;
-                while(set.remove(up)) {
-                    up++;
+                if(set.remove(num)) {
+                    int decrease = num;
+                    int increase = num;
+                    while(set.remove(increase + 1)) {
+                        increase++;
+                    }
+                    while(set.remove(decrease - 1)) {
+                        decrease--;
+                    }
+                    maxLen = Math.max(maxLen, increase - decrease + 1);
                 }
-                int down = num - 1;
-                while(set.remove(down)) {
-                    down--;
-                }
-                res = Math.max(res, up - down - 1);
+
             }
-            return res;
+            return maxLen;
         }
     }
 }

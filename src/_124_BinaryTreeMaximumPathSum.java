@@ -1,16 +1,25 @@
 public class _124_BinaryTreeMaximumPathSum {
-    int res = Integer.MIN_VALUE;
-    public int maxPathSum(TreeNode root) {
-        if(root == null) return 0;
-        helper(root);
-        return res;
-    }
+    /**
+     * Time O(n)
+     * Space O(h)
+     */
+    class Solution {
+        public int maxPathSum(TreeNode root) {
+            int[] maxSum = new int[1];
+            maxSum[0] = root.val;
+            helper(root, maxSum);
+            return maxSum[0];
+        }
 
-    private int helper(TreeNode root) {
-        if(root == null) return 0;
-        int left = Math.max(helper(root.left), 0);
-        int right = Math.max(helper(root.right), 0);
-        res = Math.max(res, root.val + left + right);
-        return Math.max(left, right) + root.val;
+        private int helper(TreeNode root, int[] maxSum) {
+            if(root == null) {
+                return 0;
+            }
+            int left = Math.max(0, helper(root.left, maxSum));
+            int right = Math.max(0, helper(root.right, maxSum));
+            int curSum = root.val + left + right;
+            maxSum[0] = Math.max(maxSum[0], curSum);
+            return root.val + Math.max(left, right);
+        }
     }
 }
