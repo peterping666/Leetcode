@@ -1,33 +1,33 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 public class _341_FlattenNestedListIterator {
     public class NestedIterator implements Iterator<Integer> {
-
-        private Stack<NestedInteger> stack;
+        private Deque<NestedInteger> stack;
 
         public NestedIterator(List<NestedInteger> nestedList) {
-            stack = new Stack<>();
+            stack  = new ArrayDeque<>();
             for(int i = nestedList.size() - 1; i >= 0; i--) {
-                stack.push(nestedList.get(i));
+                stack.offerFirst(nestedList.get(i));
             }
         }
 
         @Override
         public Integer next() {
-            return stack.pop().getInteger();
+            return stack.pollFirst().getInteger();
         }
 
         @Override
         public boolean hasNext() {
             while(!stack.isEmpty()) {
-                if(stack.peek().isInteger()) {
+                if(stack.peekFirst().isInteger()) {
                     return true;
                 } else {
-                    List<NestedInteger> curList = stack.pop().getList();
+                    List<NestedInteger> curList = stack.pollFirst().getList();
                     for(int i = curList.size() - 1; i >= 0; i--) {
-                        stack.push(curList.get(i));
+                        stack.offerFirst(curList.get(i));
                     }
                 }
             }

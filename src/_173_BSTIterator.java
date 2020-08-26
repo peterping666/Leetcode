@@ -1,39 +1,35 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _173_BSTIterator {
 
-    Stack<TreeNode> stack;
-    TreeNode cur;
-    public _173_BSTIterator(TreeNode root) {
-        cur = root;
-        stack = new Stack<>();
-    }
+    class BSTIterator {
+        private Deque<TreeNode> stack;
+        private TreeNode cur;
 
-    /** @return the next smallest number */
-    public int next() {
-        while(cur != null) {
-            stack.push(cur);
-            cur = cur.left;
+        public BSTIterator(TreeNode root) {
+            stack = new ArrayDeque<>();
+            cur = root;
         }
-        cur = stack.pop();
-        int val = cur.val;
-        cur = cur.right;
-        return val;
-    }
 
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        while(cur != null || !stack.isEmpty()) {
-            return true;
+        /** @return the next smallest number */
+        public int next() {
+            while(cur != null) {
+                stack.offerFirst(cur);
+                cur = cur.left;
+            }
+            cur = stack.pollFirst();
+            int res = cur.val;
+            cur = cur.right;
+            return res;
         }
-        return false;
-    }
 
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
+        /** @return whether we have a next smallest number */
+        public boolean hasNext() {
+            if(!stack.isEmpty() || cur != null) {
+                return true;
+            }
+            return false;
+        }
     }
-
 }

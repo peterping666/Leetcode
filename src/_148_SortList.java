@@ -1,31 +1,24 @@
 public class _148_SortList {
     /**
-     * Definition for singly-linked list.
-     * public class ListNode {
-     *     int val;
-     *     ListNode next;
-     *     ListNode() {}
-     *     ListNode(int val) { this.val = val; }
-     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-     * }
+     * Time O(nlogn)
+     * Space O(1)
+     * @return
      */
     class Solution {
-        /**
-         * Time O(nlogn)
-         * Space O(1)
-         * @param head
-         * @return
-         */
         public ListNode sortList(ListNode head) {
+            return mergeSort(head);
+        }
+
+        private ListNode mergeSort(ListNode head) {
             if(head == null || head.next == null) {
                 return head;
             }
-            ListNode mid = midNode(head);
-            ListNode midHead = mid.next;
+            ListNode mid = findMid(head);
+            ListNode midNext = mid.next;
             mid.next = null;
-            head = sortList(head);
-            midHead = sortList(midHead);
-            return merge(head, midHead);
+            ListNode left = mergeSort(head);
+            ListNode right = mergeSort(midNext);
+            return merge(left, right);
         }
 
         private ListNode merge(ListNode left, ListNode right) {
@@ -49,7 +42,7 @@ public class _148_SortList {
             return dummy.next;
         }
 
-        private ListNode midNode(ListNode head) {
+        private ListNode findMid(ListNode head) {
             if(head == null || head.next == null) {
                 return head;
             }

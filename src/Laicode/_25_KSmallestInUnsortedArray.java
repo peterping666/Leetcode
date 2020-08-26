@@ -5,7 +5,6 @@ import java.util.Arrays;
 public class _25_KSmallestInUnsortedArray {
     public class Solution {
         public int[] kSmallest(int[] array, int k) {
-            // Write your solution here
             int[] res = new int[k];
             if(array == null || array.length == 0 || k == 0) {
                 return res;

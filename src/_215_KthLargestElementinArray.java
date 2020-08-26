@@ -11,9 +11,11 @@ public class _215_KthLargestElementinArray {
     public int findKthLargest1(int[] nums, int k) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         for(int num : nums) {
-            heap.offer(num);
-            if(heap.size() > k) {
+            if(heap.size() < k) {
+                heap.offer(num);
+            } else if(heap.peek() < num) {
                 heap.poll();
+                heap.offer(num);
             }
         }
         return heap.poll();

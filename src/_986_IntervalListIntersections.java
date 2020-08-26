@@ -1,22 +1,24 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class _986_IntervalListIntersections {
+public class    _986_IntervalListIntersections {
     class Solution {
         public int[][] intervalIntersection(int[][] A, int[][] B) {
-            List<int[]> res = new ArrayList();
-            int i = 0, j = 0;
-            while (i < A.length && j < B.length) {
-                int lo = Math.max(A[i][0], B[j][0]);
-                int hi = Math.min(A[i][1], B[j][1]);
-                if (lo <= hi)
-                    res.add(new int[]{lo, hi});
-                if (A[i][1] < B[j][1])
-                    i++;
-                else
-                    j++;
+            List<int[]> res= new ArrayList<>();
+            int aIndex = 0;
+            int bIndex = 0;
+            while(aIndex < A.length && bIndex < B.length) {
+                int low = Math.max(A[aIndex][0], B[bIndex][0]);
+                int high = Math.min(A[aIndex][1], B[bIndex][1]);
+                if(low <= high) {
+                    res.add(new int[]{low, high});
+                }
+                if(A[aIndex][1] < B[bIndex][1]) {
+                    aIndex++;
+                } else {
+                    bIndex++;
+                }
             }
-
             return res.toArray(new int[0][]);
         }
     }

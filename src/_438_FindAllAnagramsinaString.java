@@ -46,32 +46,32 @@ public class _438_FindAllAnagramsinaString {
     /**
      * Time O(Ns + Np)
      * Space O(1)
-     * @param s
-     * @param p
+     * Assume s and p are not null
+     * High level idea is using sliding window to solve this problem
      * @return
      */
-    public List<Integer> findAnagrams2(String s, String p) {
-        List<Integer> list = new ArrayList<>();
-        if(s.length() == 0 || p.length() == 0 || s.length() < p.length()) {
-            return list;
-        }
-        int[] freq = new int[26];
-        for(int i = 0; i < p.length(); i++) {
-            freq[p.charAt(i) - 'a']++;
-        }
-        int count = p.length();
-        for(int i = 0, j = 0; i < s.length(); i++) {
-            if(i - j == p.length() && freq[s.charAt(j++) - 'a']++ >= 0) {
-                count++;
+    class Solution {
+        public List<Integer> findAnagrams(String s, String p) {
+            List<Integer> res = new ArrayList<>();
+            int n = p.length();
+            int[] count = new int[26];
+            for(int i = 0; i < n; i++) {
+                count[p.charAt(i) - 'a']++;
             }
-            if(--freq[s.charAt(i) - 'a'] >= 0) {
-                count--;
+            int counter = n;
+            // the string between j and i is what we are checking if it's a anagram of p
+            for(int i = 0, j = 0; i < s.length(); i++) {
+                if(--count[s.charAt(i) - 'a'] >= 0) {
+                    counter--;
+                }
+                if(i - j + 1 > n && ++count[s.charAt(j++) - 'a'] > 0) {
+                    counter++;
+                }
+                if(counter == 0) {
+                    res.add(j);
+                }
             }
-            if(count == 0) {
-                list.add(j);
-            }
-
+            return res;
         }
-        return list;
     }
 }
