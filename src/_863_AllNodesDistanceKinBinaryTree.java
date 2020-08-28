@@ -1,51 +1,54 @@
 import java.util.*;
 
 public class _863_AllNodesDistanceKinBinaryTree {
+    /**
+     * Time O(n)
+     * Space O(n)
+     */
     class Solution {
         public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
-            HashMap<TreeNode, TreeNode> parent = new HashMap<>();
-            dfs(root, null, parent);
-            Queue<TreeNode> queue = new LinkedList<>();
-            HashSet<TreeNode> seen = new HashSet<>();
-            queue.offer(target);
-            seen.add(target);
+            Map<TreeNode, TreeNode> parent = new HashMap<>();
+            dfs(root, parent);
+            Queue<TreeNode> queue = new ArrayDeque<>();
+            Set<TreeNode> visited = new HashSet<>();
             List<Integer> res = new ArrayList<>();
-            int dist = 0;
+            queue.offer(target);
+            visited.add(target);
             while(!queue.isEmpty()) {
-                if(dist == K) {
-                    while(!queue.isEmpty()) {
-                        res.add(queue.poll().val);
-                    }
-                    continue;
-                }
                 int size = queue.size();
                 for(int i = 0; i < size; i++) {
                     TreeNode cur = queue.poll();
-                    if(cur.left != null && !seen.contains(cur.left)) {
+                    if(K == 0) {
+                        res.add(cur.val);
+                        continue;
+                    }
+                    if(cur.left != null && visited.add(cur.left)) {
                         queue.offer(cur.left);
-                        seen.add(cur.left);
                     }
-                    if(cur.right != null && !seen.contains(cur.right)) {
+                    if(cur.right != null && visited.add(cur.right)) {
                         queue.offer(cur.right);
-                        seen.add(cur.right);
                     }
-                    if(parent.get(cur) != null && !seen.contains(parent.get(cur))) {
+                    if(parent.containsKey(cur) && visited.add(parent.get(cur))) {
                         queue.offer(parent.get(cur));
-                        seen.add(parent.get(cur));
                     }
                 }
-                dist++;
+                K--;
             }
             return res;
         }
 
-        private void dfs(TreeNode root, TreeNode prev, HashMap parent) {
+        private void dfs(TreeNode root, Map<TreeNode, TreeNode> parent) {
             if(root == null) {
                 return;
             }
-            parent.put(root, prev);
-            dfs(root.left, root, parent);
-            dfs(root.right, root, parent);
+            if(root.left != null) {
+                parent.put(root.left, root);
+                dfs(root.left, parent);
+            }
+            if(root.right != null) {
+                parent.put(root.right, root);
+                dfs(root.right, parent);
+            }
         }
     }
 }

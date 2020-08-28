@@ -6,7 +6,8 @@ public class _75_SortColors {
      * @param nums
      */
     public void sortColors(int[] nums) {
-        int left = 0, right = nums.length - 1;
+        int left = 0;
+        int right = nums.length - 1;
         for(int i = 0; i <= right; i++) {
             if(nums[i] == 0) {
                 swap(nums, i, left++);

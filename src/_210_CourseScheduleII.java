@@ -4,42 +4,39 @@ public class _210_CourseScheduleII {
     /**
      * Time O(E + V)
      * Space O(E + V)
-     * @param numCourses
-     * @param prerequisites
      * @return
      */
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        HashMap<Integer, List<Integer>> graph = new HashMap<>();
-        int[] indegree = new int[numCourses];
-        for(int[] prerequisite : prerequisites) {
-            graph.putIfAbsent(prerequisite[1], new ArrayList<>());
-            graph.get(prerequisite[1]).add(prerequisite[0]);
-            indegree[prerequisite[0]]++;
-        }
-        Queue<Integer> queue = new LinkedList<>();
-        List<Integer> list = new ArrayList<>();
-        for(int i = 0; i < numCourses; i++) {
-            if(indegree[i] == 0) {
-                queue.offer(i);
-                list.add(i);
+    class Solution {
+        public int[] findOrder(int numCourses, int[][] prerequisites) {
+            int[] res = new int[numCourses];
+            Map<Integer, Integer> indegree = new HashMap<>();
+            Map<Integer, Set<Integer>> graph = new HashMap<>();
+            for(int[] pre : prerequisites) {
+                indegree.put(pre[0], indegree.getOrDefault(pre[0], 0) + 1);
+                graph.putIfAbsent(pre[1], new HashSet<>());
+                graph.get(pre[1]).add(pre[0]);
             }
-        }
-        while(!queue.isEmpty()) {
-            int cur = queue.poll();
-            if(!graph.containsKey(cur)) continue;
-            for(int neighbor : graph.get(cur)) {
-                indegree[neighbor]--;
-                if(indegree[neighbor] == 0) {
-                    queue.offer(neighbor);
-                    list.add(neighbor);
+            Queue<Integer> queue = new ArrayDeque<>();
+            int index = 0;
+            for(int i = 0; i < numCourses; i++) {
+                if(!indegree.containsKey(i)) {
+                    queue.offer(i);
                 }
             }
+            while(!queue.isEmpty()) {
+                int course = queue.poll();
+                res[index++] = course;
+                if(!graph.containsKey(course)) {
+                    continue;
+                }
+                for(int neighbor : graph.get(course)) {
+                    indegree.put(neighbor, indegree.get(neighbor) - 1);
+                    if(indegree.get(neighbor) == 0) {
+                        queue.offer(neighbor);
+                    }
+                }
+            }
+            return index == numCourses ? res : new int[0];
         }
-        if(list.size() != numCourses) return new int[0];
-        int[] res = new int[list.size()];
-        for(int i = 0; i < res.length; i++) {
-            res[i] = list.get(i);
-        }
-        return res;
     }
 }

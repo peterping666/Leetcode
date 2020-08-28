@@ -3,7 +3,7 @@ import java.util.List;
 
 public class _78_Subsets {
     /**
-     * Time O(n * 2^n)
+     * Time O(n^k * n)
      * Space O(n)
      * @param nums
      * @return
@@ -21,6 +21,29 @@ public class _78_Subsets {
             subset.add(nums[i]);
             helper(lists, nums, subset, i + 1);
             subset.remove(subset.size() - 1);
+        }
+    }
+
+    /**
+     * Time O(2^n * n)
+     * Space O(n)
+     */
+    class Solution2 {
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            helper(nums, res, 0, new ArrayList<>());
+            return res;
+        }
+
+        private void helper(int[] nums, List<List<Integer>> res, int index, List<Integer> path) {
+            if(index == nums.length) {
+                res.add(new ArrayList<>(path));
+                return;
+            }
+            path.add(nums[index]);
+            helper(nums, res, index + 1, path);
+            path.remove(path.size() - 1);
+            helper(nums, res, index + 1, path);
         }
     }
 }

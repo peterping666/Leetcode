@@ -1,119 +1,50 @@
-import javafx.util.Pair;
-
 import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
 
 public class _994_RottingOranges {
+    /**
+     * Time O(m * n)
+     * Space O(m * n)
+     */
     class Solution {
-        /**
-         *
-         * @param grid
-         * @return
-         */
         public int orangesRotting(int[][] grid) {
             int m = grid.length;
             int n = grid[0].length;
-            int fresh = 0;
-            Queue<Integer> queue = new LinkedList<>();
-            HashSet<Integer> seen = new HashSet<>();
-            queue.offer(-n-1);
+            int count = 0;
+            Queue<Integer> queue = new ArrayDeque<>();
+            boolean[][] visited = new boolean[m][n];
             for(int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    if (grid[i][j] == 1) {
-                        fresh++;
-                    } else if (grid[i][j] == 2) {
-                        int index = i * n + j;
-                        queue.offer(index);
-                        seen.add(index);
+                for(int j = 0; j < n; j++) {
+                    if(grid[i][j] == 1) {
+                        count++;
+                    } else if(grid[i][j] == 2) {
+                        queue.offer(i * n + j);
+                        visited[i][j] = true;
                     }
                 }
             }
-
-            int minutes = -1;
+            if(count == 0) {
+                return 0;
+            }
             int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+            int time = 0;
             while(!queue.isEmpty()) {
                 int size = queue.size();
-                minutes++;
+                time++;
                 for(int i = 0; i < size; i++) {
                     int cur = queue.poll();
-                    int x = cur / n;
-                    int y = cur % n;
                     for(int[] dir : dirs) {
-                        int row = x + dir[0];
-                        int col = y + dir[1];
-                        if(row < 0 || row >= m || col < 0 || col >= n
-                                || seen.contains(row * n + col) || grid[row][col] != 1) {
-                            continue;
-                        }
-                        queue.offer(row * n + col);
-                        seen.add(row * n + col);
-                        fresh--;
-                    }
-                }
-            }
-            return fresh == 0 ? minutes : -1;
-
-        }
-    }
-
-    /**
-     *
-     */
-    class Solution2 {
-        public int orangesRotting(int[][] grid) {
-            Queue<Pair<Integer, Integer>> queue = new ArrayDeque();
-
-            // Step 1). build the initial set of rotten oranges
-            int freshOranges = 0;
-            int ROWS = grid.length, COLS = grid[0].length;
-
-            for (int r = 0; r < ROWS; ++r)
-                for (int c = 0; c < COLS; ++c)
-                    if (grid[r][c] == 2)
-                        queue.offer(new Pair(r, c));
-                    else if (grid[r][c] == 1)
-                        freshOranges++;
-
-            // Mark the round / level, _i.e_ the ticker of timestamp
-            queue.offer(new Pair(-1, -1));
-
-            // Step 2). start the rotting process via BFS
-            int minutesElapsed = -1;
-            int[][] directions = { {-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
-            while (!queue.isEmpty()) {
-                Pair<Integer, Integer> p = queue.poll();
-                int row = p.getKey();
-                int col = p.getValue();
-                if (row == -1) {
-                    // We finish one round of processing
-                    minutesElapsed++;
-                    // to avoid the endless loop
-                    if (!queue.isEmpty())
-                        queue.offer(new Pair(-1, -1));
-                } else {
-                    // this is a rotten orange
-                    // then it would contaminate its neighbors
-                    for (int[] d : directions) {
-                        int neighborRow = row + d[0];
-                        int neighborCol = col + d[1];
-                        if (neighborRow >= 0 && neighborRow < ROWS &&
-                                neighborCol >= 0 && neighborCol < COLS) {
-                            if (grid[neighborRow][neighborCol] == 1) {
-                                // this orange would be contaminated
-                                grid[neighborRow][neighborCol] = 2;
-                                freshOranges--;
-                                // this orange would then contaminate other oranges
-                                queue.offer(new Pair(neighborRow, neighborCol));
-                            }
+                        int x = dir[0] + cur / n;
+                        int y = dir[1] + cur % n;
+                        if(x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == 1 && !visited[x][y]) {
+                            queue.offer(x * n + y);
+                            visited[x][y] = true;
+                            count--;
                         }
                     }
                 }
             }
-            // return elapsed minutes if no fresh orange left
-            return freshOranges == 0 ? minutesElapsed : -1;
+            return count == 0? time - 1 : -1;
         }
     }
 }
