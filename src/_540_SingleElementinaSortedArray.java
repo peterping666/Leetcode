@@ -23,4 +23,18 @@ public class _540_SingleElementinaSortedArray {
             return nums[left];
         }
     }
+
+    /**
+     * Time O(n)
+     * Space O(1)
+     */
+    class Solution2 {
+        public int singleNonDuplicate(int[] nums) {
+            int cur = 0;
+            for(int num : nums) {
+                cur ^= num;
+            }
+            return cur;
+        }
+    }
 }
