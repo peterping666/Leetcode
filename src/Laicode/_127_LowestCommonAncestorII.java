@@ -15,35 +15,33 @@ public class _127_LowestCommonAncestorII {
 
     public class Solution {
         public TreeNodeP lowestCommonAncestor(TreeNodeP one, TreeNodeP two) {
-            int l1 = length(one);
-            int l2 = length(two);
-
-            if(l1 <= l2) {
-                return mergeNode(one, two, l2 - l1);
-            } else {
-                return mergeNode(two, one, l1 - l2);
+            int height1 = getHeight(one);
+            int height2 = getHeight(two);
+            if(height1 > height2) {
+                return mergeNode(two, one, height1 - height2);
             }
+            return mergeNode(one, two, height2 - height1);
         }
 
         private TreeNodeP mergeNode(TreeNodeP shorter, TreeNodeP longer, int diff) {
-            while(diff-- > 0) {
+            while(diff > 0) {
                 longer = longer.parent;
+                diff--;
             }
-            while(shorter != longer) {
-                shorter = shorter.parent;
+            while(longer != shorter) {
                 longer = longer.parent;
+                shorter = shorter.parent;
             }
             return longer;
         }
 
-        private int length(TreeNodeP node) {
-            int length = 0;
+        private int getHeight(TreeNodeP node) {
+            int height = 0;
             while(node != null) {
                 node = node.parent;
-                length++;
+                height++;
             }
-            return length;
+            return height;
         }
-
     }
 }

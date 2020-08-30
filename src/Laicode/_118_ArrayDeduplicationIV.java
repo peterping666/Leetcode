@@ -5,7 +5,11 @@ import java.util.Arrays;
 import java.util.Deque;
 
 public class _118_ArrayDeduplicationIV {
-    public class Solution {
+    /**
+     * Time O(n)
+     * Space O(n)
+     */
+    public class Solution1 {
         public int[] dedup(int[] array) {
             Deque<Integer> deque = new ArrayDeque<>();
             for(int i = 0; i < array.length; i++) {
@@ -27,22 +31,26 @@ public class _118_ArrayDeduplicationIV {
     }
 
     /**
-     *
-     * @param array
-     * @return
+     * Time O(n)
+     * Space O(1)
      */
-    public int[] dedup(int[] array) {
-        int end = 0;
-        for(int i = 1; i < array.length; i++) {
-            if(end == -1 || array[end] != array[i]) {
-                array[++end] = array[i];
-            } else {
-                end--;
-                while(i + 1 < array.length && array[i] == array[i + 1]) {
-                    i++;
+    public class Solution2 {
+        public int[] dedup(int[] array) {
+            if(array.length <= 1) {
+                return array;
+            }
+            int end = -1;
+            for(int i = 0; i < array.length; i++) {
+                if(end == -1 || array[end] != array[i]) {
+                    array[++end] = array[i];
+                } else {
+                    while(i + 1 < array.length && array[i] == array[i + 1]) {
+                        i++;
+                    }
+                    end--;
                 }
             }
+            return Arrays.copyOf(array, end + 1);
         }
-        return Arrays.copyOf(array, end + 1);
     }
 }

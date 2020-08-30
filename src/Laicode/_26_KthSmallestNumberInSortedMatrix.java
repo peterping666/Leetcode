@@ -12,14 +12,14 @@ public class _26_KthSmallestNumberInSortedMatrix {
             PriorityQueue<int[]> q = new PriorityQueue<>(new Comparator<int[]>(){
                 @Override
                 public int compare(int[] a, int[] b) {
-                    return matrix[a[0]][a[1]] - matrix[b[0]][b[1]];
+                    return Integer.compare(matrix[a[0]][a[1]], matrix[b[0]][b[1]]);
                 }
             });
             int[][] dirs = {{1,0}, {0,1}};
             HashSet<Integer> seen = new HashSet<>();
             q.offer(new int[]{0,0});
             seen.add(0);
-            while(!q.isEmpty() && k-- > 1) {
+            while(!q.isEmpty() && --k > 0) {
                 int[] cur = q.poll();
                 for(int[] dir : dirs) {
                     int x = cur[0] + dir[0];
