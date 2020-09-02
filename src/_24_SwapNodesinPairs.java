@@ -1,6 +1,23 @@
 public class _24_SwapNodesinPairs {
     /**
      * Time O(n)
+     * Space O(n)
+     */
+    class Solution {
+        public ListNode swapPairs(ListNode head) {
+            if(head == null || head.next == null) {
+                return head;
+            }
+            ListNode newHead = head.next;
+            ListNode nextHead = newHead.next;
+            newHead.next = head;
+            head.next = swapPairs(nextHead);
+            return newHead;
+        }
+    }
+
+    /**
+     * Time O(n)
      * Space O(1)
      * @param head
      * @return
@@ -32,30 +49,5 @@ public class _24_SwapNodesinPairs {
 
         // Return the new head node.
         return dummy.next;
-    }
-
-    /**
-     * Time O(n)
-     * Space O(n)
-     * @param head
-     * @return
-     */
-    public ListNode swapPairs2(ListNode head) {
-
-        // If the list has no node or has only one node left.
-        if ((head == null) || (head.next == null)) {
-            return head;
-        }
-
-        // Nodes to be swapped
-        ListNode firstNode = head;
-        ListNode secondNode = head.next;
-
-        // Swapping
-        firstNode.next  = swapPairs2(secondNode.next);
-        secondNode.next = firstNode;
-
-        // Now the head is the second node
-        return secondNode;
     }
 }

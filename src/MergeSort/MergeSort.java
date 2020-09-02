@@ -22,7 +22,7 @@ public class MergeSort {
     }
 
     public void merge(int[] array, int left, int mid, int right, int[] helper) {
-        for(int i = 0; i < array.length; i++) {
+        for(int i = left; i <= right; i++) {
             helper[i] = array[i];
         }
         int leftIndex = left;

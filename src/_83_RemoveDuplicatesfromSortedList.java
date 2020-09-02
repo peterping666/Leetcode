@@ -2,18 +2,24 @@ public class _83_RemoveDuplicatesfromSortedList {
     /**
      * Time O(n)
      * Space O(1)
-     * @param head
      * @return
      */
-    public ListNode deleteDuplicates(ListNode head) {
-        ListNode current = head;
-        while (current != null && current.next != null) {
-            if (current.next.val == current.val) {
-                current.next = current.next.next;
-            } else {
-                current = current.next;
+    class Solution {
+        public ListNode deleteDuplicates(ListNode head) {
+            if(head == null) {
+                return null;
             }
+            ListNode tail = head;
+            ListNode cur = head;
+            while(cur != null) {
+                cur = cur.next;
+                if(cur != null && cur.val != tail.val) {
+                    tail.next = cur;
+                    tail = tail.next;
+                }
+            }
+            tail.next = null;
+            return head;
         }
-        return head;
     }
 }
