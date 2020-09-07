@@ -1,7 +1,8 @@
 public class _678_ValidParenthesisString {
     class Solution {
         public boolean checkValidString(String s) {
-            int lo = 0, hi = 0;
+            int lo = 0;
+            int hi = 0;
             for (char c: s.toCharArray()) {
                 lo += c == '(' ? 1 : -1;
                 hi += c != ')' ? 1 : -1;

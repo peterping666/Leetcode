@@ -1,33 +1,38 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _402_RemoveKDigits {
     /**
      * Time O(n)
      * Space O(n)
-     * @param num
-     * @param k
      * @return
      */
-    public String removeKdigits(String num, int k) {
-        Stack<Character> stack = new Stack<>();
-        for(char digit : num.toCharArray()) {
-            while(k > 0 && !stack.isEmpty() && digit < stack.peek()) {
-                stack.pop();
+    class Solution {
+        public String removeKdigits(String num, int k) {
+            Deque<Character> deque = new ArrayDeque<>();
+            for(int i = 0; i < num.length(); i++) {
+                char ch = num.charAt(i);
+                while(k > 0 && !deque.isEmpty() && deque.peekLast() > ch) {
+                    deque.pollLast();
+                    k--;
+                }
+                deque.offerLast(ch);
+            }
+            while(k > 0) {
+                deque.pollLast();
                 k--;
             }
-            stack.push(digit);
+            StringBuilder sb = new StringBuilder();
+            boolean leadingZero = true;
+            while(!deque.isEmpty()) {
+                char digit = deque.pollFirst();
+                if(leadingZero && digit == '0') {
+                    continue;
+                }
+                leadingZero = false;
+                sb.append(digit);
+            }
+            return sb.length() == 0 ? "0" : sb.toString();
         }
-        while(k > 0){
-            stack.pop();
-            k--;
-        }
-        StringBuilder sb = new StringBuilder();
-        boolean leadingZero = true;
-        for(char digit : stack) {
-            if(leadingZero && digit == '0') continue;
-            leadingZero = false;
-            sb.append(digit);
-        }
-        return sb.length() == 0 ? "0" : sb.toString();
     }
 }

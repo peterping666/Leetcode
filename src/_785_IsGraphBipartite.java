@@ -7,8 +7,8 @@ public class _785_IsGraphBipartite {
         public boolean isBipartite(int[][] graph) {
             int n = graph.length;
             int[] colors = new int[n];
-
-            for (int i = 0; i < n; i++) {              //This graph might be a disconnected graph. So check each unvisited node.
+            //This graph might be a disconnected graph. So check each unvisited node.
+            for (int i = 0; i < n; i++) {
                 if (colors[i] == 0 && !validColor(graph, colors, 1, i)) {
                     return false;
                 }
@@ -68,8 +68,7 @@ public class _785_IsGraphBipartite {
                 map.put(i, 1);
                 while(!q.isEmpty()) {
                     int cur = q.poll();
-                    int curGroup = map.get(cur);
-                    int neiGroup = -curGroup;
+                    int neiGroup = -map.get(cur);
                     for(int nei : graph[cur]) {
                         if(!map.containsKey(nei)) {
                             map.put(nei, neiGroup);

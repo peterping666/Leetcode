@@ -3,9 +3,10 @@ import java.util.Arrays;
 public class _1029_TwoCityScheduling {
     class Solution {
         public int twoCitySchedCost(int[][] costs) {
-            int N = costs.length/2;
+            int N = costs.length / 2;
             int[] refund = new int[N * 2];
-            int minCost = 0, index = 0;
+            int minCost = 0;
+            int index = 0;
             for(int[] cost : costs){
                 refund[index++] = cost[1] - cost[0];
                 minCost += cost[0];
