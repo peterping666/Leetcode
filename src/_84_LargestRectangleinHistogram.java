@@ -1,25 +1,26 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _84_LargestRectangleinHistogram {
     /**
      * Time O(n)
      * Space O(n)
-     * @param heights
-     * @return
      */
-    public int largestRectangleArea(int[] heights) {
-        Stack<Integer> stack = new Stack <> ();
-        stack.push(-1);
-        int maxarea = 0;
-        for (int i = 0; i < heights.length; ++i) {
-            while(stack.peek() != -1 && heights[i] <= heights[stack.peek()]) {
-                maxarea = Math.max(maxarea, heights[stack.pop()] * (i - stack.peek() - 1));
+    class Solution {
+        public int largestRectangleArea(int[] heights) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            stack.offerFirst(-1);
+            int maxArea = 0;
+            for(int i = 0; i < heights.length; i++) {
+                while(stack.peekFirst() != -1 && heights[i] <= heights[stack.peekFirst()]) {
+                    maxArea = Math.max(maxArea, heights[stack.pollFirst()] * (i - stack.peekFirst() - 1));
+                }
+                stack.offerFirst(i);
             }
-            stack.push(i);
+            while(stack.peekFirst() != -1) {
+                maxArea = Math.max(maxArea, heights[stack.pollFirst()] * (heights.length - stack.peekFirst() - 1));
+            }
+            return maxArea;
         }
-        while(stack.peek() != -1) {
-            maxarea = Math.max(maxarea, heights[stack.pop()] * (heights.length - stack.peek() -1));
-        }
-        return maxarea;
     }
 }
