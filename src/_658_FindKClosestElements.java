@@ -1,7 +1,32 @@
-package Laicode;
+import java.util.LinkedList;
+import java.util.List;
 
-public class _19_KClosestInSortedArray {
-    public class Solution {
+public class _658_FindKClosestElements {
+    class Solution1 {
+        public List<Integer> findClosestElements(int[] arr, int k, int x) {
+            LinkedList<Integer> res = new LinkedList<>();
+            int left = 0;
+            int right = arr.length - 1;
+            while(left + 1 < right) {
+                int mid = left + (right - left) / 2;
+                if(arr[mid] < x) {
+                    left = mid;
+                } else {
+                    right = mid;
+                }
+            }
+            while(res.size() < k) {
+                if(left < 0 || right < arr.length && Math.abs(arr[right] - x) < Math.abs(arr[left] - x)) {
+                    res.add(arr[right++]);
+                } else {
+                    res.addFirst(arr[left--]);
+                }
+            }
+            return res;
+        }
+    }
+
+    public class Solution2 {
         public int[] kClosest(int[] array, int target, int k) {
             if(array == null || array.length == 0 || k == 0) {
                 return new int[0];
