@@ -2,32 +2,30 @@ public class _61_RotateList {
     /**
      * Time O(n)
      * Space O(1)
-     * @param head
-     * @param k
      * @return
      */
-    public ListNode rotateRight(ListNode head, int k) {
-        // base cases
-        if (head == null) return null;
-        if (head.next == null) return head;
+    class Solution {
+        public ListNode rotateRight(ListNode head, int k) {
+            if(head == null) return null;
+            int listNum = 1;
+            ListNode tail = head;
 
-        // close the linked list into the ring
-        ListNode old_tail = head;
-        int n;
-        for(n = 1; old_tail.next != null; n++)
-            old_tail = old_tail.next;
-        old_tail.next = head;
+            //find tail and count listNum
+            while(tail.next != null){
+                listNum++;
+                tail = tail.next;
+            }
+            tail.next = head;
+            int newHeadIndex = listNum - k % listNum;
 
-        // find new tail : (n - k % n - 1)th node
-        // and new head : (n - k % n)th node
-        ListNode new_tail = head;
-        for (int i = 0; i < n - k % n - 1; i++)
-            new_tail = new_tail.next;
-        ListNode new_head = new_tail.next;
+            for(int i = 0; i < newHeadIndex; i++){
+                tail = tail.next;
+            }
 
-        // break the ring
-        new_tail.next = null;
+            head = tail.next;
+            tail.next = null;
 
-        return new_head;
+            return head;
+        }
     }
 }

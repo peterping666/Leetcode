@@ -4,23 +4,19 @@ public class _494_TargetSum {
     /**
      * Time O(2^n)
      * Space O(n)
-     * @param nums
-     * @param S
      * @return
      */
-    public int findTargetSumWays1(int[] nums, int S) {
-        return helper1(nums, S, 0);
-    }
-
-    private int helper1(int[] nums, int S, int idx) {
-        if(idx == nums.length) {
-            if(S == 0) {
-                return 1;
-            }
-            return 0;
+    class Solution {
+        public int findTargetSumWays(int[] nums, int S) {
+            return helper(nums, S, 0);
         }
 
-        return helper1(nums, S - nums[idx], idx + 1) + helper1(nums, S + nums[idx], idx + 1);
+        private int helper(int[] nums, int S, int index) {
+            if(index == nums.length) {
+                return S == 0 ? 1 : 0;
+            }
+            return helper(nums, S - nums[index], index + 1) + helper(nums, S + nums[index], index + 1);
+        }
     }
 
     /**

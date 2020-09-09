@@ -2,25 +2,30 @@ public class _1060_MissingElementinSortedArray {
     class Solution {
         public int missingElement(int[] nums, int k) {
             int n = nums.length;
-            if(k > missing(nums, n-1)) {
-                return nums[n - 1] + k - missing(nums, n - 1);
+            int l = 0;
+            int h = n - 1;
+            int missingNum = nums[n - 1] - nums[0] + 1 - n;
+
+            if (missingNum < k) {
+                return nums[n - 1] + k - missingNum;
             }
-            int left = 0;
-            int right = n - 1;
-            while(left < right) {
-                int mid = left + (right - left) / 2;
-                int missingNum = missing(nums, mid);
-                if(missingNum < k) {
-                    left = mid + 1;
+
+            while (l < h - 1) {
+                int m = l + (h - l) / 2;
+                int missing = nums[m] - nums[l] - (m - l);
+
+                if (missing >= k) {
+                    // when the number is larger than k, then the index won't be located in (m, h]
+                    h = m;
                 } else {
-                    right = mid;
+                    // when the number is smaller than k,
+                    // then the index won't be located in [l, m), update k -= missing
+                    k -= missing;
+                    l = m;
                 }
             }
-            return nums[left-1] + k - missing(nums, left - 1);
-        }
 
-        private int missing(int[] nums, int idx) {
-            return nums[idx] - nums[0] - idx;
+            return nums[l] + k;
         }
     }
 }
