@@ -1,3 +1,5 @@
+package Laicode;
+
 public class _368_LowestCommonAncestorBinarySearchTreeI {
     public class Solution {
         public TreeNode lca(TreeNode root, int p, int q) {
@@ -16,5 +18,4 @@ public class _368_LowestCommonAncestorBinarySearchTreeI {
             return null;
         }
     }
-
 }

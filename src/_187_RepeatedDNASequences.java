@@ -2,89 +2,35 @@ import java.util.*;
 
 public class _187_RepeatedDNASequences {
     /**
-     * Time O((n - l) * l)
-     * Space O((n - l) * l)
-     * @param s
-     * @return
+     * Time O(10 * n)
+     * Space O(n)
      */
-    public List<String> findRepeatedDnaSequences1(String s) {
-        int L = 10, n = s.length();
-        HashSet<String> seen = new HashSet(), output = new HashSet();
-
-        // iterate over all sequences of length L
-        for (int start = 0; start < n - L + 1; ++start) {
-            String tmp = s.substring(start, start + L);
-            if (seen.contains(tmp)) output.add(tmp);
-            seen.add(tmp);
-        }
-        return new ArrayList<String>(output);
-    }
-
-    /**
-     * Time O(n - l)
-     * Space O(n - l)
-     * @param s
-     * @return
-     */
-    public List<String> findRepeatedDnaSequences2(String s) {
-        int L = 10, n = s.length();
-        if (n <= L) return new ArrayList();
-
-        // rolling hash parameters: base a
-        int a = 4, aL = (int)Math.pow(a, L);
-
-        // convert string to array of integers
-        Map<Character, Integer> toInt = new
-                HashMap() {{put('A', 0); put('C', 1); put('G', 2); put('T', 3); }};
-        int[] nums = new int[n];
-        for(int i = 0; i < n; ++i) nums[i] = toInt.get(s.charAt(i));
-
-        int h = 0;
-        Set<Integer> seen = new HashSet();
-        Set<String> output = new HashSet();
-        // iterate over all sequences of length L
-        for (int start = 0; start < n - L + 1; ++start) {
-            // compute hash of the current sequence in O(1) time
-            if (start != 0)
-                h = h * a - nums[start - 1] * aL + nums[start + L - 1];
-                // compute hash of the first sequence in O(L) time
-            else
-                for(int i = 0; i < L; ++i) h = h * a + nums[i];
-            // update output and hashset of seen sequences
-            if (seen.contains(h)) output.add(s.substring(start, start + L));
-            seen.add(h);
-        }
-        return new ArrayList<String>(output);
-    }
-
-    /**
-     *
-     * @param s
-     * @return
-     */
-    public List<String> findRepeatedDnaSequences(String s) {
-        if(s.length() <= 10) return new ArrayList<>();
-        HashMap<Character, Integer> map = new HashMap(){{
-            put('A', 0);
-            put('C', 1);
-            put('G', 2);
-            put('T', 3);
-        }};
-        int power = (int)Math.pow(4, 10);
-        HashSet<Integer> set = new HashSet<>();
-        HashSet<String> output = new HashSet<>();
-        int hashCode = 0;
-        for(int i = 0; i < 10; i++) {
-            hashCode = hashCode * 4 + map.get(s.charAt(i));
-        }
-        set.add(hashCode);
-        for(int i = 1; i < s.length() - 9; i++) {
-            hashCode = hashCode * 4 + map.get(s.charAt(i + 9))
-                    - power * map.get(s.charAt(i-1));
-            if(!set.add(hashCode)) {
-                output.add(s.substring(i, i + 10));
+    class Solution {
+        public List<String> findRepeatedDnaSequences(String s) {
+            if(s.length() <= 10) {
+                return new ArrayList<>();
             }
+            HashMap<Character, Integer> map = new HashMap();
+            map.put('A', 0);
+            map.put('C', 1);
+            map.put('G', 2);
+            map.put('T', 3);
+            int power = (int)Math.pow(4, 10);
+            HashSet<Integer> set = new HashSet<>();
+            HashSet<String> output = new HashSet<>();
+            int hashCode = 0;
+            for(int i = 0; i < 10; i++) {
+                hashCode = hashCode * 4 + map.get(s.charAt(i));
+            }
+            set.add(hashCode);
+            for(int i = 1; i < s.length() - 9; i++) {
+                hashCode = hashCode * 4 + map.get(s.charAt(i + 9))
+                        - power * map.get(s.charAt(i - 1));
+                if(!set.add(hashCode)) {
+                    output.add(s.substring(i, i + 10));
+                }
+            }
+            return new ArrayList<>(output);
         }
-        return new ArrayList<>(output);
     }
 }

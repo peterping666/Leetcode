@@ -1,4 +1,8 @@
 public class _1011_CapacityToShipPackagesWithinDDays {
+    /**
+     * Time O(nlogn)
+     * Space O(n)
+     */
     class Solution {
         public int shipWithinDays(int[] weights, int D) {
             int max = 0;
