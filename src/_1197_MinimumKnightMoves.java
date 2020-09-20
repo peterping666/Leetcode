@@ -1,12 +1,12 @@
+import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
 
 public class _1197_MinimumKnightMoves {
     class Solution {
         public int minKnightMoves(int x, int y) {
             int[][] dirs = {{1,2}, {1,-2}, {-1,2}, {-1,-2}, {2,1}, {2,-1}, {-2,1}, {-2,-1}};
-            Queue<int[]> queue = new LinkedList<>();
+            Queue<int[]> queue = new ArrayDeque<>();
             HashSet<String> seen = new HashSet<>();
             queue.offer(new int[]{0,0});
             seen.add("0-0");
