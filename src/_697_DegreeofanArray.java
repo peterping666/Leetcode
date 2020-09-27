@@ -4,8 +4,10 @@ import java.util.Map;
 public class _697_DegreeofanArray {
     class Solution {
         public int findShortestSubArray(int[] nums) {
-            Map<Integer, Integer> count = new HashMap<>(), first = new HashMap<>();
-            int res = 0, degree = 0;
+            Map<Integer, Integer> count = new HashMap<>();
+            Map<Integer, Integer> first = new HashMap<>();
+            int res = 0;
+            int degree = 0;
             for (int i = 0; i < nums.length; ++i) {
                 first.putIfAbsent(nums[i], i);
                 count.put(nums[i], count.getOrDefault(nums[i], 0) + 1);
