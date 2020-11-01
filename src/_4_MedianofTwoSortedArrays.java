@@ -1,5 +1,9 @@
 public class _4_MedianofTwoSortedArrays {
-    class Solution {
+    /**
+     * Time O(log(min(m,n)))
+     * Space O(log(min(m,n)))
+     */
+    class Solution1 {
         public double findMedianSortedArrays(int[] nums1, int[] nums2) {
             int len = nums1.length + nums2.length;
             if(len % 2 == 1) {
@@ -28,6 +32,44 @@ public class _4_MedianofTwoSortedArrays {
             } else {
                 return kth(a, astart, b, bmid + 1, k - k / 2);
             }
+        }
+    }
+
+    /**
+     * Time O(m + n)
+     * Space O(m + n)
+     */
+    class Solution2 {
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+            int[] mergedArray = merge(nums1, nums2);
+            int len = nums1.length + nums2.length;
+            if(len % 2 == 1) {
+                return mergedArray[len / 2];
+            }
+            return (mergedArray[len / 2 - 1] + mergedArray[len / 2]) / 2.0;
+        }
+
+        private int[] merge(int[] nums1, int[] nums2) {
+            int n = nums1.length;
+            int m = nums2.length;
+            int[] array = new int[m + n];
+            int index = 0;
+            int i = 0;
+            int j = 0;
+            while(i < n && j < m) {
+                if(nums1[i] < nums2[j]) {
+                    array[index++] = nums1[i++];
+                } else {
+                    array[index++] = nums2[j++];
+                }
+            }
+            while(i < n) {
+                array[index++] = nums1[i++];
+            }
+            while(j < m) {
+                array[index++] = nums2[j++];
+            }
+            return array;
         }
     }
 }

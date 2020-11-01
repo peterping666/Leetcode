@@ -17,7 +17,7 @@ public class _149_MaxPointsonaLine {
                 map.clear();
                 int samePoint = 0;
                 int sameX = 0;
-                for(int j = 0; j < points.length; j++) {
+                for(int j = i + 1; j < points.length; j++) {
                     if(i != j) {
                         if(points[i][0] == points[j][0] && points[i][1] == points[j][1]) {
                             samePoint++;

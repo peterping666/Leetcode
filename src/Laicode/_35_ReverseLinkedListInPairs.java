@@ -7,7 +7,6 @@ public class _35_ReverseLinkedListInPairs {
      * @return
      */
     public ListNode reverseInPairs(ListNode head) {
-        // Write your solution here
         if(head == null || head.next == null) {
             return head;
         }

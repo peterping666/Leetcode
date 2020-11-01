@@ -2,107 +2,79 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class _146_LRUCache {
-
-    public class LRUCache {
-
-        class DLinkedNode {
-            int key;
-            int value;
-            DLinkedNode prev;
-            DLinkedNode next;
-        }
-
-        private void addNode(DLinkedNode node) {
-            /**
-             * Always add the new node right after head.
-             */
-            node.prev = head;
-            node.next = head.next;
-
-            head.next.prev = node;
-            head.next = node;
-        }
-
-        private void removeNode(DLinkedNode node){
-            /**
-             * Remove an existing node from the linked list.
-             */
-            DLinkedNode prev = node.prev;
-            DLinkedNode next = node.next;
-
-            prev.next = next;
-            next.prev = prev;
-        }
-
-        private void moveToHead(DLinkedNode node){
-            /**
-             * Move certain node in between to the head.
-             */
-            removeNode(node);
-            addNode(node);
-        }
-
-        private DLinkedNode popTail() {
-            /**
-             * Pop the current tail.
-             */
-            DLinkedNode res = tail.prev;
-            removeNode(res);
-            return res;
-        }
-
-        private Map<Integer, DLinkedNode> cache = new HashMap<>();
-        private int size;
+    class LRUCache {
+        private Node head;
+        private Node tail;
         private int capacity;
-        private DLinkedNode head, tail;
+        private Map<Integer, Node> map;
+        private int size;
 
         public LRUCache(int capacity) {
-            this.size = 0;
             this.capacity = capacity;
-
-            head = new DLinkedNode();
-            // head.prev = null;
-
-            tail = new DLinkedNode();
-            // tail.next = null;
-
+            map = new HashMap<>();
+            size = 0;
+            head = new Node();
+            tail = new Node();
             head.next = tail;
             tail.prev = head;
         }
 
         public int get(int key) {
-            DLinkedNode node = cache.get(key);
-            if (node == null) return -1;
-
-            // move the accessed node to the head;
-            moveToHead(node);
-
-            return node.value;
+            if(!map.containsKey(key)) {
+                return -1;
+            }
+            Node target = map.get(key);
+            moveToTail(target);
+            return target.value;
         }
 
         public void put(int key, int value) {
-            DLinkedNode node = cache.get(key);
-
-            if(node == null) {
-                DLinkedNode newNode = new DLinkedNode();
-                newNode.key = key;
-                newNode.value = value;
-
-                cache.put(key, newNode);
-                addNode(newNode);
-
-                ++size;
-
+            if(!map.containsKey(key)) {
+                Node newNode = new Node(key, value);
+                map.put(key, newNode);
+                size++;
+                add(newNode);
                 if(size > capacity) {
-                    // pop the tail
-                    DLinkedNode tail = popTail();
-                    cache.remove(tail.key);
-                    --size;
+                    map.remove(head.next.key);
+                    remove(head.next);
+                    size--;
                 }
-            } else {
-                // update the value.
-                node.value = value;
-                moveToHead(node);
+                return;
+            }
+            Node target = map.get(key);
+            target.value = value;
+            moveToTail(target);
+        }
+
+        private void add(Node node) {
+            node.prev = tail.prev;
+            node.next = tail;
+            tail.prev.next = node;
+            tail.prev = node;
+        }
+
+        private void remove(Node node) {
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
+        }
+
+        private void moveToTail(Node node) {
+            remove(node);
+            add(node);
+        }
+
+        private class Node {
+            int key;
+            int value;
+            Node next;
+            Node prev;
+            Node() {
+                key = 0;
+                value = 0;
+            }
+            Node(int key, int value) {
+                this.key = key;
+                this.value = value;
             }
         }
     }
