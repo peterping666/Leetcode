@@ -25,7 +25,6 @@ public class _128_LongestConsecutiveSequence {
                     }
                     maxLen = Math.max(maxLen, increase - decrease + 1);
                 }
-
             }
             return maxLen;
         }

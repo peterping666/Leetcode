@@ -1,9 +1,54 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class _103_BinaryTreeZigzagLevelOrderTraversal {
+
+    /**
+     * root: level 0
+     * even: poll first, append last
+     * odd: poll last, append first
+     */
+    class Solution1 {
+        public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+            List<List<Integer>> result = new ArrayList<>();
+            if(root == null) {
+                return result;
+            }
+            Deque<TreeNode> deque = new ArrayDeque<>();
+            boolean even = true;
+            deque.offerFirst(root);
+            while(!deque.isEmpty()) {
+                int size = deque.size();
+                List<Integer> list = new ArrayList<>();
+                for(int i = 0; i < size; i++) {
+                    TreeNode cur;
+                    if(even) {
+                        cur = deque.pollFirst();
+                        if(cur.left != null) {
+                            deque.offerLast(cur.left);
+                        }
+                        if(cur.right != null) {
+                            deque.offerLast(cur.right);
+                        }
+                    } else {
+                        cur = deque.pollLast();
+                        if(cur.right != null) {
+                            deque.offerFirst(cur.right);
+                        }
+                        if(cur.left != null) {
+                            deque.offerFirst(cur.left);
+                        }
+                    }
+                    list.add(cur.val);
+                }
+                even = !even;
+                result.add(list);
+            }
+            return result;
+        }
+    }
+
+
+
     /**
      * Time O(n)
      * Space O(n)

@@ -4,33 +4,33 @@ import java.util.Deque;
 public class _1438_LongestContinuousSubarrayWithAbsoluteDiffLessThanorEqualtoLimit {
     class Solution {
         public int longestSubarray(int[] nums, int limit) {
-            Deque<Integer> maxd = new ArrayDeque<>();
-            Deque<Integer> mind = new ArrayDeque<>();
-            int slow = 0;
-            int fast = 0;
-            while (fast < nums.length) {
-                while (!maxd.isEmpty() && nums[fast] > maxd.peekLast()) {
-                    maxd.pollLast();
+            Deque<Integer> max = new ArrayDeque<>();
+            Deque<Integer> min = new ArrayDeque<>();
+            int left = 0;
+            int right = 0;
+            while(right < nums.length) {
+                while(!max.isEmpty() && max.peekLast() < nums[right]) {
+                    max.pollLast();
                 }
-                maxd.add(nums[fast]);
+                max.offerLast(nums[right]);
 
-                while (!mind.isEmpty() && nums[fast] < mind.peekLast()) {
-                    mind.pollLast();
+                while(!min.isEmpty() && min.peekLast() > nums[right]) {
+                    min.pollLast();
                 }
-                mind.add(nums[fast]);
+                min.offerLast(nums[right]);
 
-                if (maxd.peekFirst() - mind.peekFirst() > limit) {
-                    if (maxd.peekFirst() == nums[slow]) {
-                        maxd.pollFirst();
+                if(max.peekFirst() - min.peekFirst() > limit) {
+                    if(max.peekFirst() == nums[left]) {
+                        max.pollFirst();
                     }
-                    if (mind.peekFirst() == nums[slow]) {
-                        mind.pollFirst();
+                    if(min.peekFirst() == nums[left]) {
+                        min.pollFirst();
                     }
-                    slow++;
+                    left++;
                 }
-                fast++;
+                right++;
             }
-            return fast - slow;
+            return right - left;
         }
     }
 }

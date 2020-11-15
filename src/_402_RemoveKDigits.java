@@ -23,14 +23,12 @@ public class _402_RemoveKDigits {
                 k--;
             }
             StringBuilder sb = new StringBuilder();
-            boolean leadingZero = true;
             while(!deque.isEmpty()) {
-                char digit = deque.pollFirst();
-                if(leadingZero && digit == '0') {
+                char c = deque.pollFirst();
+                if(sb.length() == 0 && c == '0') {
                     continue;
                 }
-                leadingZero = false;
-                sb.append(digit);
+                sb.append(c);
             }
             return sb.length() == 0 ? "0" : sb.toString();
         }

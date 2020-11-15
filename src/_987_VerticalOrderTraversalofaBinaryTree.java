@@ -19,7 +19,12 @@ public class _987_VerticalOrderTraversalofaBinaryTree {
             }
             addVerticalValue(root, width[0], lists, 0);
             for(List<int[]> list : lists) {
-                Collections.sort(list, (a, b) -> a[1] != b[1] ? a[1] - b[1] : a[0] - b[0]);
+                Collections.sort(list, (a, b) -> {
+                    if(a[1] == b[1]) {
+                        return Integer.compare(a[0], b[0]);
+                    }
+                    return Integer.compare(a[1], b[1]);
+                });
             }
             for(int i = 0; i < lists.size(); i++) {
                 for(int[] pair : lists.get(i)) {

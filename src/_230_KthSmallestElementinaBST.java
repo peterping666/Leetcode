@@ -24,23 +24,24 @@ public class _230_KthSmallestElementinaBST {
         return -1;
     }
 
-    /**
-     *
-     */
-    private int count;
-    private int res;
-    public int kthSmallest2(TreeNode root, int k) {
-        count = k;
-        helper(root);
-        return res;
-    }
-    private void helper(TreeNode root) {
-        if(root == null) return;
-        helper(root.left);
-        if(--count == 0) {
-            res = root.val;
+    class Solution {
+        public int kthSmallest(TreeNode root, int k) {
+            int[] result = new int[2];
+            result[0] = k;
+            helper(root, result);
+            return result[1];
         }
 
-        helper(root.right);
+        private void helper(TreeNode root, int[] result) {
+            if(root == null) {
+                return;
+            }
+            helper(root.left, result);
+            if(--result[0] == 0) {
+                result[1] = root.val;
+                return;
+            }
+            helper(root.right, result);
+        }
     }
 }
