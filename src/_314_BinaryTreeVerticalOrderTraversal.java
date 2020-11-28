@@ -5,50 +5,49 @@ public class _314_BinaryTreeVerticalOrderTraversal {
      * Time O(n)
      * Space O(n)
      */
-    class Solution1 {
+    class Solution {
         public List<List<Integer>> verticalOrder(TreeNode root) {
-            List<List<Integer>> res = new ArrayList<>();
+            List<List<Integer>> lists = new ArrayList<>();
             if(root == null) {
-                return res;
+                return lists;
             }
-            int[] range = new int[2];
-            getRange(root, range, 0, 0);
-            for(int i = 0; i <= range[0] + range[1]; i++) {
-                res.add(new ArrayList<>());
+            int[] width = new int[2];
+            calcWidth(root, width, 0);
+            for(int i = 0; i < width[1] - width[0] + 1; i++) {
+                lists.add(new ArrayList<>());
             }
-            Queue<TreeNode> queue = new ArrayDeque<>();
-            Queue<Integer> index = new ArrayDeque<>();
-
-            queue.offer(root);
-            index.offer(range[0]);
-
-            while(!queue.isEmpty()) {
-                TreeNode cur = queue.poll();
-                int curIndex = index.poll();
-
-                res.get(curIndex).add(cur.val);
-
-                if(cur.left != null) {
-                    queue.offer(cur.left);
-                    index.offer(curIndex - 1);
-                }
-                if(cur.right != null) {
-                    queue.offer(cur.right);
-                    index.offer(curIndex + 1);
-                }
-            }
-            return res;
+            bfs(root, lists, -width[0]);
+            return lists;
         }
 
-        private void getRange(TreeNode root, int[] range, int left, int right) {
+        private void bfs(TreeNode root, List<List<Integer>> lists, int rootIndex) {
+            Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+            Queue<Integer> indexQueue = new ArrayDeque<>();
+            nodeQueue.offer(root);
+            indexQueue.offer(rootIndex);
+            while(!nodeQueue.isEmpty()) {
+                TreeNode node = nodeQueue.poll();
+                int index = indexQueue.poll();
+                lists.get(index).add(node.val);
+                if(node.left != null) {
+                    nodeQueue.offer(node.left);
+                    indexQueue.offer(index - 1);
+                }
+                if(node.right != null) {
+                    nodeQueue.offer(node.right);
+                    indexQueue.offer(index + 1);
+                }
+            }
+        }
+
+        private void calcWidth(TreeNode root, int[] width, int index) {
             if(root == null) {
                 return;
             }
-            range[0] = Math.max(range[0], left);
-            range[1] = Math.max(range[1], right);
-
-            getRange(root.left, range, left + 1, right - 1);
-            getRange(root.right, range, left - 1, right + 1);
+            width[0] = Math.min(width[0], index);
+            width[1] = Math.max(width[1], index);
+            calcWidth(root.left, width, index - 1);
+            calcWidth(root.right, width, index + 1);
         }
     }
 }

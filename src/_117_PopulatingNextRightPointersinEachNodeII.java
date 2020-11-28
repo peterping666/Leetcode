@@ -1,65 +1,37 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class _117_PopulatingNextRightPointersinEachNodeII {
     /**
      * Time O(n)
      * Space O(n)
-     * @param root
-     * @return
      */
-    public Node connect1(Node root) {
-        if(root == null) return null;
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()) {
-            int size = queue.size();
-            Node pre = null;
-            for(int i = 0; i < size; i++) {
-                Node cur = queue.poll();
-                if(pre != null) {
-                    pre.next = cur;
-                }
-                if(cur.left != null) queue.offer(cur.left);
-                if(cur.right != null) queue.offer(cur.right);
-                pre = cur;
+    class Solution {
+        public Node connect(Node root) {
+            if(root == null) {
+                return root;
             }
-        }
-        return root;
-    }
-
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param root
-     * @return
-     */
-    public Node connect2(Node root) {
-        Node cur = root;
-        Node head = null;
-        Node pre = null;
-
-        while(cur != null) {
-            while(cur != null) {
-                if(cur.left != null) {
-                    if(pre != null) {
-                        pre.next = cur.left;
-                    } else head = cur.left;
-                    pre = cur.left;
+            Queue<Node> queue = new ArrayDeque<>();
+            queue.offer(root);
+            while(!queue.isEmpty()) {
+                int size = queue.size();
+                Node prev = null;
+                for(int i = 0; i < size; i++) {
+                    Node cur = queue.poll();
+                    if(prev != null) {
+                        prev.next = cur;
+                    }
+                    if(cur.left != null) {
+                        queue.offer(cur.left);
+                    }
+                    if(cur.right != null) {
+                        queue.offer(cur.right);
+                    }
+                    prev = cur;
                 }
-                if(cur.right != null) {
-                    if(pre != null) {
-                        pre.next = cur.right;
-                    } else head = cur.right;
-                    pre = cur.right;
-                }
-                cur = cur.next;
             }
-            cur = head;
-            head = null;
-            pre = null;
+            return root;
         }
-        return root;
     }
 
     class Node {

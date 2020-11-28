@@ -1,31 +1,26 @@
 public class _2_AddTwoNumbers {
-    /**
-     * Time O(max(m,n))
-     * Space O(max(m,n))
-     * @param l1
-     * @param l2
-     * @return
-     */
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode dummyHead = new ListNode(0);
-        ListNode p1 = l1, p2 = l2, curr = dummyHead;
-        int sum = 0;
-        while (p1 != null || p2 != null) {
-            if(p1 != null) {
-                sum += p1.val;
-                p1 = p1.next;
+    class Solution {
+        public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+            ListNode dummy = new ListNode(0);
+            ListNode tail = dummy;
+            int sum = 0;
+            while(l1 != null || l2 != null) {
+                if(l1 != null) {
+                    sum += l1.val;
+                    l1 = l1.next;
+                }
+                if(l2 != null) {
+                    sum += l2.val;
+                    l2 = l2.next;
+                }
+                tail.next = new ListNode(sum % 10);
+                tail = tail.next;
+                sum /= 10;
             }
-            if(p2 != null) {
-                sum += p2.val;
-                p2 = p2.next;
+            if(sum != 0) {
+                tail.next = new ListNode(sum);
             }
-            curr.next = new ListNode(sum % 10);
-            sum = sum / 10;
-            curr = curr.next;
+            return dummy.next;
         }
-        if (sum > 0) {
-            curr.next = new ListNode(sum);
-        }
-        return dummyHead.next;
     }
 }

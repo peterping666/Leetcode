@@ -13,12 +13,7 @@ public class _56_MergeIntervals {
             if(intervals.length == 0) {
                 return new int[0][];
             }
-            Arrays.sort(intervals, (a,b) -> {
-                if(a[0] == b[0]) {
-                    return 0;
-                }
-                return a[0] < b[0] ? -1 : 1;
-            });
+            Arrays.sort(intervals, (a,b) -> Integer.compare(a[0], b[0]));
             List<int[]> res = new ArrayList<>();
             int left = intervals[0][0];
             int right = intervals[0][1];

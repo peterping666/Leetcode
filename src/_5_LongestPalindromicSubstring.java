@@ -1,8 +1,32 @@
 public class _5_LongestPalindromicSubstring {
     /**
-     *
+     * Time O(n^2)
+     * Space O(1)
      */
-    class Solution {
+    class Solution1 {
+        public String longestPalindrome(String s) {
+            int[] indices = new int[2];
+            for(int i = 0; i < s.length(); i++) {
+                helper(s, i, i, indices);
+                helper(s, i, i + 1, indices);
+            }
+            return s.substring(indices[0], indices[1]);
+        }
+
+        private void helper(String s, int left, int right, int[] indices) {
+            while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            }
+            int len = right - left - 1;
+            if(len > indices[1] - indices[0]) {
+                indices[0] = left + 1;
+                indices[1] = right;
+            }
+        }
+    }
+
+    class Solution2 {
         public String longestPalindrome(String s) {
             int start = 0;
             int maxLen = 0;
@@ -27,31 +51,6 @@ public class _5_LongestPalindromicSubstring {
                 right++;
             }
             return right - left - 1;
-        }
-    }
-
-    /**
-     * Time O(n^2)
-     * @param s
-     * @return
-     */
-    public String longestPalindrome2(String s) {
-        int[] indices = new int[2];
-        for(int i = 0; i < s.length(); i++) {
-            helper2(s, i, i, indices);
-            helper2(s, i, i + 1, indices);
-        }
-        return s.substring(indices[0], indices[1]);
-    }
-
-    private void helper2(String s, int l, int r, int[] indices) {
-        while(l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
-            l--;
-            r++;
-        }
-        if(r - l - 1 > indices[1] - indices[0]) {
-            indices[0] = l + 1;
-            indices[1] = r;
         }
     }
 }

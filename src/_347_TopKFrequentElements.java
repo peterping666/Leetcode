@@ -12,7 +12,6 @@ public class _347_TopKFrequentElements {
             for(int num : nums) {
                 frequency.put(num, frequency.getOrDefault(num, 0) + 1);
             }
-            int[] result = new int[k];
             Queue<Map.Entry<Integer, Integer>> minHeap =
                     new PriorityQueue<>((a, b) -> a.getValue().compareTo(b.getValue()));
             for(Map.Entry<Integer, Integer> entry : frequency.entrySet()) {
@@ -23,6 +22,7 @@ public class _347_TopKFrequentElements {
                     minHeap.offer(entry);
                 }
             }
+            int[] result = new int[k];
             for(int i = k - 1; i >= 0; i--) {
                 result[i] = minHeap.poll().getKey();
             }

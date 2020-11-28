@@ -1,12 +1,13 @@
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class _1396_DesignUndergroundSystem {
     class UndergroundSystem {
 
-        HashMap<Integer, Pair<String, Integer>> checkInMap;  // Uid - {StationName, Time}
-        HashMap<String, Pair<Integer, Integer>> checkoutMap; // Route - {TotalTime, Count}
+        Map<Integer, Pair<String, Integer>> checkInMap;  // Uid - {StationName, Time}
+        Map<String, Pair<Integer, Integer>> checkoutMap; // Route - {TotalTime, Count}
         public UndergroundSystem() {
             checkInMap = new HashMap<>();
             checkoutMap = new HashMap<>();

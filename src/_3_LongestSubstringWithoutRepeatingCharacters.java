@@ -3,6 +3,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class _3_LongestSubstringWithoutRepeatingCharacters {
+    /**
+     * Time O(2n)
+     * Space O(256)
+     */
     class Solution1 {
         public int lengthOfLongestSubstring(String s) {
             int[] count = new int[256];

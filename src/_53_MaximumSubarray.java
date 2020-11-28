@@ -3,13 +3,12 @@ public class _53_MaximumSubarray {
     /**
      * Time O(n)
      * Space O(n)
-     * @return
      */
-    class Solution {
+    class Solution1 {
         public int maxSubArray(int[] nums) {
-            int maxSum = nums[0];
             int[] dp = new int[nums.length];
             dp[0] = nums[0];
+            int maxSum = nums[0];
             for(int i = 1; i < nums.length; i++) {
                 dp[i] = Math.max(nums[i], nums[i] + dp[i-1]);
                 maxSum = Math.max(maxSum, dp[i]);
@@ -20,17 +19,17 @@ public class _53_MaximumSubarray {
 
     /**
      * Time O(n)
-     * Space O(1)
-     * @param nums
-     * @return
+     * Space O(1) Optimization
      */
-    public int maxSubArray2(int[] nums) {
-        int sum = nums[0];
-        int res = nums[0];
-        for(int i = 1; i < nums.length; i++) {
-            sum = Math.max(sum + nums[i], nums[i]);
-            res = Math.max(res, sum);
+    class Solution2 {
+        public int maxSubArray(int[] nums) {
+            int sum = nums[0];
+            int max = nums[0];
+            for(int i = 1; i < nums.length; i++) {
+                sum = Math.max(nums[i], sum + nums[i]);
+                max = Math.max(max, sum);
+            }
+            return max;
         }
-        return res;
     }
 }

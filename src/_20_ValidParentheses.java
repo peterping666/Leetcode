@@ -1,26 +1,27 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _20_ValidParentheses {
     /**
      * Time O(n)
      * Space O(n)
-     * @param s
-     * @return
      */
-    public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<>();
-        for(int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if(c == ')') {
-                if(stack.isEmpty() || stack.pop() != '(') return false;
-            } else if(c == '}') {
-                if(stack.isEmpty() || stack.pop() != '{') return false;
-            } else if(c == ']') {
-                if(stack.isEmpty() || stack.pop() != '[') return false;
-            } else {
-                stack.push(c);
+    class Solution {
+        public boolean isValid(String s) {
+            Deque<Character> stack = new ArrayDeque<>();
+            for(int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if(c == '(') {
+                    stack.offerFirst(')');
+                } else if(c == '{') {
+                    stack.offerFirst('}');
+                } else if(c == '[') {
+                    stack.offerFirst(']');
+                } else if(stack.isEmpty() || stack.pollFirst() != c){
+                    return false;
+                }
             }
+            return stack.isEmpty();
         }
-        return stack.isEmpty();
     }
 }
