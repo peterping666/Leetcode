@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class _1396_DesignUndergroundSystem {
     class UndergroundSystem {
+        private Map<Integer, Pair<String, Integer>> checkInMap;  // Uid - {StationName, Time}
+        private Map<String, Pair<Integer, Integer>> checkoutMap; // Route - {TotalTime, Count}
 
-        Map<Integer, Pair<String, Integer>> checkInMap;  // Uid - {StationName, Time}
-        Map<String, Pair<Integer, Integer>> checkoutMap; // Route - {TotalTime, Count}
         public UndergroundSystem() {
             checkInMap = new HashMap<>();
             checkoutMap = new HashMap<>();
