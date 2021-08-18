@@ -1,5 +1,30 @@
 public class _1041_RobotBoundedInCircle {
-    class Solution {
+    class Solution1 {
+        public boolean isRobotBounded(String instructions) {
+            int x = 0;
+            int y = 0;
+            int dir_x = 0;
+            int dir_y = 1;
+            for(int i = 0; i < instructions.length(); i++) {
+                char c = instructions.charAt(i);
+                if(c == 'L') {
+                    int tmp_x = dir_x;
+                    dir_x = -dir_y;
+                    dir_y = tmp_x;
+                } else if(c == 'R') {
+                    int tmp_x = dir_x;
+                    dir_x = dir_y;
+                    dir_y = -tmp_x;
+                } else {
+                    x += dir_x;
+                    y += dir_y;
+                }
+            }
+            return (x == 0 && y == 0) || !(dir_x == 0 && dir_y == 1);
+        }
+    }
+
+    class Solution2 {
         public boolean isRobotBounded(String instructions) {
             int index = 0;
             int x = 0;
@@ -20,3 +45,5 @@ public class _1041_RobotBoundedInCircle {
         }
     }
 }
+
+

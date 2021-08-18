@@ -1,13 +1,11 @@
 import java.util.HashMap;
 
 public class _138_CopyListwithRandomPointer {
+    /**
+     * Time O(n)
+     * Space O(n)
+     */
     class Solution {
-        /**
-         * Time O(n)
-         * Space O(n)
-         * @param head
-         * @return
-         */
         public Node copyRandomList(Node head) {
             Node dummy = new Node(0);
             Node tail = dummy;

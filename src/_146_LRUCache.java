@@ -38,7 +38,9 @@ public class _146_LRUCache {
             } else {
                 map.put(key, new Node(key, value));
             }
+
             add(map.get(key));
+
             if(size > cap) {
                 Node node = head.next;
                 head.next = head.next.next;
