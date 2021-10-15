@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class _3_LongestSubstringWithoutRepeatingCharacters {
@@ -30,14 +31,15 @@ public class _3_LongestSubstringWithoutRepeatingCharacters {
      * @return
      */
     public int lengthOfLongestSubstring1(String s) {
+        Map<Character, Integer> map = new HashMap<>();
         int res = 0;
-        HashMap<Character, Integer> map = new HashMap<>();
         for(int i = 0, j = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(map.containsKey(c)) {
-                j = Math.max(j, map.get(c) + 1);
+            while(map.getOrDefault(c, 0) > 0) {
+                char ch = s.charAt(j++);
+                map.put(ch, map.get(ch) - 1);
             }
-            map.put(c, i);
+            map.put(c, map.getOrDefault(c, 0) + 1);
             res = Math.max(res, i - j + 1);
         }
         return res;

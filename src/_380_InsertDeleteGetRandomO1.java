@@ -32,13 +32,12 @@ public class _380_InsertDeleteGetRandomO1 {
             int index = map.get(val);
             if(index == list.size() - 1) {
                 list.remove(list.size() - 1);
-                map.remove(val);
             } else {
                 int lastVal = list.remove(list.size() - 1);
                 list.set(index, lastVal);
                 map.put(lastVal, index);
-                map.remove(val);
             }
+            map.remove(val);
             return true;
         }
 

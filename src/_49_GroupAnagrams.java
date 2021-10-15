@@ -8,7 +8,7 @@ public class _49_GroupAnagrams {
      * @return
      */
     public List<List<String>> groupAnagrams(String[] strs) {
-        HashMap<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>();
         for(String str : strs) {
             int[] count = new int[26];
             for(int i = 0; i < str.length(); i++) {

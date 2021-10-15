@@ -26,4 +26,32 @@ public class _17_LetterCombinationsofaPhoneNumber {
             }
         }
     }
+
+    class Solution2 {
+        public List<String> letterCombinations(String digits) {
+            if(digits.length() == 0) {
+                return new ArrayList<>();
+            }
+            List<String> list = new ArrayList<>();
+            char[] cur = new char[digits.length()];
+            String[] letters = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+            dfs(digits, list, cur, 0, letters);
+            return list;
+        }
+
+        private void dfs(String digits, List<String> list, char[] cur, int index, String[] letters) {
+            if(index == digits.length()) {
+                list.add(new String(cur));
+                return;
+            }
+            String str = letters[digits.charAt(index) - '0'];
+            for(int i = 0; i < str.length(); i++) {
+                cur[index] = str.charAt(i);
+                dfs(digits, list, cur, index + 1, letters);
+            }
+
+        }
+    }
 }
+
+

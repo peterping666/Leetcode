@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class LRUCache {
+
     private int cap;
     private Node head;
     private Node tail;
@@ -32,22 +33,17 @@ class LRUCache {
             Node node = map.get(key);
             node.val = value;
             remove(node);
+            add(node);
         } else {
-            map.put(key, new Node(key, value));
-        }
-
-        add(map.get(key));
-
-        if(map.size() > cap) {
-            Node node = head.next;
-            remove(node);
-            map.remove(node.key); // very important
+            Node newNode = new Node(key, value);
+            add(newNode);
         }
     }
 
     private void remove(Node node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
+        map.remove(node.key);
     }
 
     private void add(Node node) {
@@ -55,6 +51,10 @@ class LRUCache {
         node.next = tail;
         tail.prev.next = node;
         tail.prev = node;
+        map.put(node.key, node);
+        if(map.size() > cap) {
+            remove(head.next);
+        }
     }
 
 
