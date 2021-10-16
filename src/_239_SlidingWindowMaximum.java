@@ -15,8 +15,8 @@ public class _239_SlidingWindowMaximum {
                 if(i - deque.peekFirst() >= k) {
                     deque.pollFirst();
                 }
-                if(i - k + 1 >= 0) {
-                    res[i - k + 1] = nums[deque.peekFirst()];
+                if(i + 1 >= k) {
+                    res[i + 1 - k] = nums[deque.peekFirst()];
                 }
             }
             return res;
