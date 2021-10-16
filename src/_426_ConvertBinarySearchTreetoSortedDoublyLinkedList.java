@@ -5,27 +5,27 @@ public class _426_ConvertBinarySearchTreetoSortedDoublyLinkedList {
      */
     class Solution {
         public Node treeToDoublyList(Node root) {
-            if (root == null) {
+            if(root == null) {
                 return null;
             }
             Node[] prev = new Node[1];
-            Node dummy = new Node(0, null, null);
+            Node dummy = new Node();
             prev[0] = dummy;
-            connect(root, prev);
+            helper(root, prev);
             dummy.right.left = prev[0];
             prev[0].right = dummy.right;
             return dummy.right;
         }
 
-        private void connect(Node root, Node[] prev) {
+        private void helper(Node root, Node[] prev) {
             if(root == null) {
                 return;
             }
-            connect(root.left, prev);
-            prev[0].right = root;
+            helper(root.left, prev);
             root.left = prev[0];
+            prev[0].right = root;
             prev[0] = root;
-            connect(root.right, prev);
+            helper(root.right, prev);
         }
     }
 
