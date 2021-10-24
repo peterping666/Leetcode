@@ -7,9 +7,9 @@ public class _50_Pow {
                     throw new IllegalArgumentException("x and n can't both be zero");
                 }
                 return 1 / pow(x, -n);
-            } else {
-                return pow(x, n);
             }
+            return pow(x, n);
+
         }
 
         private double pow(double x, int n) {

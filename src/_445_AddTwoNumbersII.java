@@ -16,7 +16,7 @@ public class _445_AddTwoNumbersII {
             }
 
             int sum = 0;
-            ListNode list = new ListNode(0);
+            ListNode cur = new ListNode(0);
             while(!stack1.isEmpty() || !stack2.isEmpty()) {
                 if(!stack1.isEmpty()) {
                     sum += stack1.pollFirst();
@@ -24,13 +24,13 @@ public class _445_AddTwoNumbersII {
                 if(!stack2.isEmpty()) {
                     sum += stack2.pollFirst();
                 }
-                list.val = sum % 10;
+                cur.val = sum % 10;
                 ListNode head = new ListNode(sum / 10);
-                head.next = list;
-                list = head;
+                head.next = cur;
+                cur = head;
                 sum /= 10;
             }
-            return list.val == 0 ? list.next : list;
+            return cur.val == 0 ? cur.next : cur;
         }
     }
 }

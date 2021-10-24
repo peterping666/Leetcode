@@ -19,31 +19,32 @@ public class _215_KthLargestElementinArray {
         }
 
         private int partition(int[] nums, int left, int right) {
-            int pivotIndex = pivotIndex(left, right);
+            int pivotIndex = getPivotIndex(left, right);
+            int pivot = nums[pivotIndex];
             swap(nums, pivotIndex, right);
-            int pivot = nums[right];
-            int leftBound = left;
-            int rightBound = right - 1;
-            while(leftBound <= rightBound) {
-                if(nums[leftBound] <= pivot) {
-                    leftBound++;
-                } else if(nums[rightBound] >= pivot) {
-                    rightBound--;
+            int start = left;
+            int end = right - 1;
+            while(start <= end) {
+                if(nums[start] <= pivot) {
+                    start++;
+                } else if(nums[end] > pivot) {
+                    end--;
                 } else {
-                    swap(nums, leftBound++, rightBound--);
+                    swap(nums, start++, end--);
                 }
             }
-            swap(nums, leftBound, right);
-            return leftBound;
+            swap(nums, start, right);
+            return start;
         }
 
         private void swap(int[] nums, int left, int right) {
             int tmp = nums[left];
-            nums[left] = nums[right];
-            nums[right] = tmp;
+            nums[left++] = nums[right];
+            nums[right--] = tmp;
         }
-        private int pivotIndex(int left, int right) {
-            return left + (int)(Math.random() * (right - left + 1));
+
+        private int getPivotIndex(int left, int right) {
+            return left + ((int)(Math.random() * (right - left + 1)));
         }
     }
 }

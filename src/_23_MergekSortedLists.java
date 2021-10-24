@@ -55,7 +55,7 @@ public class _23_MergekSortedLists {
             ListNode dummy = new ListNode(0);
             ListNode tail = dummy;
             while(l1 != null && l2 != null) {
-                if(l1.val < l2.val) {
+                if(l1.val <= l2.val) {
                     tail.next = l1;
                     l1 = l1.next;
                 } else {
@@ -64,11 +64,7 @@ public class _23_MergekSortedLists {
                 }
                 tail = tail.next;
             }
-            if(l1 != null) {
-                tail.next = l1;
-            } else {
-                tail.next = l2;
-            }
+            tail.next = l1 == null ? l2 : l1;
             return dummy.next;
         }
     }

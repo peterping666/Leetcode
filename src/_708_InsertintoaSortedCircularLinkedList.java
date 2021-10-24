@@ -1,41 +1,41 @@
 public class _708_InsertintoaSortedCircularLinkedList {
 
-    class Solution {
+    class Solution1 {
         public Node insert(Node head, int insertVal) {
-            if (head == null) {
+            if(head == null){
                 Node newNode = new Node(insertVal, null);
                 newNode.next = newNode;
                 return newNode;
             }
-
-            Node prev = head;
-            Node curr = head.next;
-            boolean toInsert = false;
-
-            do {
-                if (prev.val <= insertVal && insertVal <= curr.val) {
-                    // Case 1).
-                    toInsert = true;
-                } else if (prev.val > curr.val) {
-                    // Case 2).
-                    if (insertVal >= prev.val || insertVal <= curr.val)
-                        toInsert = true;
+            Node cur = head;
+            while(true){
+                if((cur.val <= insertVal && cur.next.val >= insertVal) ||
+                        (cur.val > cur.next.val && (insertVal >= cur.val || insertVal <= cur.next.val)) ||
+                        cur.next == head) {
+                    Node newNode = new Node(insertVal, null);
+                    newNode.next = cur.next;
+                    cur.next = newNode;
+                    break;
                 }
-
-                if (toInsert) {
-                    prev.next = new Node(insertVal, curr);
-                    return head;
-                }
-
-                prev = curr;
-                curr = curr.next;
-            } while (prev != head);
-
-            // Case 3).
-            prev.next = new Node(insertVal, curr);
+                cur = cur.next;
+            }
             return head;
         }
     }
+
+    /* 3 cases
+        case 1: insertVal is between 2 nodes
+        e.g. 1->2->4, insert 3
+        condition: insertVal >= n.val && insertVal <= n.next.val
+
+        case 2: insertVal is >= largest node value or <= smalles node value
+        e.g. 1->2->4, insert 0 or 1->2->4, insert 5
+        condition: n.next.val < n.val && (insertVal >= n.val || insertVal <= n.next.val)
+
+        case 3: all the nodes in the tree have same value
+        e.g. 1->1->1, insert 2
+        condition: n.next == head
+    */
 
     class Node {
         public int val;

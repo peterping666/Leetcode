@@ -9,18 +9,18 @@ public class _560_SubarraySumEqualsK {
      */
     class Solution3 {
         public int subarraySum(int[] nums, int k) {
-            Map<Integer, Integer> prefixSum = new HashMap<>();
-            prefixSum.put(0, 1);
+            Map<Integer, Integer> map = new HashMap<>();
+            map.put(0, 1);
             int sum = 0;
-            int count = 0;
-            for(int i = 0; i < nums.length; i++) {
-                sum += nums[i];
-                if(prefixSum.containsKey(sum - k)) {
-                    count += prefixSum.get(sum - k);
+            int res = 0;
+            for(int num : nums) {
+                sum += num;
+                if(map.containsKey(sum - k)) {
+                    res += map.get(sum - k);
                 }
-                prefixSum.put(sum, prefixSum.getOrDefault(sum, 0) + 1);
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
             }
-            return count;
+            return res;
         }
     }
 }

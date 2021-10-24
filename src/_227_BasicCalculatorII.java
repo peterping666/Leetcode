@@ -16,8 +16,7 @@ public class _227_BasicCalculatorII {
                 if(Character.isDigit(ch)) {
                     int num = ch - '0';
                     while(i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
-                        num = num * 10 + s.charAt(i + 1) - '0';
-                        i++;
+                        num = num * 10 + s.charAt(++i) - '0';
                     }
                     if(sign == '+') {
                         stack.offerFirst(num);
