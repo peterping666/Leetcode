@@ -3,20 +3,20 @@ import java.util.List;
 
 public class    _986_IntervalListIntersections {
     class Solution {
-        public int[][] intervalIntersection(int[][] A, int[][] B) {
+        public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
             List<int[]> res= new ArrayList<>();
-            int aIndex = 0;
-            int bIndex = 0;
-            while(aIndex < A.length && bIndex < B.length) {
-                int low = Math.max(A[aIndex][0], B[bIndex][0]);
-                int high = Math.min(A[aIndex][1], B[bIndex][1]);
+            int firstIndex = 0;
+            int secondIndex = 0;
+            while(firstIndex < firstList.length && secondIndex < secondList.length) {
+                int low = Math.max(firstList[firstIndex][0], secondList[secondIndex][0]);
+                int high = Math.min(firstList[firstIndex][1], secondList[secondIndex][1]);
                 if(low <= high) {
                     res.add(new int[]{low, high});
                 }
-                if(A[aIndex][1] < B[bIndex][1]) {
-                    aIndex++;
+                if(firstList[firstIndex][1] <= secondList[secondIndex][1]) {
+                    firstIndex++;
                 } else {
-                    bIndex++;
+                    secondIndex++;
                 }
             }
             return res.toArray(new int[0][]);

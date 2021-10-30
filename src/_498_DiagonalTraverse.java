@@ -7,8 +7,7 @@ public class _498_DiagonalTraverse {
      */
     public int[] findDiagonalOrder(int[][] matrix) {
         if(matrix == null || matrix.length == 0) return new int[0];
-        int m = matrix.length;
-        int n = matrix[0].length;
+        int m = matrix.length, n = matrix[0].length;
         int[] res = new int[m * n];
         int[][] dirs = {{-1, 1}, {1, -1}};
         int r = 0, c = 0, d = 0;

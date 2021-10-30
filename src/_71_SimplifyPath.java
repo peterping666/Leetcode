@@ -1,28 +1,29 @@
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class _71_SimplifyPath {
-    /**
-     * Time O(n)
-     * Space O(n)
-     * @param path
-     * @return
-     */
-    public String simplifyPath(String path) {
-        Stack<String> stack = new Stack<String>();
-        String[] components = path.split("/");
-        for (String directory : components) {
-            if(directory.equals("..")) {
-                if(!stack.isEmpty()) {
-                    stack.pop();
+    class Solution {
+        public String simplifyPath(String path) {
+            List<String> list = new ArrayList<>();
+            for (String dir : path.split("/")) {
+                if (dir.equals("..")) {
+                    if(list.size() != 0) {
+                        list.remove(list.size() - 1);
+                    }
+                } else if (!dir.equals(".") && !dir.equals("")) {
+                    list.add(dir);
                 }
-            } else if(!directory.equals(".") && !directory.equals("")) {
-                stack.push(directory);
             }
+
+            if (list.size() == 0) {
+                return "/";
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (String str : list) {
+                sb.append("/").append(str);
+            }
+            return sb.toString();
         }
-        StringBuilder result = new StringBuilder();
-        for (String dir : stack) {
-            result.append("/").append(dir);
-        }
-        return result.length() > 0 ? result.toString() : "/" ;
     }
 }

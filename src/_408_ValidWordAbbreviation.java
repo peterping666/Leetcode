@@ -1,51 +1,24 @@
 public class _408_ValidWordAbbreviation {
-    public boolean validWordAbbreviation1(String word, String abbr) {
-        int i = 0, j = 0;
-        while (i < word.length() && j < abbr.length()) {
-            if (word.charAt(i) == abbr.charAt(j)) {
-                ++i;++j;
-                continue;
+    class Solution {
+        public boolean validWordAbbreviation(String word, String abbr) {
+            int index = 0;
+            for(int i = 0; i < abbr.length(); i++) {
+                char c = abbr.charAt(i);
+                if(Character.isDigit(c)) {
+                    int num = c - '0';
+                    if(num == 0) {
+                        return false;
+                    }
+                    while(i + 1 < abbr.length() && Character.isDigit(abbr.charAt(i + 1))) {
+                        num = num * 10 + abbr.charAt(i + 1) - '0';
+                        i++;
+                    }
+                    index += num;
+                } else if(index >= word.length() || c != word.charAt(index++)) {
+                    return false;
+                }
             }
-            if (abbr.charAt(j) <= '0' || abbr.charAt(j) > '9') {
-                return false;
-            }
-            int start = j;
-            while (j < abbr.length() && abbr.charAt(j) >= '0' && abbr.charAt(j) <= '9') {
-                ++j;
-            }
-            int num = Integer.valueOf(abbr.substring(start, j));
-            i += num;
+            return index == word.length();
         }
-        return i == word.length() && j == abbr.length();
-    }
-
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param word
-     * @param abbr
-     * @return
-     */
-    public boolean validWordAbbreviation2(String word, String abbr) {
-        int i = 0, j = 0;
-        while(i < word.length() && j < abbr.length()) {
-            if(abbr.charAt(j) == '0') {
-                return false;
-            }
-            int len = 0;
-            while(j < abbr.length() && Character.isDigit(abbr.charAt(j))) {
-                len = len * 10 + abbr.charAt(j) - '0';
-                j++;
-            }
-            if(len != 0) {
-                i += len;
-            } else if(word.charAt(i) != abbr.charAt(j)) {
-                return false;
-            } else {
-                i++;
-                j++;
-            }
-        }
-        return i == word.length() && j == abbr.length();
     }
 }

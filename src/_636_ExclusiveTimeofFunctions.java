@@ -6,25 +6,36 @@ public class _636_ExclusiveTimeofFunctions {
     class Solution {
         public int[] exclusiveTime(int n, List<String> logs) {
             int[] res = new int[n];
-            Deque<Integer> stack = new ArrayDeque<>();
-            int prevTime = 0;
-            for(String log : logs) {
-                String[] logInfo = log.split(":");
-                int id = Integer.parseInt(logInfo[0]);
-                int timestamp = Integer.parseInt(logInfo[2]);
-
-                if (!stack.isEmpty()) {
-                    res[stack.peekFirst()] += timestamp - prevTime;
-                }
-                prevTime = timestamp;
-                if (logInfo[1].equals("start")) {
-                    stack.push(id);
+            Deque<Log> stack = new ArrayDeque<>();
+            for(String str : logs) {
+                Log log = new Log(str);
+                if(log.isStart) {
+                    stack.push(log);
                 } else {
-                    res[stack.pollFirst()]++;
-                    prevTime++;
+                    Log top = stack.pop();
+                    res[top.id] += log.time - top.time + 1;
+                    if(!stack.isEmpty()) {
+                        res[stack.peek().id] -= log.time - top.time + 1;
+                    }
                 }
             }
             return res;
         }
+
+        class Log{
+            int id;
+            boolean isStart;
+            int time;
+
+            Log(String content) {
+                String[] strs = content.split(":");
+                id = Integer.valueOf(strs[0]);
+                isStart = strs[1].equals("start");
+                time = Integer.valueOf(strs[2]);
+            }
+        }
     }
+    /*
+
+     */
 }
