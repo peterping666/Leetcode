@@ -23,7 +23,7 @@ public class _394_DecodeString {
                 } else if(c == ']') {
                     int num = count.pollFirst();
                     StringBuilder decode = prevStr.pollFirst();
-                    for(int j = 0; j < num; j++) {
+                    while(num-- > 0) {
                         decode.append(sb);
                     }
                     sb = decode;

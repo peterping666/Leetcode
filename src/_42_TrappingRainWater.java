@@ -8,7 +8,7 @@ public class _42_TrappingRainWater {
             if(height.length == 0) {
                 return 0;
             }
-            int total = 0;
+            int res = 0;
             int left = 0;
             int right = height.length - 1;
             int leftMax = height[left];
@@ -17,20 +17,20 @@ public class _42_TrappingRainWater {
                 if(leftMax < rightMax) {
                     left++;
                     if(height[left] < leftMax) {
-                        total += leftMax - height[left];
+                        res += leftMax - height[left];
                     } else {
                         leftMax = height[left];
                     }
                 } else {
                     right--;
                     if(height[right] < rightMax) {
-                        total += rightMax - height[right];
+                        res += rightMax - height[right];
                     } else {
                         rightMax = height[right];
                     }
                 }
             }
-            return total;
+            return res;
         }
     }
 }

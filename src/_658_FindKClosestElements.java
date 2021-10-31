@@ -1,26 +1,20 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class _658_FindKClosestElements {
-    class Solution1 {
+    class Solution {
         public List<Integer> findClosestElements(int[] arr, int k, int x) {
-            LinkedList<Integer> res = new LinkedList<>();
-            int left = 0;
-            int right = arr.length - 1;
-            while(left + 1 < right) {
-                int mid = left + (right - left) / 2;
-                if(arr[mid] < x) {
-                    left = mid;
-                } else {
+            int left = 0, right = arr.length - k;
+            while (left < right) {
+                int mid = (left + right) / 2;
+                if (x - arr[mid] > arr[mid + k] - x)
+                    left = mid + 1;
+                else
                     right = mid;
-                }
             }
-            while(res.size() < k) {
-                if(left < 0 || right < arr.length && Math.abs(arr[right] - x) < Math.abs(arr[left] - x)) {
-                    res.add(arr[right++]);
-                } else {
-                    res.addFirst(arr[left--]);
-                }
+            List<Integer> res = new ArrayList<>();
+            for(int i = left; i < left + k; i++) {
+                res.add(arr[i]);
             }
             return res;
         }
