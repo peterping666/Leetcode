@@ -1,26 +1,48 @@
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class _339_NestedListWeightSum {
-    /**
-     * Time O(n)
-     * Space O(d) d is the maximum level of nesting in the input
-     * @param nestedList
-     * @return
-     */
-    public int depthSum(List<NestedInteger> nestedList) {
-        return depthSum(nestedList, 1);
+
+    class Solution1 {
+        public int depthSum(List<NestedInteger> nestedList) {
+            return helper(nestedList, 1);
+        }
+        public int helper(List<NestedInteger> nestedList, int level) {
+            int result = 0;
+            for(NestedInteger ni : nestedList) {
+                if (ni.isInteger()) {
+                    result += (level * ni.getInteger());
+                }else {
+                    result += helper(ni.getList(), level + 1);
+                }
+            }
+            return result;
+        }
     }
 
-    public int depthSum(List<NestedInteger> list, int depth) {
-        int sum = 0;
-        for (NestedInteger n : list) {
-            if (n.isInteger()) {
-                sum += n.getInteger() * depth;
-            } else {
-                sum += depthSum(n.getList(), depth + 1);
+    class Solution2 {
+        public int depthSum(List<NestedInteger> nestedList) {
+            if(nestedList == null){
+                return 0;
             }
+            int sum = 0;
+            int level = 1;
+            Queue<NestedInteger> queue = new LinkedList<NestedInteger>(nestedList);
+            while(queue.size() > 0){
+                int size = queue.size();
+                for(int i = 0; i < size; i++){
+                    NestedInteger ni = queue.poll();
+                    if(ni.isInteger()){
+                        sum += ni.getInteger() * level;
+                    }else{
+                        queue.addAll(ni.getList());
+                    }
+                }
+                level++;
+            }
+            return sum;
         }
-        return sum;
     }
 
 

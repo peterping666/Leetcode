@@ -3,29 +3,29 @@ import java.util.List;
 
 public class _78_Subsets {
     /**
-     * Time O(n^k * n)
+     * Time O(n! * n) or O(2^n * n)
      * Space O(n)
-     * @param nums
-     * @return
      */
-    public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> lists = new ArrayList<>();
-        helper(lists, nums, new ArrayList<>(), 0);
-        return lists;
-    }
+    class Solution {
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            helper(res, nums, new ArrayList<>(), 0);
+            return res;
+        }
 
-    private void helper(List<List<Integer>> lists, int[] nums,
-                        List<Integer> subset, int first) {
-        lists.add(new ArrayList<>(subset));
-        for(int i = first; i < nums.length; i++) {
-            subset.add(nums[i]);
-            helper(lists, nums, subset, i + 1);
-            subset.remove(subset.size() - 1);
+        private void helper(List<List<Integer>> res, int[] nums,
+                            List<Integer> subset, int first) {
+            res.add(new ArrayList<>(subset));
+            for(int i = first; i < nums.length; i++) {
+                subset.add(nums[i]);
+                helper(res, nums, subset, i + 1);
+                subset.remove(subset.size() - 1);
+            }
         }
     }
 
     /**
-     * Time O(2^n * n)
+     * Time O(2^n * n) - 2^n subsets and O(n) to create new list for each subset
      * Space O(n)
      */
     class Solution2 {

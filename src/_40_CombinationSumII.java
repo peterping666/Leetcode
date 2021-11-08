@@ -4,8 +4,8 @@ import java.util.List;
 
 public class _40_CombinationSumII {
     /**
-     * Time O(2^n)
-     * Space O(2^n)
+     * Time O(2^n * n)
+     * Space O(n)
      * @return
      */
     class Solution {

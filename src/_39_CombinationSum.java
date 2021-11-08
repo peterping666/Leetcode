@@ -2,7 +2,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class _39_CombinationSum {
+
+    /**
+     * Time: O(n^n)
+     * Space: O(n)
+     */
     class Solution1 {
+        public List<List<Integer>> combinationSum(int[] candidates, int target) {
+            List<List<Integer>> res = new ArrayList<>();
+            helper(res, candidates, target, new ArrayList<>(), 0);
+            return res;
+        }
+
+        private void helper(List<List<Integer>> res, int[] candidates,
+                            int target, List<Integer> path, int index) {
+            if(target == 0) {
+                res.add(new ArrayList<>(path));
+                return;
+            }
+            if(target < 0) return;
+            for(int i = index; i < candidates.length; i++) {
+                path.add(candidates[i]);
+                helper(res, candidates, target - candidates[i], path, i);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+
+    class Solution2 {
         public List<List<Integer>> combinationSum(int[] candidates, int target) {
             List<List<Integer>> res = new ArrayList<>();
             helper(candidates, res, target, new ArrayList<>(), 0);
@@ -29,25 +56,5 @@ public class _39_CombinationSum {
         }
     }
 
-    class Solution2 {
-        public List<List<Integer>> combinationSum(int[] candidates, int target) {
-            List<List<Integer>> res = new ArrayList<>();
-            helper(res, candidates, target, new ArrayList<>(), 0);
-            return res;
-        }
 
-        private void helper(List<List<Integer>> res, int[] candidates,
-                            int target, List<Integer> path, int index) {
-            if(target == 0) {
-                res.add(new ArrayList<>(path));
-                return;
-            }
-            if(target < 0) return;
-            for(int i = index; i < candidates.length; i++) {
-                path.add(candidates[i]);
-                helper(res, candidates, target - candidates[i], path, i);
-                path.remove(path.size() - 1);
-            }
-        }
-    }
 }

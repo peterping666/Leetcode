@@ -1,26 +1,27 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class _692_TopKFrequentWords {
     class Solution {
         public List<String> topKFrequent(String[] words, int k) {
-            HashMap<String, Integer> map = new HashMap<>();
-            for(String word : words) {
-                map.put(word, map.getOrDefault(word, 0) + 1);
+            Map<String, Integer> map = new HashMap<>();
+            for(int i = 0; i < words.length; i++) {
+                map.put(words[i], map.getOrDefault(words[i], 0) + 1);
             }
-            PriorityQueue<String> heap = new PriorityQueue<>(
-                    (a, b) -> map.get(a) == map.get(b) ? b.compareTo(a) : map.get(a) - map.get(b));
-            for(String word : map.keySet()) {
-                heap.offer(word);
+            Queue<Map.Entry<String, Integer>> heap = new PriorityQueue<>((a,b) -> {
+                if(a.getValue() == b.getValue()) {
+                    return b.getKey().compareTo(a.getKey());
+                }
+                return a.getValue().compareTo(b.getValue());
+            });
+            for(Map.Entry<String, Integer> entry : map.entrySet()) {
+                heap.offer(entry);
                 if(heap.size() > k) {
                     heap.poll();
                 }
             }
             List<String> res = new LinkedList<>();
             while(!heap.isEmpty()) {
-                res.add(0, heap.poll());
+                res.add(0, heap.poll().getKey());
             }
             return res;
         }

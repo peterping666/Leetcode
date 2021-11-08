@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class _46_Permutations {
     /**
@@ -24,6 +22,29 @@ public class _46_Permutations {
                 path.add(nums[i]);
                 helper(list, path, nums);
                 path.remove(path.size() - 1);
+            }
+        }
+    }
+
+    class Solution4 {
+        public List<List<Integer>> permute(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            helper(nums, new HashSet<>(), res, new ArrayList<>());
+            return res;
+        }
+
+        private void helper(int[] nums, Set<Integer> set, List<List<Integer>> res, List<Integer> list) {
+            if(list.size() == nums.length) {
+                res.add(new ArrayList<>(list));
+                return;
+            }
+            for(int i = 0; i < nums.length; i++) {
+                if(set.add(nums[i])) {
+                    list.add(nums[i]);
+                    helper(nums, set, res, list);
+                    list.remove(list.size() - 1);
+                    set.remove(nums[i]);
+                }
             }
         }
     }

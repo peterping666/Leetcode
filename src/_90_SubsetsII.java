@@ -4,7 +4,7 @@ import java.util.List;
 
 public class _90_SubsetsII {
     /**
-     * Time O(2^n)
+     * Time O(2^n * n)
      * Space O(n)
      * @param nums
      * @return

@@ -2,11 +2,14 @@ package Trie;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Trie {
+
+    TrieNode root;
+
     class TrieNode {
         TrieNode[] children;
+//        Map<Character, TrieNode> children; // All charactor
         boolean isWord;
         int numWords; // number of words in the subtree
 
@@ -15,16 +18,18 @@ public class Trie {
         }
     }
 
-    TrieNode root;
+    public Trie() {
+        root = new TrieNode();
+    }
 
     public boolean search(String word) {
         TrieNode cur = root;
         for(int i = 0; i < word.length(); i++) {
-            int pos = word.charAt(i) - 'a';
-            if(cur.children[pos] == null) {
+            int index = word.charAt(i) - 'a';
+            if(cur.children[index] == null) {
                 return false;
             }
-            cur = cur.children[pos];
+            cur = cur.children[index];
         }
         return cur.isWord;
     }
@@ -90,6 +95,9 @@ public class Trie {
     }
 
     private void dfsHelper(TrieNode current, StringBuilder curPath, List<String> result) {
+        if(current == null) {
+            return;
+        }
         if(current.isWord) {
             result.add(curPath.toString());
         }
@@ -131,9 +139,4 @@ public class Trie {
             curPath.deleteCharAt(curPath.length() - 1);
         }
     }
-
-
-//    class TrieNode {
-//        Map<Character, TrieNode> children; // All charactor
-//    }
 }

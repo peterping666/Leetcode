@@ -11,7 +11,7 @@ public class _133_CloneGraph {
             queue.add(node);
             visited.put(node, new Node(node.val));
             while (!queue.isEmpty()) {
-                Node cur = queue.remove();
+                Node cur = queue.poll();
                 for (Node neighbor : cur.neighbors) {
                     if (!visited.containsKey(neighbor)) {
                         visited.put(neighbor, new Node(neighbor.val));

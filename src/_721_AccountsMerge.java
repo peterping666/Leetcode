@@ -2,6 +2,7 @@ import java.util.*;
 
 public class _721_AccountsMerge {
 
+    // Union Find
     class Solution1 {
         public List<List<String>> accountsMerge(List<List<String>> accounts) {
             if (accounts.size() == 0) {
@@ -82,6 +83,7 @@ public class _721_AccountsMerge {
         }
     }
 
+    // Graph + BFS
     class Solution2 {
         public List<List<String>> accountsMerge(List<List<String>> accounts) {
             Map<String, Set<String>> graph = new HashMap<>();
@@ -139,6 +141,7 @@ public class _721_AccountsMerge {
         }
     }
 
+    // Graph + DFS
     class Solution3 {
         public List<List<String>> accountsMerge(List<List<String>> accounts) {
             Map<String, Set<String>> graph = new HashMap<>();
