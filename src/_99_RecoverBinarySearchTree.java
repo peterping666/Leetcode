@@ -3,27 +3,31 @@ public class _99_RecoverBinarySearchTree {
      * Time O(n)
      *  Space O(h)
      */
-    TreeNode first = null;
-    TreeNode second = null;
-    TreeNode pre = null;
-    public void recoverTree(TreeNode root) {
-        helper(root);
-        if(first != null && second != null) {
-            int temp = first.val;
-            first.val = second.val;
-            second.val = temp;
+    class Solution {
+        public void recoverTree(TreeNode root) {
+            TreeNode[] first = new TreeNode[1];
+            TreeNode[] second = new TreeNode[1];
+            helper(root, first, second, new TreeNode[1]);
+            int tmp = first[0].val;
+            first[0].val = second[0].val;
+            second[0].val = tmp;
         }
-        return;
-    }
 
-    private void helper(TreeNode node) {
-        if(node == null) return;
-        helper(node.left);
-        if(pre != null && pre.val > node.val) {
-            if(first == null) first = pre;
-            second = node;
+        private void helper(TreeNode root, TreeNode[] first, TreeNode[] second, TreeNode[] prev) {
+            if(root == null) {
+                return;
+            }
+            helper(root.left, first, second, prev);
+
+            if(prev[0] != null && prev[0].val > root.val) {
+                if(first[0] == null) {
+                    first[0] = prev[0];
+                }
+                second[0] = root;
+            }
+            prev[0] = root;
+
+            helper(root.right, first, second, prev);
         }
-        pre = node;
-        helper(node.right);
     }
 }

@@ -6,7 +6,6 @@ public class _441_ArrangingCoins {
                 i+=1;
                 n-=i;
             }
-
             return n==0 ? i : i-1;
         }
     }

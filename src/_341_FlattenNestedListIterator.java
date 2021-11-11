@@ -24,14 +24,45 @@ public class _341_FlattenNestedListIterator {
             while(!stack.isEmpty()) {
                 if(stack.peekFirst().isInteger()) {
                     return true;
-                } else {
-                    List<NestedInteger> curList = stack.pollFirst().getList();
-                    for(int i = curList.size() - 1; i >= 0; i--) {
-                        stack.offerFirst(curList.get(i));
-                    }
+                }
+                List<NestedInteger> curList = stack.pollFirst().getList();
+                for(int i = curList.size() - 1; i >= 0; i--) {
+                    stack.offerFirst(curList.get(i));
                 }
             }
             return false;
+        }
+    }
+
+    public class NestedIterator2 implements Iterator<Integer> {
+
+        Deque<NestedInteger> deque;
+
+        public NestedIterator2(List<NestedInteger> nestedList) {
+            deque = new ArrayDeque<>();
+            for(NestedInteger n :  nestedList) {
+                deque.offerLast(n);
+            }
+        }
+
+        @Override
+        public Integer next() {
+            return deque.pollFirst().getInteger();
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(deque.isEmpty()) {
+                return false;
+            }
+            if(deque.peekFirst().isInteger()) {
+                return true;
+            }
+            List<NestedInteger> curList = deque.pollFirst().getList();
+            for(int i = curList.size() - 1; i>= 0; i--) {
+                deque.offerFirst(curList.get(i));
+            }
+            return hasNext();
         }
     }
 

@@ -1,32 +1,39 @@
 public class _410_SplitArrayLargestSum {
     class Solution {
         public int splitArray(int[] nums, int m) {
-            int max = 0;
-            int sum = 0;
-            for(int num : nums) {
-                max = Math.max(max, num);
+            int max = 0; long sum = 0;
+            for (int num : nums) {
+                max = Math.max(num, max);
                 sum += num;
             }
-            int left = max;
-            int right = sum;
-            while(left < right) {
-                int mid = left + (right - left) / 2;
-                int count = 1;
-                int curSum = 0;
-                for(int num : nums) {
-                    if(curSum + num > mid) {
-                        count++;
-                        curSum = 0;
-                    }
-                    curSum += num;
-                }
-                if(count > m) {
-                    left = mid + 1;
+            if (m == 1) return (int)sum;
+            //binary search
+            long l = max; long r = sum;
+            while (l <= r) {
+                long mid = (l + r)/ 2;
+                if (valid(mid, nums, m)) {
+                    r = mid - 1;
                 } else {
-                    right = mid;
+                    l = mid + 1;
                 }
             }
-            return left;
+            return (int)l;
+        }
+
+        public boolean valid(long target, int[] nums, int m) {
+            int count = 1;
+            long total = 0;
+            for(int num : nums) {
+                total += num;
+                if (total > target) {
+                    total = num;
+                    count++;
+                    if (count > m) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

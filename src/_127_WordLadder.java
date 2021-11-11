@@ -2,7 +2,7 @@ import java.util.*;
 
 public class _127_WordLadder {
     /**
-     * Time O(m * 26)  m: beginWod.length
+     * Time O(m^2 * 26 * n)  m: beginWod.length
      * Space O(n) n: wordList.size()
      * @return
      */
@@ -23,6 +23,7 @@ public class _127_WordLadder {
                 for(int i = 0; i < curChars.length; i++) {
                     char c = curChars[i];
                     for(char l = 'a'; l <= 'z'; l++) {
+                        if(c == l) continue;
                         curChars[i] = l;
                         String newWord = new String(curChars);
 

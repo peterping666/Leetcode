@@ -1,5 +1,8 @@
 public class _706_DesignHashMap {
     class MyHashMap {
+
+        private Node[] array;
+
         private class Node {
             int key;
             int value;
@@ -10,8 +13,6 @@ public class _706_DesignHashMap {
                 this.value = value;
             }
         }
-
-        private Node[] array;
 
         public MyHashMap() {
             array = new Node[1000000 + 1];
