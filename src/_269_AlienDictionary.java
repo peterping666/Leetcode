@@ -44,7 +44,7 @@ public class _269_AlienDictionary {
                     queue.offer(c);
                 }
             }
-            System.out.println(graph);
+
             while(!queue.isEmpty()) {
                 char c = queue.poll();
                 sb.append(c);

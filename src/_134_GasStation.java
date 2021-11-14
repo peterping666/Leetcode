@@ -2,8 +2,6 @@ public class _134_GasStation {
     /**
      * Time O(n)
      * Space O(1)
-     * @param gas
-     * @param cost
      * @return
      */
     public int canCompleteCircuit(int[] gas, int[] cost) {

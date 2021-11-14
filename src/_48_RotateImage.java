@@ -9,7 +9,7 @@ public class _48_RotateImage {
 
         // transpose matrix
         for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 int tmp = matrix[j][i];
                 matrix[j][i] = matrix[i][j];
                 matrix[i][j] = tmp;
