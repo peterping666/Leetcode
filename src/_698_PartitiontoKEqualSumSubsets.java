@@ -7,7 +7,7 @@ public class _698_PartitiontoKEqualSumSubsets {
                 sum += num;
                 maxNum = Math.max(maxNum, num);
             }
-            if(sum % k != 0 || maxNum > sum / k) {
+            if(sum % k != 0 || nums.length < k || maxNum > sum / k) {
                 return false;
             }
             return helper(nums, k, sum / k, new boolean[nums.length], 0, 0);
