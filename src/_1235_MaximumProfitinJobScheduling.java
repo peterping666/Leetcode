@@ -9,7 +9,7 @@ public class _1235_MaximumProfitinJobScheduling {
             for (int i = 0; i < n; i++) {
                 jobs[i] = new int[] {startTime[i], endTime[i], profit[i]};
             }
-            Arrays.sort(jobs, (a, b)->a[1] - b[1]);
+            Arrays.sort(jobs, (a, b)-> Integer.compare(a[1], b[1]));
             TreeMap<Integer, Integer> dp = new TreeMap<>();
             dp.put(0, 0);
             for (int[] job : jobs) {

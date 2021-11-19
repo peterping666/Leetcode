@@ -5,8 +5,6 @@ public class _68_TextJustification {
     /**
      * Time O(n)
      * Space O(1)
-     * @param words
-     * @param maxWidth
      * @return
      */
     public List<String> fullJustify(String[] words, int maxWidth) {
