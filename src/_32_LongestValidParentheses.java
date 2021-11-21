@@ -1,28 +1,25 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 public class _32_LongestValidParentheses {
-    /**
-     * O(n)
-     * Space O(n)
-     * @param s
-     * @return
-     */
-    public int longestValidParentheses(String s) {
-        int maxans = 0;
-        Stack<Integer> stack = new Stack<>();
-        stack.push(-1);
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else {
-                stack.pop();
-                if(stack.isEmpty()) {
+
+    class Solution {
+        public int longestValidParentheses(String s) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            int res = 0;
+            for(int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if(c == '(' || stack.isEmpty() || s.charAt(stack.peek()) == ')'){
                     stack.push(i);
                 } else {
-                    maxans = Math.max(maxans, i - stack.peek());
+                    stack.pop();
+                    int left = stack.isEmpty() ? -1 : stack.peek();
+                    res = Math.max(res, i - left);
                 }
+
             }
+            return res;
         }
-        return maxans;
     }
 }

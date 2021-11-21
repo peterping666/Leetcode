@@ -36,31 +36,31 @@ public class _341_FlattenNestedListIterator {
 
     public class NestedIterator2 implements Iterator<Integer> {
 
-        Deque<NestedInteger> deque;
+        Deque<NestedInteger> stack;
 
         public NestedIterator2(List<NestedInteger> nestedList) {
-            deque = new ArrayDeque<>();
+            stack = new ArrayDeque<>();
             for(NestedInteger n :  nestedList) {
-                deque.offerLast(n);
+                stack.offerLast(n);
             }
         }
 
         @Override
         public Integer next() {
-            return deque.pollFirst().getInteger();
+            return stack.pollFirst().getInteger();
         }
 
         @Override
         public boolean hasNext() {
-            if(deque.isEmpty()) {
+            if(stack.isEmpty()) {
                 return false;
             }
-            if(deque.peekFirst().isInteger()) {
+            if(stack.peekFirst().isInteger()) {
                 return true;
             }
-            List<NestedInteger> curList = deque.pollFirst().getList();
+            List<NestedInteger> curList = stack.pollFirst().getList();
             for(int i = curList.size() - 1; i>= 0; i--) {
-                deque.offerFirst(curList.get(i));
+                stack.offerFirst(curList.get(i));
             }
             return hasNext();
         }

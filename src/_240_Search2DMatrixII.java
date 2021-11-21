@@ -2,9 +2,6 @@ public class _240_Search2DMatrixII {
     /**
      * Time O(m + n)
      * Space O(1)
-     * @param matrix
-     * @param target
-     * @return
      */
     public boolean searchMatrix(int[][] matrix, int target) {
         int m = matrix.length;
