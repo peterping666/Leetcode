@@ -3,11 +3,6 @@ import java.util.Deque;
 
 public class _503_NextGreaterElementII {
     class Solution {
-        /**
-         *
-         * @param nums
-         * @return
-         */
         public int[] nextGreaterElements(int[] nums) {
             Deque<Integer> stack = new ArrayDeque<>();
             int n = nums.length;

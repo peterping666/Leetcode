@@ -1,22 +1,19 @@
 public class _370_RangeAddition {
-    /**
-     * Time O(k + n)
-     * Space O(n)
-     * @param length
-     * @param updates
-     * @return
-     */
-    public int[] getModifiedArray(int length, int[][] updates) {
-        int[] arr = new int[length];
-        for(int[] update : updates) {
-            arr[update[0]] += update[2];
-            if(update[1] + 1 < length) {
-                arr[update[1] + 1] -= update[2];
+    class Solution {
+        public int[] getModifiedArray(int length, int[][] updates) {
+            int[] res = new int[length];
+            for(int[] update : updates) {
+                res[update[0]] += update[2];
+                if(update[1] + 1 < length) {
+                    res[update[1] + 1] -= update[2];
+                }
             }
+            int cur = 0;
+            for(int i = 0; i < length; i++) {
+                cur += res[i];
+                res[i] = cur;
+            }
+            return res;
         }
-        for(int i = 1; i < arr.length; i++) {
-            arr[i] += arr[i-1];
-        }
-        return arr;
     }
 }

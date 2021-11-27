@@ -2,9 +2,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class _202_HappyNumber {
-    /**
-     * Floyd Cycle
-     */
     class Solution1 {
         public boolean isHappy(int n) {
             int slow, fast;
@@ -34,19 +31,18 @@ public class _202_HappyNumber {
     class Solution2 {
         public boolean isHappy(int n) {
             Set<Integer> inLoop = new HashSet<Integer>();
-            int squareSum,remain;
+            int squareSum;
             while (inLoop.add(n)) {
                 squareSum = 0;
                 while (n > 0) {
-                    remain = n%10;
+                    int remain = n%10;
                     squareSum += remain*remain;
                     n /= 10;
                 }
-                if (squareSum == 1)
+                if (squareSum == 1) {
                     return true;
-                else
-                    n = squareSum;
-
+                }
+                n = squareSum;
             }
             return false;
         }

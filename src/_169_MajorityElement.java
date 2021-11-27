@@ -1,15 +1,18 @@
 public class _169_MajorityElement {
-    public int majorityElement(int[] nums) {
-        int count = 0;
-        Integer candidate = null;
 
-        for (int num : nums) {
-            if (count == 0) {
-                candidate = num;
+    class Solution {
+        public int majorityElement(int[] nums) {
+            int res = nums[0];
+            int count = 1;
+            for(int i = 1; i < nums.length; i++) {
+                if(res == nums[i]) {
+                    count++;
+                } else if(--count == 0) {
+                    res = nums[i];
+                    count = 1;
+                }
             }
-            count += (num == candidate) ? 1 : -1;
+            return res;
         }
-
-        return candidate;
     }
 }

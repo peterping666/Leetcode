@@ -2,8 +2,6 @@ public class _234_PalindromeLinkedList {
     /**
      * Time O(n)
      * Space O(1)
-     * @param head
-     * @return
      */
     public boolean isPalindrome(ListNode head) {
         if(head == null || head.next == null) {

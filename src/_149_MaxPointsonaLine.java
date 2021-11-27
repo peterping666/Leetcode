@@ -5,8 +5,6 @@ public class _149_MaxPointsonaLine {
         /**
          * Time O(n^2)
          * Space O(n)
-         * @param points
-         * @return
          */
         public int maxPoints(int[][] points) {
             if(points == null || points.length == 0) return 0;

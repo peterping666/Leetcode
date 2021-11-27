@@ -1,29 +1,21 @@
 import java.util.*;
 
 public class _118_PascalsTriangle {
-    /**
-     * Time O(nlogk)
-     * Space O(k)
-     * @param numRows
-     * @return
-     */
-    public List<List<Integer>> generate1(int numRows) {
-        List<List<Integer>> triangle = new ArrayList<List<Integer>>();
-        if (numRows == 0) {
-            return triangle;
-        }
-        triangle.add(new ArrayList<>());
-        triangle.get(0).add(1);
-        for (int rowNum = 1; rowNum < numRows; rowNum++) {
-            List<Integer> row = new ArrayList<>();
-            List<Integer> prevRow = triangle.get(rowNum-1);
-            row.add(1);
-            for (int j = 1; j < rowNum; j++) {
-                row.add(prevRow.get(j-1) + prevRow.get(j));
+
+    class Solution {
+        public List<List<Integer>> generate(int numRows) {
+            List<List<Integer>> res = new ArrayList<List<Integer>>();
+            res.add(new ArrayList<>());
+            res.get(0).add(1);
+            for(int i = 1; i < numRows; i++) {
+                res.add(new ArrayList<>());
+                for(int j = 0; j < i+1; j++) {
+                    int left = j == 0 ? 0 : res.get(i-1).get(j-1);
+                    int right = j == i ? 0 : res.get(i-1).get(j);
+                    res.get(i).add(left + right);
+                }
             }
-            row.add(1);
-            triangle.add(row);
+            return res;
         }
-        return triangle;
     }
 }

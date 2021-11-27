@@ -1,35 +1,30 @@
 public class _37_SudokuSolver {
+    /**
+     * Time O(m * n * (m + n))
+     * Space O(1)
+     */
     class Solution {
-        /**
-         * Time O(m * n * (m + n))
-         * Space O(1)
-         * @param board
-         */
         public void solveSudoku(char[][] board) {
-            if(board == null || board.length == 0) {
-                return;
-            }
-            solve(board);
+            solve(board,  0, 0);
         }
 
-        private boolean solve(char[][] board) {
-            int m = board.length;
-            int n = board[0].length;
-            for(int i = 0; i < m; i++) {
-                for(int j = 0; j < n; j++) {
-                    if(board[i][j] == '.') {
-                        for(char c = '1'; c <= '9'; c++) {
-                            if(isValid(board, i, j, c)) {
-                                board[i][j] = c;
-                                if(solve(board)) {
-                                    return true;
-                                } else {
-                                    board[i][j] = '.';
-                                }
+        private boolean solve(char[][] board, int row, int col) {
+            for(int i = row; i < 9; i++, col = 0) {
+                for(int j = col; j < 9; j++) {
+                    if(board[i][j] != '.') {
+                        continue;
+                    }
+                    for(char c = '1'; c <= '9'; c++) {
+                        if(isValid(board, i, j, c)) {
+                            board[i][j] = c;
+                            if(solve(board, i, j+1)) {
+                                return true;
+                            } else {
+                                board[i][j] = '.';
                             }
                         }
-                        return false;
                     }
+                    return false;
                 }
             }
             return true;
@@ -37,11 +32,11 @@ public class _37_SudokuSolver {
 
         private boolean isValid(char[][] board, int row, int col, char c) {
             for(int i = 0; i < 9; i++) {
-                if(board[i][col] != '.' && board[i][col] == c) return false;
-                if(board[row][i] != '.' && board[row][i] == c) return false;
-                int rowIdx = 3 * (row / 3) + i / 3;
-                int colIdx = 3 * (col / 3) + i % 3;
-                if(board[rowIdx][colIdx] != '.' && board[rowIdx][colIdx] == c) return false;
+                int blockRow = 3 * (row / 3);
+                int blockCol = 3 * (col / 3);
+                if(board[i][col] == c || board[row][i] == c || board[blockRow + i/3][blockCol + i%3] == c) {
+                    return false;
+                }
             }
             return true;
         }

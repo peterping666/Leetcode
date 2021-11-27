@@ -2,7 +2,6 @@ public class _67_AddBinary {
     /**
      * Time O(n)
      * Space O(1)
-     * @return
      */
     class Solution {
         public String addBinary(String a, String b) {

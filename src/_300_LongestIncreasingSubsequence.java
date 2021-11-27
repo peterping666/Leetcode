@@ -1,50 +1,54 @@
-import java.util.Arrays;
-
 public class _300_LongestIncreasingSubsequence {
-    /**
-     * Time O(n^2)
-     * Space O(n)
-     * @param nums
-     * @return
-     */
-    public int lengthOfLIS1(int[] nums) {
-        if(nums == null || nums.length == 0) return 0;
-        int[] dp = new int[nums.length];
-        int max = 1;
-        dp[0] = 1;
-        for(int i = 1; i < nums.length; i++) {
-            int maxVal = 0;
-            for(int j = 0; j < i; j++) {
-                if(nums[i] > nums[j]) {
-                    maxVal = Math.max(maxVal, dp[j]);
-                }
-            }
-            dp[i] = maxVal + 1;
-            max = Math.max(max, dp[i]);
-        }
-        return max;
-    }
 
     /**
      * Time O(nlogn)
      * Space O(n)
-     * @param nums
-     * @return
      */
-    public int lengthOfLIS2(int[] nums) {
-        int[] dp = new int[nums.length];
-        int len = 0;
-        for (int num : nums) {
-            int i = Arrays.binarySearch(dp, 0, len, num);
-            if (i < 0) {
-                i = -(i + 1);
+    class Solution1 {
+        public int lengthOfLIS(int[] nums) {
+            int[] lis = new int[nums.length];
+            int size = 0;
+            for (int num : nums) {
+                int index = helper(lis, size, num);
+                lis[index] = num;
+                if (index == size) {
+                    size++;
+                }
             }
-            dp[i] = num;
-            if (i == len) {
-                len++;
-            }
+            return size;
         }
-        return len;
+
+        private int helper(int[] lis, int size, int target) {
+            int left = 0, right = size;
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                if (lis[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            return left;
+        }
     }
 
+    /**
+     * Time: O(n^2)
+     */
+    class Solution2 {
+        public int lengthOfLIS(int[] nums) {
+            int[] dp = new int[nums.length];
+            int res = 0;
+            for(int i = 0; i < nums.length; i++) {
+                dp[i] = 1;
+                for(int j = 0; j < i; j++) {
+                    if(nums[i] > nums[j]) {
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
+                    }
+                }
+                res = Math.max(res, dp[i]);
+            }
+            return res;
+        }
+    }
 }

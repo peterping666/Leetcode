@@ -2,7 +2,6 @@ public class _242_ValidAnagram {
     /**
      * Time O(n)
      * Space O(1)
-     * @return
      */
     class Solution {
         public boolean isAnagram(String s, String t) {
