@@ -1,9 +1,7 @@
 public class _204_CountPrimes {
     /**
-     * Time： 求一组质数：O(nloglogn)
-     * Space： 1 - n-1 判断质数(n * n^1/2)
-     * @param n
-     * @return
+     * Time： O(nloglogn)
+     * Space: O(n)
      */
     public int countPrimes(int n) {
         boolean[] notPrimes = new boolean[n];

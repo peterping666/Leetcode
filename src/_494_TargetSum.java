@@ -1,50 +1,32 @@
-import java.util.Arrays;
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class _494_TargetSum {
 
-    class Solution2 {
-
-        public int findTargetSumWays(int[] nums, int target) {
-            Map<Map.Entry<Integer,Integer>,Integer> map = new HashMap<>();
-            return dp(nums,target,0,0, map);
-        }
-
-        private int dp(int[] nums, int target, int index, int curSum, Map<Map.Entry<Integer,Integer>, Integer> map){
-            Map.Entry<Integer,Integer> entry = Map.entry(index,curSum);
-            if(map.containsKey(entry)) {
-                return map.get(entry);
-            }
-            if(index == nums.length) {
-                if(curSum == target) {
-                    return 1;
-                }
-                return 0;
-            }
-            int pos = dp(nums, target,index + 1,curSum + nums[index], map);
-            int neg = dp(nums, target,index + 1,curSum - nums[index], map);
-            entry = Map.entry(index,curSum);
-            map.put(entry,pos + neg);
-            return pos + neg;
-        }
-    }
-
     /**
-     * Time O(2^n)
-     * Space O(n)
-     * @return
+     * Time O(n * sum(nums))
      */
-    class Solution3 {
+    class Solution {
         public int findTargetSumWays(int[] nums, int target) {
-            return helper(nums, target, 0);
+            return helper(nums, target, 0, new HashMap<>());
         }
 
-        private int helper(int[] nums, int S, int index) {
+        private int helper(int[] nums, int target, int index, Map<Pair<Integer,Integer>, Integer> map){
             if(index == nums.length) {
-                return S == 0 ? 1 : 0;
+                return target == 0 ? 1 : 0;
             }
-            return helper(nums, S - nums[index], index + 1) + helper(nums, S + nums[index], index + 1);
+            Pair<Integer, Integer> pair = new Pair(index, target);
+
+            if(map.containsKey(pair)) {
+                return map.get(pair);
+            }
+            int res = 0;
+            res += helper(nums, target + nums[index], index + 1, map);
+            res += helper(nums, target - nums[index], index + 1, map);
+            map.put(pair, res);
+            return res;
         }
     }
 }

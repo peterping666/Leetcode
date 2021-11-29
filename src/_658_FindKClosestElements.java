@@ -2,15 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class _658_FindKClosestElements {
+    /**
+     * Time O(k + logn)
+     */
     class Solution {
         public List<Integer> findClosestElements(int[] arr, int k, int x) {
             int left = 0, right = arr.length - k;
             while (left < right) {
-                int mid = (left + right) / 2;
-                if (x - arr[mid] > arr[mid + k] - x)
+                int mid = left + (right - left) / 2;
+                if (x - arr[mid] > arr[mid + k] - x) {
                     left = mid + 1;
-                else
+                } else {
                     right = mid;
+                }
             }
             List<Integer> res = new ArrayList<>();
             for(int i = left; i < left + k; i++) {
@@ -20,30 +24,34 @@ public class _658_FindKClosestElements {
         }
     }
 
-    public class Solution2 {
-        public int[] kClosest(int[] array, int target, int k) {
-            if(array == null || array.length == 0 || k == 0) {
-                return new int[0];
-            }
-            int left = largestSmallerEqual(array, target);
+    /**
+     * Time O(k + logn)
+     */
+    class Solution2 {
+        public List<Integer> findClosestElements(int[] arr, int k, int x) {
+            int left = largestSmallerEqual(arr, x);
             int right = left + 1;
-            int[] res = new int[k];
-            for(int i = 0; i < k; i++) {
-                if(right >= array.length ||
-                        left >= 0 && Math.abs(array[left] - target) <= Math.abs(array[right] - target)) {
-                    res[i] = array[left--];
+            while(k-- > 0) {
+                if(right >= arr.length ||
+                        left >= 0 && Math.abs(arr[left] - x) <= Math.abs(arr[right] - x)) {
+                    left--;
                 } else {
-                    res[i] = array[right++];
+                    right++;
                 }
+            }
+            List<Integer> res = new ArrayList<>();
+            for(int i = left + 1; i < right; i++) {
+                res.add(arr[i]);
             }
             return res;
         }
-        private int largestSmallerEqual(int[] array, int target) {
+
+        private int largestSmallerEqual(int[] arr, int target) {
             int left = 0;
-            int right = array.length - 1;
+            int right = arr.length - 1;
             while(left <= right) {
                 int mid = left + (right - left) / 2;
-                if(array[mid] > target) {
+                if(arr[mid] > target) {
                     right = mid - 1;
                 } else {
                     left = mid + 1;
@@ -51,5 +59,8 @@ public class _658_FindKClosestElements {
             }
             return right;
         }
+
+
     }
+
 }

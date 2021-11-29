@@ -1,17 +1,28 @@
 public class _678_ValidParenthesisString {
     class Solution {
         public boolean checkValidString(String s) {
-            int lo = 0;
-            int hi = 0;
-            for (char c: s.toCharArray()) {
-                lo += c == '(' ? 1 : -1;
-                hi += c != ')' ? 1 : -1;
-                if (hi < 0) {
+            int maxCount = 0; // # of unmatched ( with * as (
+            int minCount = 0; // # of unmatched ( with * as ) or ''
+            for(int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if(c == '(') {
+                    maxCount++;
+                    minCount++;
+                } else if(c == ')') {
+                    maxCount--;
+                    minCount--;
+                } else {
+                    maxCount++;
+                    minCount--;
+                }
+                if(maxCount < 0) {
                     return false;
                 }
-                lo = Math.max(lo, 0);
+                if(minCount < 0) {
+                    minCount = 0;
+                }
             }
-            return lo == 0;
+            return minCount == 0;
         }
     }
 }

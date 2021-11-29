@@ -1,39 +1,32 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class _1110_DeleteNodesAndReturnForest {
 
     class Solution {
         public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
             List<TreeNode> res = new ArrayList<>();
-            HashSet<Integer> seen = new HashSet<>();
-            for(int num : to_delete) {
-                seen.add(num);
+            Set<Integer> set = new HashSet<>();
+            for(int val : to_delete) {
+                set.add(val);
             }
-            if(!seen.contains(root.val)) {
-                res.add(root);
-            }
-            helper(root, res, seen);
+            helper(root, set, res, true);
             return res;
         }
 
-        private TreeNode helper(TreeNode root, List<TreeNode> res, HashSet<Integer> seen) {
+        private TreeNode helper(TreeNode root, Set<Integer> set, List<TreeNode> res, boolean isRoot) {
             if(root == null) {
                 return null;
             }
-            root.left = helper(root.left, res, seen);
-            root.right = helper(root.right, res, seen);
-            if(seen.contains(root.val)) {
-                if(root.left != null) {
-                    res.add(root.left);
-                }
-                if(root.right != null) {
-                    res.add(root.right);
-                }
-                return null;
+            if(isRoot && !set.contains(root.val)) {
+                res.add(root);
             }
-            return root;
+            boolean deleted = set.contains(root.val);
+            root.left = helper(root.left, set, res, deleted);
+            root.right = helper(root.right, set, res, deleted);
+            return deleted ? null : root;
         }
     }
 }
