@@ -1,10 +1,51 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class _987_VerticalOrderTraversalofaBinaryTree {
 
-    class Solution {
+    class Solution1 {
+        public List<List<Integer>> verticalTraversal(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            Map<Integer, List<Integer>> map = new HashMap<>();
+            Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+            Queue<Integer> colQueue = new ArrayDeque<>();
+            int min = 0;
+            int max = 0;
+            nodeQueue.offer(root);
+            colQueue.offer(0);
+            while(!nodeQueue.isEmpty()) {
+                int size = nodeQueue.size();
+                Map<Integer, List<Integer>> levelMap = new HashMap<>();
+                while(size-- > 0) {
+                    TreeNode node = nodeQueue.poll();
+                    int col = colQueue.poll();
+                    levelMap.putIfAbsent(col, new ArrayList<>());
+                    levelMap.get(col).add(node.val);
+                    if(node.left != null) {
+                        nodeQueue.offer(node.left);
+                        colQueue.offer(col-1);
+                        min = Math.min(min, col-1);
+                    }
+                    if(node.right != null) {
+                        nodeQueue.offer(node.right);
+                        colQueue.offer(col+1);
+                        max = Math.max(max, col+1);
+                    }
+                }
+                for(int key : levelMap.keySet()) {
+                    map.putIfAbsent(key, new ArrayList<>());
+                    List<Integer> list = levelMap.get(key);
+                    Collections.sort(list);
+                    map.get(key).addAll(list);
+                }
+            }
+            for(int i = min; i <= max; i++) {
+                res.add(map.get(i));
+            }
+            return res;
+        }
+    }
+
+    class Solution2 {
         public List<List<Integer>> verticalTraversal(TreeNode root) {
             List<List<Integer>> res = new ArrayList<>();
             if(root == null) {

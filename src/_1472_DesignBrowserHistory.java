@@ -38,9 +38,6 @@ public class _1472_DesignBrowserHistory {
         }
     }
 
-    /**
-     *
-     */
     class BrowserHistory2 {
 
         public class Node{

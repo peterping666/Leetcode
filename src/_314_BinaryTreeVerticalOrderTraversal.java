@@ -1,11 +1,48 @@
 import java.util.*;
 
 public class _314_BinaryTreeVerticalOrderTraversal {
+
+    class Solution1 {
+        public List<List<Integer>> verticalOrder(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            if(root == null) {
+                return res;
+            }
+            Map<Integer, List<Integer>> map = new HashMap<>();
+            Queue<TreeNode> nodeQueue = new ArrayDeque<>();
+            Queue<Integer> colQueue = new ArrayDeque<>();
+            int min = 0;
+            int max = 0;
+            nodeQueue.offer(root);
+            colQueue.offer(0);
+            while(!nodeQueue.isEmpty()) {
+                TreeNode node = nodeQueue.poll();
+                int col = colQueue.poll();
+                map.putIfAbsent(col, new ArrayList<>());
+                map.get(col).add(node.val);
+                if(node.left != null) {
+                    nodeQueue.offer(node.left);
+                    colQueue.offer(col-1);
+                    min = Math.min(min, col-1);
+                }
+                if(node.right != null) {
+                    nodeQueue.offer(node.right);
+                    colQueue.offer(col+1);
+                    max = Math.max(max, col+1);
+                }
+            }
+            for(int i = min; i <= max; i++) {
+                res.add(map.get(i));
+            }
+            return res;
+        }
+    }
+
     /**
      * Time O(n)
      * Space O(n)
      */
-    class Solution {
+    class Solution2 {
         public List<List<Integer>> verticalOrder(TreeNode root) {
             List<List<Integer>> lists = new ArrayList<>();
             if(root == null) {

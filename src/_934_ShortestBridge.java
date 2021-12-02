@@ -3,17 +3,16 @@ import java.util.Queue;
 
 public class _934_ShortestBridge {
     class Solution {
-        public int shortestBridge(int[][] A) {
-            int m = A.length;
-            int n = A[0].length;
-            int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-            Queue<int[]> q = new ArrayDeque<>();
-            boolean[][] visited = new boolean[m][n];
+        public int shortestBridge(int[][] grid) {
+            int m = grid.length;
+            int n = grid[0].length;
+            Queue<int[]> queue = new ArrayDeque<>();
+            boolean[][] seen = new boolean[m][n];
             boolean found = false;
             for(int i = 0; i < m; i++) {
                 for(int j = 0; j < n; j++) {
-                    if(A[i][j] == 1) {
-                        dfs(A, q, visited, i, j, dirs);
+                    if(grid[i][j] == 1) {
+                        dfs(grid, i, j, queue, seen);
                         found = true;
                         break;
                     }
@@ -22,40 +21,43 @@ public class _934_ShortestBridge {
                     break;
                 }
             }
-            int dist = 0;
-            while(!q.isEmpty()) {
-                int size = q.size();
-                for(int i = 0; i < size; i++) {
-                    int[] cur = q.poll();
+            return bfs(grid, queue, seen);
+        }
+
+        private void dfs(int[][] grid, int i, int j, Queue<int[]> queue, boolean[][] seen) {
+            if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || seen[i][j] || grid[i][j] == 0) {
+                return;
+            }
+            queue.offer(new int[]{i,j});
+            seen[i][j] = true;
+            dfs(grid, i+1, j, queue, seen);
+            dfs(grid, i-1, j, queue, seen);
+            dfs(grid, i, j+1, queue, seen);
+            dfs(grid, i, j-1, queue, seen);
+        }
+
+        private int bfs(int[][] grid, Queue<int[]> queue, boolean[][] seen) {
+            int res = 0;
+            int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+            while(!queue.isEmpty()) {
+                int size = queue.size();
+                while(size-- > 0) {
+                    int[] cur = queue.poll();
                     for(int[] dir : dirs) {
                         int x = cur[0] + dir[0];
                         int y = cur[1] + dir[1];
-                        if(x < 0 || x >= m || y < 0 || y >= n || visited[x][y]) {
-                            continue;
+                        if(x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && !seen[x][y]){
+                            if(grid[x][y] == 1) {
+                                return res;
+                            }
+                            queue.offer(new int[]{x,y});
+                            seen[x][y] = true;
                         }
-                        if(A[x][y] == 1) {
-                            return dist;
-                        }
-                        q.offer(new int[]{x, y});
-                        visited[x][y] = true;
                     }
                 }
-                dist++;
+                res++;
             }
-            return -1;
-        }
-
-        private void dfs(int[][] A, Queue<int[]> q, boolean[][] visited, int i, int j, int[][] dirs) {
-            int m = A.length;
-            int n = A[0].length;
-            if(i < 0 || i >= m || j < 0 || j >= n || visited[i][j] || A[i][j] != 1) {
-                return;
-            }
-            q.offer(new int[]{i, j});
-            visited[i][j] = true;
-            for(int[] dir : dirs) {
-                dfs(A, q, visited, i + dir[0], j + dir[1], dirs);
-            }
+            return res;
         }
     }
 }
