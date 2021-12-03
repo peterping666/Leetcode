@@ -1,20 +1,24 @@
 public class _1539_KthMissingPositiveNumber {
-    /**
-     *  A[i] - (i + 1) will be # of missing positives at index i
-     */
+
     class Solution {
         public int findKthPositive(int[] arr, int k) {
-            int left = 0;
-            int right = arr.length;
+            int left = 0, right = arr.length - 1;
             while(left < right) {
-                int mid = left + (right - left) / 2;
-                if(arr[mid] - mid - 1 < k) {
-                    left = mid + 1;
+                int mid = right - (right - left) / 2;
+                if(numMis(arr, mid) < k) {
+                    left = mid;
                 } else {
-                    right = mid;
+                    right = mid - 1;
                 }
             }
-            return left + k;
+            int mis = numMis(arr, left);
+            if(mis < k) {
+                return arr[left] + k - mis;
+            }
+            return k;
+        }
+        private int numMis(int[] nums, int i) {
+            return nums[i] - i - 1;
         }
     }
 }
