@@ -1,6 +1,6 @@
-public class _616_AddBoldTaginString {
+public class _758_BoldWordsinString {
     class Solution {
-        public String addBoldTag(String s, String[] words) {
+        public String boldWords(String[] words, String s) {
             int n = s.length();
             boolean[] bold = new boolean[n];
             for(String word : words) {
