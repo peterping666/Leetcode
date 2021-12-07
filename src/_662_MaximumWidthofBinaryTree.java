@@ -7,30 +7,31 @@ public class _662_MaximumWidthofBinaryTree {
 
     class Solution1 {
         public int widthOfBinaryTree(TreeNode root) {
-            Map<TreeNode, Integer> map = new HashMap<>();
-            Queue<TreeNode> q = new ArrayDeque<>();
-            q.offer(root);
-            map.put(root, 0);
-            int res = 0;
-            while(!q.isEmpty()) {
-                int size = q.size();
-                int left = 0;
-                int right = 0;
+            Queue<TreeNode> queue = new ArrayDeque<>();
+            Queue<Integer> marks = new ArrayDeque<>();
+            queue.offer(root);
+            marks.offer(0);
+            int res = 1;
+            while(!queue.isEmpty()) {
+                int size = queue.size();
+                int left = 0, right = 0;
                 for(int i = 0; i < size; i++) {
-                    TreeNode cur = q.poll();
+                    TreeNode node = queue.poll();
+                    int mark = marks.poll();
+
                     if(i == 0) {
-                        left = map.get(cur);
+                        left = mark;
                     }
                     if(i == size - 1) {
-                        right = map.get(cur);
+                        right = mark;
                     }
-                    if(cur.left != null) {
-                        map.put(cur.left, map.get(cur) * 2 + 1);
-                        q.offer(cur.left);
+                    if(node.left != null) {
+                        queue.offer(node.left);
+                        marks.offer(mark * 2 + 1);
                     }
-                    if(cur.right != null) {
-                        map.put(cur.right, map.get(cur) * 2 + 2);
-                        q.offer(cur.right);
+                    if(node.right != null) {
+                        queue.offer(node.right);
+                        marks.offer(mark * 2 + 2);
                     }
                 }
                 res = Math.max(res, right - left + 1);
@@ -39,9 +40,6 @@ public class _662_MaximumWidthofBinaryTree {
         }
     }
 
-    /**
-     *
-     */
     class Solution2 {
         public int widthOfBinaryTree(TreeNode root) {
             Map<Integer, Integer> map = new HashMap<>();

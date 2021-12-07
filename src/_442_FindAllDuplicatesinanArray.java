@@ -2,21 +2,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class _442_FindAllDuplicatesinanArray {
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param nums
-     * @return
-     */
-    public List<Integer> findDuplicates(int[] nums) {
-        List<Integer> list = new ArrayList<>();
-        for(int num : nums) {
-            num = Math.abs(num);
-            if(nums[num - 1] < 0) {
-                list.add(num);
+
+    class Solution {
+        public List<Integer> findDuplicates(int[] nums) {
+            int n = nums.length;
+            for(int i = 0; i < n; i++) {
+                while(nums[i] != nums[nums[i] - 1]) {
+                    swap(nums, i, nums[i] - 1);
+                }
             }
-            nums[num - 1] *= -1;
+            List<Integer> res = new ArrayList<>();
+            for(int i = 0; i < n; i++) {
+                if(nums[i] != i + 1) {
+                    res.add(nums[i]);
+                }
+            }
+            return res;
         }
-        return list;
+
+        private void swap(int[] nums, int left, int right) {
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+        }
     }
 }

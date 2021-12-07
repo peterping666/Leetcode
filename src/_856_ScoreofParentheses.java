@@ -1,28 +1,26 @@
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class _856_ScoreofParentheses {
-    class Solution1 {
-        public int scoreOfParentheses(String S) {
-            Stack<Integer> stack = new Stack<>();
+    class Solution {
+        public int scoreOfParentheses(String s) {
+            Deque<Integer> stack = new ArrayDeque<>();
             int cur = 0;
-            for (char c : S.toCharArray()) {
-                if (c == '(') {
+            for(int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if(c == ')') {
+                    if(cur == 0) {
+                        cur = 1;
+                    } else {
+                        cur *= 2;
+                    }
+                    cur += stack.pop();
+                } else {
                     stack.push(cur);
                     cur = 0;
-                } else {
-                    cur = stack.pop() + Math.max(cur * 2, 1);
                 }
             }
             return cur;
         }
-    }
-
-    public int scoreOfParentheses(String S) {
-        int res = 0, l = 0;
-        for (int i = 0; i < S.length(); ++i) {
-            if (S.charAt(i) == '(') l++; else l--;
-            if (S.charAt(i) == ')' && S.charAt(i - 1) == '(') res += 1 << l;
-        }
-        return res;
     }
 }

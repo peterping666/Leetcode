@@ -6,43 +6,41 @@ public class _417_PacificAtlanticWaterFlow {
     /**
      * Time O(m * n)
      * Space O(m * n)
-     * @param matrix
-     * @return
      */
-    public List<List<Integer>> pacificAtlantic(int[][] matrix) {
-        List<List<Integer>> lists = new ArrayList<>();
-        int m = matrix.length;
-        if(m == 0) return lists;
-        int n = matrix[0].length;
-        boolean[][] pacific = new boolean[m][n];
-        boolean[][] atlantic = new boolean[m][n];
-        int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
-        for(int i = 0; i < m; i++) {
-            helper(pacific, dirs, i, 0, matrix);
-            helper(atlantic, dirs, i, n-1, matrix);
-        }
-        for(int i = 0; i < n; i++) {
-            helper(pacific, dirs, 0, i, matrix);
-            helper(atlantic, dirs, m-1, i, matrix);
-        }
-        for(int i = 0; i < m; i++) {
+    class Solution {
+        public List<List<Integer>> pacificAtlantic(int[][] heights) {
+            int m = heights.length, n = heights[0].length;
+            boolean[][] pacific = new boolean[m][n];
+            boolean[][] atlantic = new boolean[m][n];
+            for(int i = 0; i < m; i++) {
+                dfs(heights, i, 0, pacific, Integer.MIN_VALUE);
+                dfs(heights, i, n-1, atlantic, Integer.MIN_VALUE);
+            }
             for(int j = 0; j < n; j++) {
-                if(pacific[i][j] && atlantic[i][j]) {
-                    lists.add(new ArrayList<>(Arrays.asList(i, j)));
+                dfs(heights, 0, j, pacific, Integer.MIN_VALUE);
+                dfs(heights, m-1, j, atlantic, Integer.MIN_VALUE);
+            }
+            List<List<Integer>> res = new ArrayList<>();
+            for(int i = 0; i < m; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(pacific[i][j] && atlantic[i][j]) {
+                        res.add(Arrays.asList(i, j));
+                    }
                 }
             }
+            return res;
         }
-        return lists;
-    }
 
-    private void helper(boolean[][] visited, int[][] dirs, int i, int j, int[][] matrix) {
-        visited[i][j] = true;
-        for(int[] dir : dirs) {
-            int x = i + dir[0];
-            int y = j + dir[1];
-            if(x < 0 || x >= visited.length || y < 0 || y >= visited[0].length
-                    || visited[x][y] || matrix[i][j] > matrix[x][y]) continue;
-            helper(visited, dirs, x, y, matrix);
+        private void dfs(int[][] heights, int i, int j, boolean[][] ocean, int prev) {
+            if(i < 0 || i >= heights.length || j < 0 || j >= heights[0].length || ocean[i][j] ||
+                    heights[i][j] < prev) {
+                return;
+            }
+            ocean[i][j] = true;
+            dfs(heights, i+1, j, ocean, heights[i][j]);
+            dfs(heights, i-1, j, ocean, heights[i][j]);
+            dfs(heights, i, j+1, ocean, heights[i][j]);
+            dfs(heights, i, j-1, ocean, heights[i][j]);
         }
     }
 }

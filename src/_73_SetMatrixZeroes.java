@@ -1,4 +1,8 @@
 public class _73_SetMatrixZeroes {
+    /**
+     * Time O(mn)
+     * Space O(1)
+     */
     class Solution {
         public void setZeroes(int[][] matrix) {
             int m = matrix.length;

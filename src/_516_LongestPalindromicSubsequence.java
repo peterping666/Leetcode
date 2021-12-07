@@ -3,13 +3,13 @@ public class _516_LongestPalindromicSubsequence {
         public int longestPalindromeSubseq(String s) {
             int n = s.length();
             int[][] dp = new int[n][n];
-            for(int i = n - 1; i >= 0; i--) {
+            for(int i = 0; i < n; i++) {
                 dp[i][i] = 1;
-                for(int j = i + 1; j < n; j++) {
-                    if(s.charAt(i) == s.charAt(j)) {
-                        dp[i][j] = dp[i+1][j-1] + 2;
+                for(int j = i - 1; j >= 0; j--) {
+                    if(s.charAt(j) == s.charAt(i)) {
+                        dp[j][i] = dp[j+1][i-1] + 2;
                     } else {
-                        dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+                        dp[j][i] = Math.max(dp[j+1][i], dp[j][i-1]);
                     }
                 }
             }
