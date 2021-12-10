@@ -1,18 +1,12 @@
 public class _344_ReverseString {
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @param s
-     */
-    public void reverseString(char[] s) {
-        int start = 0;
-        int end = s.length - 1;
-        while(start < end) {
-            char tmp = s[start];
-            s[start] = s[end];
-            s[end] = tmp;
-            end--;
-            start++;
+    class Solution {
+        public void reverseString(char[] s) {
+            int left = 0, right = s.length - 1;
+            while(left < right) {
+                char tmp = s[left];
+                s[left++] = s[right];
+                s[right--] = tmp;
+            }
         }
     }
 }
