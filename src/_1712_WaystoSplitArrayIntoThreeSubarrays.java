@@ -1,48 +1,48 @@
 public class _1712_WaystoSplitArrayIntoThreeSubarrays {
+
     class Solution {
         public int waysToSplit(int[] nums) {
             int n = nums.length;
-            int[] prefixSum = new int[n + 1];
-            for(int i = 1; i <= n; i++) {
-                prefixSum[i] = prefixSum[i-1] + nums[i-1];
-            }
-            int res = 0;
-            int mod = (int)(1e9 + 7);
+            int[] preSum = new int[n];
+            preSum[0] = nums[0];
             for(int i = 1; i < n; i++) {
-                int leftSum = prefixSum[i];
-                if(leftSum * 3 > prefixSum[n]) {
-                    break;
-                }
-                int left = helper(prefixSum, i, true);
-                int right = helper(prefixSum, i, false);
-                if(left != -1 && right != -1) {
-                    res = (res + right - left + 1) % mod;
-                }
+                preSum[i] = preSum[i-1] + nums[i];
+            }
+            int res = 0, mod = (int)(1e9 + 7);
+            for(int i = 0; i < n-2 && preSum[i] <= preSum[n-1]/3; i++) {
+                int left = findLeft(preSum, i);
+                int right = findRight(preSum, i);
+                res = (res + right - left + 1) % mod;
             }
             return res;
         }
 
-        private int helper(int[] sums, int index, boolean searchLeft) {
-            int left = index + 1, right = sums.length - 2, res = -1;
-            int leftSum = sums[index];
-            while(left <= right) {
+        private int findLeft(int[] preSum, int index) {
+            int n = preSum.length, left = index + 1, right = n - 2, leftSum = preSum[index];
+            while(left < right) {
                 int mid = left + (right - left) / 2;
-                int midSum = sums[mid] - leftSum;
-                int rightSum = sums[sums.length - 1] - sums[mid];
-                if(leftSum <= midSum && midSum <= rightSum) {
-                    res = mid;
-                    if(searchLeft) {
-                        right = mid - 1;
-                    } else {
-                        left = mid + 1;
-                    }
-                } else if(leftSum > midSum){
+                int midSum = preSum[mid] - leftSum;
+                if(midSum >= leftSum) {
+                    right = mid;
+                } else {
                     left = mid + 1;
+                }
+            }
+            return left;
+        }
+        private int findRight(int[] preSum, int index) {
+            int n = preSum.length, left = index + 1, right = n - 2, leftSum = preSum[index];
+            while(left < right) {
+                int mid = right - (right - left) / 2;
+                int midSum = preSum[mid] - leftSum;
+                int rightSum = preSum[n - 1] - leftSum - midSum;
+                if(midSum <= rightSum) {
+                    left = mid;
                 } else {
                     right = mid - 1;
                 }
             }
-            return res;
+            return right;
         }
     }
 }
