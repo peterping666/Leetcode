@@ -8,8 +8,6 @@ public class _102_BTLevelOrder {
     /**
      * Time: O(n)
      * Space: O(n)
-     * @param root
-     * @return
      */
     public List<List<Integer>> levelOrder1(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();

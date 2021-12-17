@@ -2,7 +2,6 @@ public class _91_DecodeWays {
     /**
      * Time O(n)
      * Space O(n)
-     * @return
      */
     class Solution {
         public int numDecodings(String s) {

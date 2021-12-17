@@ -5,7 +5,6 @@ public class _402_RemoveKDigits {
     /**
      * Time O(n)
      * Space O(n)
-     * @return
      */
     class Solution {
         public String removeKdigits(String num, int k) {
