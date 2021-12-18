@@ -2,7 +2,6 @@ public class _148_SortList {
     /**
      * Time O(nlogn)
      * Space O(1)
-     * @return
      */
     class Solution {
         public ListNode sortList(ListNode head) {
@@ -34,20 +33,12 @@ public class _148_SortList {
                 }
                 tail = tail.next;
             }
-            if(left != null) {
-                tail.next = left;
-            } else {
-                tail.next = right;
-            }
+            tail.next = left == null ? right : left;
             return dummy.next;
         }
 
         private ListNode findMid(ListNode head) {
-            if(head == null || head.next == null) {
-                return head;
-            }
-            ListNode fast = head;
-            ListNode slow = head;
+            ListNode fast = head, slow = head;
             while(fast.next != null && fast.next.next != null) {
                 fast = fast.next.next;
                 slow = slow.next;

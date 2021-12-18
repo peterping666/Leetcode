@@ -11,29 +11,27 @@ public class _395_LongestSubstringwithAtLeastKRepeatingCharacters {
             return res;
         }
 
-        private int helper(String s, int unique, int k) {
-            int counter = 0;
+        private int helper(String s, int targetUniq, int k) {
+            int res = 0, countUniq = 0, count = 0;
             int[] freq = new int[26];
-            int count = 0;
-            int res = 0;
             for(int i = 0, j = 0; i < s.length(); i++) {
-                int index = s.charAt(i) - 'a';
-                if(freq[index] == 0) {
+                int rIndex = s.charAt(i) - 'a';
+                if(freq[rIndex] == 0) {
+                    countUniq++;
+                }
+                if(++freq[rIndex] == k){
                     count++;
                 }
-                if(++freq[index] == k) {
-                    counter++;
-                }
-                while(count > unique) {
-                    int idx = s.charAt(j++) - 'a';
-                    if(freq[idx] == k) {
-                        counter--;
-                    }
-                    if(--freq[idx] == 0) {
+                while(countUniq > targetUniq) {
+                    int lIndex = s.charAt(j++) -'a';
+                    if(freq[lIndex] == k) {
                         count--;
                     }
+                    if(--freq[lIndex] == 0) {
+                        countUniq--;
+                    }
                 }
-                if(counter == unique) {
+                if(count == targetUniq) {
                     res = Math.max(res, i - j + 1);
                 }
             }

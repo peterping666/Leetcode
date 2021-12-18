@@ -1,39 +1,32 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class _95_UniqueBinarySearchTreesII {
-    /**
-     * Time O()
-     * Space O()
-     * @param n
-     * @return
-     */
-    public List<TreeNode> generateTrees(int n) {
-        if (n == 0) {
-            return new LinkedList<TreeNode>();
-        }
-        return generateTreeList(1, n);
-    }
 
-    public List<TreeNode> generateTreeList(int start, int end) {
-        List<TreeNode> list = new ArrayList<TreeNode>();
-        if (start > end) {
-            list.add(null);
-            return list;
+    class Solution {
+        public List<TreeNode> generateTrees(int n) {
+            return helper(1, n);
         }
-        for (int i = start; i <= end; i++) {
-            List<TreeNode> leftTreeList = generateTreeList(start, i - 1);
-            List<TreeNode> rightTreeList = generateTreeList(i + 1, end);
-            for (TreeNode left : leftTreeList) {
-                for (TreeNode right : rightTreeList) {
-                    TreeNode cur = new TreeNode(i);
-                    cur.left = left;
-                    cur.right = right;
-                    list.add(cur);
+
+        private List<TreeNode> helper(int left, int right) {
+            List<TreeNode> res = new ArrayList<>();
+            if(left > right) {
+                res.add(null);
+                return res;
+            }
+            for(int i = left; i <= right; i++) {
+                List<TreeNode> leftTrees = helper(left, i-1);
+                List<TreeNode> rightTrees = helper(i+1, right);
+                for(TreeNode leftTree : leftTrees) {
+                    for(TreeNode rightTree : rightTrees) {
+                        TreeNode root = new TreeNode(i);
+                        root.left = leftTree;
+                        root.right = rightTree;
+                        res.add(root);
+                    }
                 }
             }
+            return res;
         }
-        return list;
     }
 }

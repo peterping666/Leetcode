@@ -3,7 +3,7 @@ public class _24_SwapNodesinPairs {
      * Time O(n)
      * Space O(n)
      */
-    class Solution {
+    class Solution1 {
         public ListNode swapPairs(ListNode head) {
             if(head == null || head.next == null) {
                 return head;
@@ -19,35 +19,26 @@ public class _24_SwapNodesinPairs {
     /**
      * Time O(n)
      * Space O(1)
-     * @param head
-     * @return
      */
-    public ListNode swapPairs1(ListNode head) {
-
-        // Dummy node acts as the prevNode for the head node
-        // of the list and hence stores pointer to the head node.
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-
-        ListNode prevNode = dummy;
-
-        while ((head != null) && (head.next != null)) {
-
-            // Nodes to be swapped
-            ListNode firstNode = head;
-            ListNode secondNode = head.next;
-
-            // Swapping
-            prevNode.next = secondNode;
-            firstNode.next = secondNode.next;
-            secondNode.next = firstNode;
-
-            // Reinitializing the head and prevNode for next swap
-            prevNode = firstNode;
-            head = firstNode.next; // jump
+    class Solution2 {
+        public ListNode swapPairs(ListNode head) {
+            ListNode dummy = new ListNode(0);
+            ListNode tail = dummy;
+            while(head != null && head.next != null) {
+                ListNode nextHead = head.next.next;
+                tail.next = swap(head);
+                tail = tail.next.next;
+                head = nextHead;
+            }
+            tail.next = head;
+            return dummy.next;
         }
 
-        // Return the new head node.
-        return dummy.next;
+        private ListNode swap(ListNode node) {
+            ListNode newHead = node.next;
+            newHead.next = node;
+            node.next = null;
+            return newHead;
+        }
     }
 }

@@ -20,18 +20,22 @@ public class _129_SumRoottoLeafNumbers {
         }
     }
 
-    class Solution2 {
+    class Solution {
         public int sumNumbers(TreeNode root) {
             return helper(root, 0);
         }
 
-        private int helper(TreeNode root, int pathSum) {
-            if(root == null) return 0;
-            if(root.left == null && root.right == null) {
-                return pathSum * 10 + root.val;
+        private int helper(TreeNode root, int sum) {
+            if(root == null) {
+                return 0;
             }
-            return helper(root.left, pathSum * 10 + root.val)
-                    + helper(root.right, pathSum * 10 + root.val);
+            sum = sum * 10 + root.val;
+            if(root.left == null && root.right == null) {
+                return sum;
+            }
+            int left = helper(root.left, sum);
+            int right = helper(root.right, sum);
+            return left + right;
         }
     }
 }
