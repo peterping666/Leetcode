@@ -1,5 +1,7 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.Stack;
+import java.util.Map;
 
 public class _496_NextGreaterElementI {
     class Solution {

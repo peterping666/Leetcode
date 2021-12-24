@@ -1,34 +1,30 @@
 public class _304_RangeSumQuery2DImmutable {
     class NumMatrix {
-        /**
-         * Time O(m * n)
-         * Space O(m * n)
-         */
-        int[][] prefixSum;
+
+        private int[][] sum;
+
         public NumMatrix(int[][] matrix) {
-            if(matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
-            int m = matrix.length;
-            int n = matrix[0].length;
-            prefixSum = new int[m + 1][n + 1];
-            for(int i = 1; i <= m; i++) {
-                for(int j = 1; j <= n; j++) {
-                    prefixSum[i][j] = prefixSum[i][j-1] + prefixSum[i-1][j] - prefixSum[i-1][j-1] + matrix[i-1][j-1];
+            sum = new int[matrix.length][matrix[0].length];
+            for(int i = 0; i < matrix.length; i++) {
+                for(int j = 0; j < matrix[0].length; j++) {
+                    if(i == 0 && j == 0) {
+                        sum[i][j] = matrix[i][j];
+                    } else if(i == 0) {
+                        sum[i][j] = sum[i][j-1] + matrix[i][j];
+                    } else if(j == 0) {
+                        sum[i][j] = sum[i-1][j] + matrix[i][j];
+                    } else {
+                        sum[i][j] = sum[i-1][j] + sum[i][j-1] - sum[i-1][j-1] + matrix[i][j];
+                    }
                 }
             }
         }
 
-        /**
-         * Time O(1)
-         * Space O(1)
-         * @param row1
-         * @param col1
-         * @param row2
-         * @param col2
-         * @return
-         */
         public int sumRegion(int row1, int col1, int row2, int col2) {
-            return prefixSum[row2+1][col2+1] - prefixSum[row1][col2+1]
-                    - prefixSum[row2+1][col1] + prefixSum[row1][col1];
+            int upSum = row1 > 0 ? sum[row1-1][col2] : 0;
+            int leftSum = col1 > 0 ? sum[row2][col1-1] : 0;
+            int leftUp = (row1 > 0 && col1 > 0) ? sum[row1-1][col1-1] : 0;
+            return sum[row2][col2] - upSum - leftSum + leftUp;
         }
     }
 }

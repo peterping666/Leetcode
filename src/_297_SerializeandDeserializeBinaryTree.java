@@ -1,70 +1,112 @@
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.*;
 
 public class _297_SerializeandDeserializeBinaryTree {
+
     /**
+     * DFS
      * Time O(n)
      * Space O(n)
-     * @param root
-     * @return
      */
-    // Encodes a tree to a single string.
-    public String serialize(TreeNode root) {
-        if(root == null) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> q = new ArrayDeque<>();
-        q.offer(root);
-        sb.append(root.val + " ");
-        while(!q.isEmpty()) {
-            TreeNode cur = q.poll();
-            if(cur.left != null) {
-                q.offer(cur.left);
-                sb.append(cur.left.val + " ");
-            } else {
-                sb.append("# ");
+    public class Codec1 {
+
+        public String serialize(TreeNode root) {
+            if(root == null) {
+                return "#";
             }
-            if(cur.right != null) {
-                q.offer(cur.right);
-                sb.append(cur.right.val + " ");
-            } else {
-                sb.append("# ");
-            }
+            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
         }
-        return sb.toString();
+
+        public TreeNode deserialize(String data) {
+            String[] strs = data.split(",");
+            int n = strs.length;
+            TreeNode[] nodes = new TreeNode[n];
+            for(int i = 0; i < n; i++) {
+                nodes[i] = strs[i].equals("#") ? null : new TreeNode(Integer.valueOf(strs[i]));
+            }
+            return dfs(nodes, new int[1]);
+        }
+
+        private TreeNode dfs(TreeNode[] nodes, int[] index) {
+            TreeNode root = nodes[index[0]++];
+            if(root == null) {
+                return root;
+            }
+            root.left = dfs(nodes, index);
+            root.right = dfs(nodes, index);
+            return root;
+        }
     }
 
     /**
+     * DFS optimized
+     */
+    public class Codec2 {
+
+        public String serialize(TreeNode root) {
+            if(root == null) {
+                return "#";
+            }
+            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+        }
+
+        public TreeNode deserialize(String data) {
+            String[] strs = data.split(",");
+            return dfs(strs, new int[1]);
+        }
+
+        private TreeNode dfs(String[] strs, int[] index) {
+            TreeNode root =
+                    strs[index[0]].equals("#") ? null : new TreeNode(Integer.valueOf(strs[index[0]]));
+            index[0]++;
+            if(root == null) {
+                return root;
+            }
+            root.left = dfs(strs, index);
+            root.right = dfs(strs, index);
+            return root;
+        }
+    }
+
+    /**
+     * BFS
      * Time O(n)
      * Space O(n)
-     * @param data
-     * @return
      */
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        if(data.length() == 0) {
-            return null;
-        }
-        String[] strs = data.split(" ");
-        TreeNode root = new TreeNode(Integer.parseInt(strs[0]));
-        Queue<TreeNode> q = new ArrayDeque<>();
-        q.offer(root);
-        int index = 1;
-        while(index < strs.length) {
-            TreeNode cur = q.poll();
-            String left = strs[index++];
-            if(!left.equals("#")) {
-                cur.left = new TreeNode(Integer.parseInt(left));
-                q.offer(cur.left);
-            }
+    public class Codec3 {
 
-            String right = strs[index++];
-            if(!right.equals("#")) {
-                cur.right = new TreeNode(Integer.parseInt(right));
-                q.offer(cur.right);
+        public String serialize(TreeNode root) {
+            StringBuilder sb = new StringBuilder();
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.offer(root);
+            while(!queue.isEmpty()) {
+                TreeNode cur = queue.poll();
+                if(cur == null) {
+                    sb.append("#,");
+                } else {
+                    sb.append(cur.val + ",");
+                    queue.offer(cur.left);
+                    queue.offer(cur.right);
+                }
             }
+            return sb.toString();
         }
-        return root;
+
+        public TreeNode deserialize(String data) {
+            String[] strs = data.split(",");
+            int n = strs.length;
+            TreeNode[] nodes = new TreeNode[n];
+            for(int i = 0; i < n; i++) {
+                nodes[i] = strs[i].equals("#") ? null : new TreeNode(Integer.valueOf(strs[i]));
+            }
+            for(int i = 0, j = 1; j < n; i++) {
+                TreeNode root = nodes[i];
+                if(root != null) {
+                    root.left = nodes[j];
+                    root.right = nodes[j+1];
+                    j += 2;
+                }
+            }
+            return nodes[0];
+        }
     }
 }

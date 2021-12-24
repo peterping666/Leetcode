@@ -1,31 +1,34 @@
 public class _61_RotateList {
-    /**
-     * Time O(n)
-     * Space O(1)
-     * @return
-     */
+
     class Solution {
         public ListNode rotateRight(ListNode head, int k) {
-            if(head == null) return null;
-            int listNum = 1;
+            int len = getLen(head);
+            if(len == 0 || k % len == 0) {
+                return head;
+            }
+            k %= len;
             ListNode tail = head;
-
-            //find tail and count listNum
-            while(tail.next != null){
-                listNum++;
+            while(k-- > 0) {
                 tail = tail.next;
             }
+            ListNode newTail = head;
+            while(tail.next != null) {
+                tail = tail.next;
+                newTail = newTail.next;
+            }
+            ListNode newHead = newTail.next;
+            newTail.next = null;
             tail.next = head;
-            int newHeadIndex = listNum - k % listNum;
+            return newHead;
+        }
 
-            for(int i = 0; i < newHeadIndex; i++){
-                tail = tail.next;
+        private int getLen(ListNode head) {
+            int res = 0;
+            while(head != null) {
+                head = head.next;
+                res++;
             }
-
-            head = tail.next;
-            tail.next = null;
-
-            return head;
+            return res;
         }
     }
 }

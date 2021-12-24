@@ -3,17 +3,20 @@ import java.util.Deque;
 
 public class _901_OnlineStockSpan {
     class StockSpanner {
-        private Deque<int[]> stack;
+
+        Deque<int[]> stack;
+
         public StockSpanner() {
             stack = new ArrayDeque<>();
         }
 
         public int next(int price) {
-            int res = 1;
-            while (!stack.isEmpty() && stack.peekFirst()[0] <= price)
-                res += stack.pollFirst()[1];
-            stack.offerFirst(new int[]{price, res});
-            return res;
+            int[] cur = new int[]{price, 1};
+            while(!stack.isEmpty() && stack.peek()[0] <= price) {
+                cur[1] += stack.pop()[1];
+            }
+            stack.push(cur);
+            return cur[1];
         }
     }
 }

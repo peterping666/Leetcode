@@ -83,102 +83,48 @@ public class _721_AccountsMerge {
         }
     }
 
-    // Graph + BFS
+    // Graph + DFS
     class Solution2 {
         public List<List<String>> accountsMerge(List<List<String>> accounts) {
-            Map<String, Set<String>> graph = new HashMap<>();
             Map<String, String> emailToName = new HashMap<>();
-
-            // step 1: build graph that connects all emails have relationships
-            for (List<String> account : accounts) {
-                String name = account.get(0);
-                for (int i = 1; i < account.size(); i++) {
-                    graph.putIfAbsent(account.get(i), new HashSet<>());
-                    emailToName.put(account.get(i), name);
-                    if (i != 1) {
-                        graph.get(account.get(i)).add(account.get(i - 1));
-                        graph.get(account.get(i - 1)).add(account.get(i));
-                    }
-                }
-            }
-
-            // step 2: BFS traversal to traverse all nodes in every single component and generate each result list individually
-            List<List<String>> result = new ArrayList<>();
-            Set<String> visited = new HashSet<>();
-            for (String email : graph.keySet()) {
-                if (!visited.contains(email)) {
-                    visited.add(email);
-                    List<String> newList = bfs(graph, visited, email);
-                    Collections.sort(newList);
-                    newList.add(0, emailToName.get(newList.get(0)));
-                    result.add(newList);
-                }
-            }
-            return result;
-        }
-
-        public List<String> bfs(Map<String, Set<String>> graph, Set<String> visited, String startPoint) {
-            List<String> newList = new ArrayList<>();
-            Queue<String> queue = new LinkedList<>();
-            queue.offer(startPoint);
-
-            while(!queue.isEmpty()) {
-                int size = queue.size();
-                for (int i = 0; i < size; i++) {
-                    String curEmail = queue.poll();
-                    newList.add(curEmail);
-                    Set<String> neighbors = graph.get(curEmail);
-                    for (String neighbor : neighbors) {
-                        // WARING: DO NOT FORGET to check whether current email has been visited before
-                        if (!visited.contains(neighbor)) {
-                            visited.add(neighbor);
-                            queue.offer(neighbor);
-                        }
-                    }
-                }
-            }
-            return newList;
-        }
-    }
-
-    // Graph + DFS
-    class Solution3 {
-        public List<List<String>> accountsMerge(List<List<String>> accounts) {
-            Map<String, Set<String>> graph = new HashMap<>();
-            Map<String, String> name = new HashMap<>();
-            // build graph
+            Map<String, List<String>> emailGraph = new HashMap<>();
             for(List<String> account : accounts) {
-                String username = account.get(0);
+                String name = account.get(0);
                 for(int i = 1; i < account.size(); i++) {
-                    graph.putIfAbsent(account.get(i), new HashSet<>());
-                    name.put(account.get(i), username);
-                    if(i == 1) continue;
-                    graph.get(account.get(i)).add(account.get(i-1));
-                    graph.get(account.get(i-1)).add(account.get(i));
+                    emailGraph.putIfAbsent(account.get(i), new ArrayList<>());
+                    emailToName.put(account.get(i), name);
+                    if(i == 1) {
+                        continue;
+                    }
+                    emailGraph.get(account.get(i)).add(account.get(i-1));
+                    emailGraph.get(account.get(i-1)).add(account.get(i));
                 }
             }
 
             List<List<String>> res = new ArrayList<>();
-            Set<String> visited = new HashSet<>();
+            Set<String> seen = new HashSet<>();
 
-            for(String email : name.keySet()) {
-                List<String> emails = new LinkedList<>();
-                if(visited.add(email)) {
-                    dfs(graph, email, emails, visited);
-                    Collections.sort(emails);
-                    emails.add(0, name.get(email));
-                    res.add(emails);
+            for(String email : emailGraph.keySet()) {
+                if(!seen.add(email)) {
+                    continue;
                 }
+                List<String> list = new LinkedList<>();
+                dfs(emailGraph, email, seen, list);
+                Collections.sort(list);
+                list.add(0, emailToName.get(email));
+                res.add(list);
             }
             return res;
         }
 
-        private void dfs(Map<String, Set<String>> graph, String email, List<String> emails, Set<String> visited) {
-            emails.add(email);
-            for(String neighbor : graph.get(email)) {
-                if(visited.add(neighbor)) {
-                    dfs(graph, neighbor, emails, visited);
+        private void dfs(Map<String, List<String>> emailGraph, String email, Set<String> seen,
+                         List<String> list) {
+            list.add(email);
+            for(String next : emailGraph.get(email)) {
+                if(!seen.add(next)) {
+                    continue;
                 }
+                dfs(emailGraph, next, seen, list);;
             }
         }
     }
