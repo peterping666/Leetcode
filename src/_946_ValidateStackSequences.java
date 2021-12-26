@@ -5,12 +5,12 @@ public class _946_ValidateStackSequences {
     class Solution {
         public boolean validateStackSequences(int[] pushed, int[] popped) {
             Deque<Integer> stack = new ArrayDeque<>();
-            int index = 0;
+            int i = 0;
             for(int num : pushed) {
-                stack.offerFirst(num);
-                while(!stack.isEmpty() && popped[index] == stack.peekFirst()) {
-                    stack.pollFirst();
-                    index++;
+                stack.push(num);
+                while(!stack.isEmpty() && stack.peek() == popped[i]) {
+                    stack.pop();
+                    i++;
                 }
             }
             return stack.isEmpty();
