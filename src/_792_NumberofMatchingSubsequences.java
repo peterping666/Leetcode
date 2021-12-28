@@ -6,7 +6,7 @@ import java.util.TreeSet;
 public class _792_NumberofMatchingSubsequences {
 
     /**
-     * Time O(n + kL^2)
+     * Time O(n + kl^2) // n = s.length, k = words.length, l = words[i].length
      */
     class Solution1 {
         public int numMatchingSubseq(String s, String[] words) {

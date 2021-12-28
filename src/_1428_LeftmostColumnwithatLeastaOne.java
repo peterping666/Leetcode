@@ -3,55 +3,55 @@ import java.util.List;
 
 public class _1428_LeftmostColumnwithatLeastaOne {
 
-    // Time: nlogm
+    /**
+     * Time O(m + n)
+     */
     class Solution1 {
         public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
-            List<Integer> dimension = binaryMatrix.dimensions();
-            int row = dimension.get(0);
-            int col = dimension.get(1);
-            int res = Integer.MAX_VALUE;
-            for (int i = 0; i < row; i++) {
-                int index = binarySearch(i, col, binaryMatrix);
+            List<Integer> list = binaryMatrix.dimensions();
+            int m = list.get(0), n = list.get(1);
+            int i = 0, j = n-1, res = -1;
+            while(i < m && j >= 0) {
+                if(binaryMatrix.get(i, j) == 1) {
+                    res = j;
+                    j--;
+                } else {
+                    i++;
+                }
+            }
+            return res;
+        }
+    }
+
+    /**
+     * Time O(mlogn)
+     */
+    class Solution2 {
+        public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
+            List<Integer> list = binaryMatrix.dimensions();
+            int m = list.get(0), n = list.get(1);
+            int res = n;
+            for (int i = 0; i < m; i++) {
+                int index = leftMost(i, n, binaryMatrix);
                 if(index != -1) {
                     res = Math.min(res, index);
                 }
             }
-            return res == Integer.MAX_VALUE ? -1 : res;
+            return res == n ? -1 : res;
         }
 
-        private int binarySearch(int row, int col, BinaryMatrix bm) {
-            int left = 0;
-            int right = col - 1;
+        private int leftMost(int i, int n, BinaryMatrix bm) {
+            int left = 0, right = n - 1;
             while (left < right) {
-                int mid = (right - left) / 2 + left;
-                int val = bm.get(row, mid);
+                int mid = left + (right - left) / 2;
+                int val = bm.get(i, mid);
                 if (val == 1) {
                     right = mid;
-                }
-                else {
+                } else {
                     left = mid + 1;
                 }
             }
-            return bm.get(row, left) == 1 ? left : -1;
-        }
-    }
-
-    // Time: m + n
-    class Solution2 {
-        public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
-            List<Integer> dimen = binaryMatrix.dimensions();
-            int m = dimen.get(0);
-            int n = dimen.get(1);
-            int ans = -1, r = 0, c = n - 1;
-            while (r < m && c >= 0) {
-                if (binaryMatrix.get(r, c) == 1) {
-                    ans = c;
-                    c--;
-                } else {
-                    r++;
-                }
-            }
-            return ans;
+            return bm.get(i, left) == 1 ? left : -1;
         }
     }
 
