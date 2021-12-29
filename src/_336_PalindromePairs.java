@@ -4,7 +4,7 @@ import java.util.List;
 
 public class _336_PalindromePairs {
 
-    class Solution1 {
+    class Solution {
         public List<List<Integer>> palindromePairs(String[] words) {
             List<List<Integer>> res = new ArrayList<>();
             TrieNode root = new TrieNode();

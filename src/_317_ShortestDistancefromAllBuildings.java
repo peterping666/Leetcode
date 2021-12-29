@@ -1,59 +1,62 @@
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class _317_ShortestDistancefromAllBuildings {
     /**
-     * Time O(m^2 * n^2)
-     * Space O(m * n)
-     * @param grid
-     * @return
+     * Time O(mn * b) // b = # of 0
+     * Space O(mn)
      */
-    public int shortestDistance(int[][] grid) {
-        if(grid == null || grid.length == 0) return -1;
-        int n = grid.length;
-        int m = grid[0].length;
-        int[][] dist = new int[n][m];
-        int[][] reach = new int[n][m];
-        int count = 0;
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                if(grid[i][j] == 1) {
-                    bfs(grid, i, j, n, m, dist, reach);
-                    count++;
+    class Solution {
+        public int shortestDistance(int[][] grid) {
+            int m = grid.length, n = grid[0].length;
+            int[][] travel = new int[m][n];
+            int[][] reach = new int[m][n];
+            int count = 0;
+            for(int i = 0; i < m; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(grid[i][j] == 1) {
+                        bfs(grid, travel, reach, m, n, i, j);
+                        count++;
+                    }
                 }
-
             }
-        }
-        int distance = Integer.MAX_VALUE;
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                if(reach[i][j] != count || dist[i][j] == 0) continue;
-                distance = Math.min(distance, dist[i][j]);
-            }
-        }
-        return distance == Integer.MAX_VALUE ? -1 : distance;
-    }
 
-    private void bfs(int[][] grid, int i, int j, int n, int m, int[][] dist, int[][] reach) {
-        int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-        Queue<int[]> queue = new LinkedList<>();
-        boolean[][] visited = new boolean[n][m];
-        visited[i][j] = true;
-        queue.offer(new int[]{i, j});
-        int distance = 0;
-        while(!queue.isEmpty()) {
-            int size = queue.size();
-            distance++;
-            for(int k = 0; k < size; k++) {
-                int[] coordinates = queue.poll();
-                for(int[] dir : dirs) {
-                    int x = coordinates[0] + dir[0];
-                    int y = coordinates[1] + dir[1];
-                    if(x < 0 || x >= n || y < 0 || y >= m || grid[x][y] != 0 || visited[x][y]) continue;
-                    dist[x][y] += distance;
-                    queue.offer(new int[]{x, y});
-                    visited[x][y] = true;
-                    reach[x][y]++;
+            int res = Integer.MAX_VALUE;
+            for(int i = 0; i < m; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(travel[i][j] != 0 && reach[i][j] == count) {
+                        res = Math.min(res, travel[i][j]);
+                    }
+                }
+            }
+            return res == Integer.MAX_VALUE ? -1 : res;
+        }
+
+        private void bfs(int[][] grid, int[][] travel, int[][] reach, int m, int n, int i, int j) {
+            Queue<int[]> queue = new ArrayDeque<>();
+            boolean[][] seen = new boolean[m][n];
+            queue.offer(new int[]{i, j});
+            seen[i][j] = true;
+            reach[i][j]++;
+            int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+            int dist = 0;
+            while(!queue.isEmpty()) {
+                int size = queue.size();
+                dist++;
+                while(size-- > 0) {
+                    int[] cur = queue.poll();
+                    for(int[] dir : dirs) {
+                        int x = cur[0] + dir[0];
+                        int y = cur[1] + dir[1];
+                        if(x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == 2 || seen[x][y] ||
+                                grid[x][y] == 1) {
+                            continue;
+                        }
+                        travel[x][y] += dist;
+                        queue.offer(new int[]{x, y});
+                        seen[x][y] = true;
+                        reach[x][y]++;
+                    }
                 }
             }
         }
