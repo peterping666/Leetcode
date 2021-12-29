@@ -6,11 +6,11 @@ public class _300_LongestIncreasingSubsequence {
      */
     class Solution1 {
         public int lengthOfLIS(int[] nums) {
-            int[] lis = new int[nums.length];
+            int[] arr = new int[nums.length];
             int size = 0;
             for (int num : nums) {
-                int index = helper(lis, size, num);
-                lis[index] = num;
+                int index = helper(arr, size, num);
+                arr[index] = num;
                 if (index == size) {
                     size++;
                 }
@@ -18,11 +18,11 @@ public class _300_LongestIncreasingSubsequence {
             return size;
         }
 
-        private int helper(int[] lis, int size, int target) {
+        private int helper(int[] arr, int size, int target) {
             int left = 0, right = size;
             while (left < right) {
                 int mid = left + (right - left) / 2;
-                if (lis[mid] < target) {
+                if (arr[mid] < target) {
                     left = mid + 1;
                 } else {
                     right = mid;

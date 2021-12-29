@@ -4,58 +4,61 @@ import java.util.Deque;
 public class _772_BasicCalculatorIII {
     class Solution {
         public int calculate(String s) {
-            if(s == null || s.length() == 0) {
-                return 0;
-            }
+            int n = s.length();
             Deque<Integer> stack = new ArrayDeque<>();
             char sign = '+';
-            for(int i = 0; i < s.length(); i++) {
+            for(int i = 0; i < n; i++) {
                 char c = s.charAt(i);
-                if(c == ' ') {
-                    continue;
-                }
                 if(Character.isDigit(c)) {
-                    int num = c - '0';
-                    while(i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
-                        i++;
-                        num = num * 10 + (s.charAt(i) - '0');
+                    int num = 0;
+                    while(i < n && Character.isDigit(s.charAt(i))) {
+                        num = num * 10 + s.charAt(i++) - '0';
                     }
-                    addToStack(num, sign, stack);
+                    i--;
+                    if(sign == '+') {
+                        stack.push(num);
+                    } else if(sign == '-') {
+                        stack.push(-num);
+                    } else if(sign == '*') {
+                        stack.push(stack.pop() * num);
+                    } else {
+                        stack.push(stack.pop() / num);
+                    }
                 } else if(c == '(') {
-                    int j = i + 1;
-                    for(int count = 0; i < s.length(); i++) {
-                        if(s.charAt(i) == '(') {
-                            count++;
-                        } else if(s.charAt(i) == ')') {
+                    int count = 1, start = ++i;
+                    while(count > 0) {
+                        if(s.charAt(i) == ')') {
                             count--;
+                        } else if(s.charAt(i) == '(') {
+                            count++;
                         }
-                        if(count == 0) {
-                            break;
-                        }
+                        i++;
                     }
-                    int num = calculate(s.substring(j, i));
-                    addToStack(num, sign, stack);
-                } else {
-                    sign = c;
+                    int num = calculate(s.substring(start, --i));
+                    if(sign == '+') {
+                        stack.push(num);
+                    } else if(sign == '-') {
+                        stack.push(-num);
+                    } else if(sign == '*') {
+                        stack.push(stack.pop() * num);
+                    } else {
+                        stack.push(stack.pop() / num);
+                    }
+                } else if(c == '+') {
+                    sign = '+';
+                } else if(c == '-') {
+                    sign = '-';
+                } else if(c == '*') {
+                    sign = '*';
+                } else if(c == '/') {
+                    sign = '/';
                 }
             }
             int res = 0;
             while(!stack.isEmpty()) {
-                res += stack.pollFirst();
+                res += stack.pop();
             }
             return res;
-        }
-
-        private void addToStack(int num, char sign, Deque<Integer> stack) {
-            if(sign == '+') {
-                stack.offerFirst(num);
-            } else if(sign == '-') {
-                stack.offerFirst(-num);
-            } else if(sign == '*') {
-                stack.offerFirst(stack.pollFirst() * num);
-            } else {
-                stack.offerFirst(stack.pollFirst() / num);
-            }
         }
     }
 }
