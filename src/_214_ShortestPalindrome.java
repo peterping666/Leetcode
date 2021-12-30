@@ -1,28 +1,38 @@
 public class _214_ShortestPalindrome {
-    /**
-     * Time O(n^2)
-     * Space O(n)
-     * @param s
-     * @return
-     */
-    public String shortestPalindrome(String s) {
-        for(int i = s.length(); i >= 0; i--) {
-            if(isPalindrome(s, i)) {
-                return new StringBuilder(s.substring(i)).reverse() + s;
+
+    class Solution1 {
+        public String shortestPalindrome(String s) {
+            String str = new StringBuilder(s).reverse().toString();
+            for (int i = 0; i <= str.length(); i++) {
+                if (s.startsWith(str.substring(i))) {
+                    return str.substring(0, i) + s;
+                }
             }
+            return str + s;
         }
-        return s;
     }
 
-    private boolean isPalindrome(String str, int i) {
-        int l = 0, r = i-1;
-        while(l < r) {
-            if(str.charAt(l) != str.charAt(r)) {
-                return false;
+    /**
+     * Time O(n^2)
+     */
+    class Solution2 {
+        public String shortestPalindrome(String s) {
+            for(int i = s.length() - 1; i >= 0; i--) {
+                if(valid(s, i)) {
+                    return new StringBuilder(s.substring(i+1)).reverse() + s;
+                }
             }
-            l++;
-            r--;
+            return s;
         }
-        return true;
+
+        private boolean valid(String s, int i) {
+            int left = 0, right = i;
+            while(left < right) {
+                if(s.charAt(left++) != s.charAt(right--)) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
