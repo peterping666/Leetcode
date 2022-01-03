@@ -1,40 +1,31 @@
-import javafx.util.Pair;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class _489_RobotRoomCleaner {
-    int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-    Set<Pair<Integer, Integer>> visited = new HashSet();
-
-    public void cleanRoom(Robot robot) {
-        backtrack(robot, 0, 0, 0);
-    }
-
-    public void backtrack(Robot robot, int row, int col, int d) {
-        visited.add(new Pair(row, col));
-        robot.clean();
-        // going clockwise : 0: 'up', 1: 'right', 2: 'down', 3: 'left'
-        for (int i = 0; i < 4; ++i) {
-            int newD = (d + i) % 4;
-            int newRow = row + directions[newD][0];
-            int newCol = col + directions[newD][1];
-
-            if (!visited.contains(new Pair(newRow, newCol)) && robot.move()) {
-                backtrack(robot, newRow, newCol, newD);
-                goBack(robot);
-            }
-            // turn the robot following chosen direction : clockwise
-            robot.turnRight();
+    class Solution {
+        public void cleanRoom(Robot robot) {
+            dfs(robot, 0, 0, 0, new HashSet<>());
         }
-    }
 
-    public void goBack(Robot robot) {
-        robot.turnRight();
-        robot.turnRight();
-        robot.move();
-        robot.turnRight();
-        robot.turnRight();
+        private void dfs(Robot robot, int i, int j, int dir, Set<String> seen) {
+            int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+            robot.clean();
+            seen.add(i + "-" + j);
+            for(int k = 0; k < 4; k++) {
+                int nextDir = (dir + k) % 4;
+                int x = dirs[nextDir][0] + i;
+                int y = dirs[nextDir][1] + j;
+                if (!seen.contains(x + "-" + y) && robot.move()) {
+                    dfs(robot, x, y, nextDir, seen);
+                    robot.turnRight();
+                    robot.turnRight();
+                    robot.move();
+                    robot.turnRight();
+                    robot.turnRight();
+                }
+                robot.turnRight();
+            }
+        }
     }
 }
 

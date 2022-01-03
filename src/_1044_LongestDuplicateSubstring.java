@@ -1,45 +1,53 @@
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class _1044_LongestDuplicateSubstring {
+    /**
+     * Time O(nlogn)
+     * Space O(n)
+     */
     class Solution {
-        public String longestDupSubstring(String S) {
-            int left = 1;
-            int right = S.length() - 1;
-            int start = 0;
-            int maxLen = 0;
-            while(left <= right) {
-                int mid = (left + right + 1) / 2;
-                int cur = -1;
-                cur = searchDuplicate(S, mid);
-                if(cur != -1) {
-                    left = mid + 1;
-                    maxLen = mid;
-                    start = cur;
+        public String longestDupSubstring(String s) {
+            int n = s.length(), left = 0, right = n-1;
+            while(left < right) {
+                int mid = right - (right - left) / 2;
+                if(longest(s, mid) != null) {
+                    left = mid;
                 } else {
                     right = mid - 1;
                 }
             }
-            return S.substring(start, start + maxLen);
+            String res = longest(s, left);
+            return res == null ? "" : res;
         }
 
-        private int searchDuplicate(String s, int len) {
-            long val = 0;
-            long modulus = (long)Math.pow(2, 32);
-            long pow = 1;
+        private String longest(String s, int len) {
+            Map<Long, List<Integer>> map = new HashMap<>();
+            long hash = 0, mod = (long)(1e9+7), pow = 1, base = 26;
             for(int i = 0; i < len; i++) {
-                pow = pow * 26 % modulus;
+                pow = pow * base % mod;
             }
-            HashSet<Long> set = new HashSet<>();
             for(int i = 0, j = 0; i < s.length(); i++) {
-                val = (val * 26 + s.charAt(i) - 'a') % modulus;
+                hash = (hash * base + s.charAt(i) - 'a') % mod;
                 if(i - j + 1 > len) {
-                    val -= ((s.charAt(j++) - 'a') * pow) % modulus;
+                    hash = (hash - (s.charAt(j++) - 'a') * pow % mod + mod) % mod;
                 }
-                if(i - j + 1 == len && !set.add(val)) {
-                    return j;
+                if(i - j + 1 >= len) {
+                    if(map.containsKey(hash)) {
+                        for(int start : map.get(hash)) {
+                            String str = s.substring(j, i+1);
+                            if(str.equals(s.substring(start, start + len))) {
+                                return str;
+                            }
+                        }
+                    }
+                    map.put(hash, new ArrayList<>());
+                    map.get(hash).add(j);
                 }
             }
-            return -1;
+            return null;
         }
     }
 }

@@ -1,5 +1,6 @@
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 public class _773_SlidingPuzzle {
@@ -12,37 +13,37 @@ public class _773_SlidingPuzzle {
                     start += board[i][j];
                 }
             }
-            Queue<String> queue = new LinkedList<>();
-            HashSet<String> seen = new HashSet<>();
+            if(start.equals(target)) {
+                return 0;
+            }
+            Queue<String> queue = new ArrayDeque<>();
+            Map<String, Integer> map = new HashMap<>();
             queue.offer(start);
-            seen.add(start);
+            map.put(start, 0);
             int[][] dirs = {{1,3}, {0,2,4}, {1,5}, {0,4}, {1,3,5}, {2,4}};
-            int res = 0;
             while(!queue.isEmpty()) {
-                int size = queue.size();
-                for(int i = 0; i < size; i++) {
-                    String cur = queue.poll();
-                    if(cur.equals(target)) {
-                        return res;
+                String cur = queue.poll();
+                int zero = cur.indexOf('0');
+                for(int index : dirs[zero]) {
+                    String next = swap(cur, zero, index);
+                    if(next.equals(target)) {
+                        return map.get(cur) + 1;
                     }
-                    int zero = cur.indexOf('0');
-                    for(int index : dirs[zero]) {
-                        String next = swap(cur, zero, index);
-                        if(seen.add(next)) {
-                            queue.offer(next);
-                        }
+                    if(!map.containsKey(next)) {
+                        queue.offer(next);
+                        map.put(next, map.get(cur) + 1);
                     }
                 }
-                res++;
             }
             return -1;
         }
 
         private String swap(String str, int zero, int index) {
-            StringBuilder sb = new StringBuilder(str);
-            sb.setCharAt(zero, str.charAt(index));
-            sb.setCharAt(index, str.charAt(zero));
-            return sb.toString();
+            char[] arr = str.toCharArray();
+            char tmp = arr[zero];
+            arr[zero] = arr[index];
+            arr[index] = tmp;
+            return new String(arr);
         }
     }
 }
