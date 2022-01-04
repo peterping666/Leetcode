@@ -1,20 +1,25 @@
 public class _270_ClosestBST {
 
-    public int closestValue(TreeNode root, double target) {
-        double minVal = Double.MAX_VALUE;
-        int minNodeVal = root.val;
-        while(root != null) {
-            if(root.val == target) return root.val;
-            if(Math.abs(root.val - target) < minVal) {
-                minVal = Math.abs(root.val - target);
-                minNodeVal = root.val;
+    class Solution {
+        public int closestValue(TreeNode root, double target) {
+            int res = 0;
+            double minDiff = Double.MAX_VALUE;
+            while(root != null) {
+                double diff = Math.abs(root.val - target);
+                if(diff == 0) {
+                    return root.val;
+                }
+                if(diff < minDiff) {
+                    res = root.val;
+                    minDiff = diff;
+                }
+                if(root.val > target) {
+                    root = root.left;
+                } else {
+                    root = root.right;
+                }
             }
-            if(root.val < target) {
-                root = root.right;
-            }else {
-                root = root.left;
-            }
+            return res;
         }
-        return minNodeVal;
     }
 }
