@@ -1,5 +1,5 @@
 public class _273_IntegertoEnglishWords {
-    class Solution1 {
+    class Solution {
         String[] tens = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
         String[] ones = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven",
                 "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
@@ -13,47 +13,51 @@ public class _273_IntegertoEnglishWords {
 
         private String helper(int num) {
             if (num >= 1000000000) {
-                return (helper(num / 1000000000) + " Billion " + helper(num % 1000000000));
+                int val = num / 1000000000;
+                int remain = num % 1000000000;
+                if(remain == 0) {
+                    return helper(val) + " Billion";
+                } else {
+                    return (helper(val) + " Billion " + helper(remain));
+                }
             }
             if (num >= 1000000) {
-                return (helper(num / 1000000) + " Million " + helper(num % 1000000));
+                int val = num / 1000000;
+                int remain = num % 1000000;
+                if(remain == 0) {
+                    return helper(val) + " Million";
+                } else {
+                    return (helper(val) + " Million " + helper(remain));
+                }
             }
             if (num >= 1000) {
-                return (helper(num / 1000) + " Thousand " + helper(num % 1000));
+                int val = num / 1000;
+                int remain = num % 1000;
+                if(remain == 0) {
+                    return helper(val) + " Thousand";
+                } else {
+                    return (helper(val) + " Thousand " + helper(remain));
+                }
             }
             if (num >= 100) {
-                return (helper(num / 100) + " Hundred " + helper((num % 100))).trim();
+                int val = num / 100;
+                int remain = num % 100;
+                if(remain == 0) {
+                    return helper(val) + " Hundred";
+                } else {
+                    return (helper(val) + " Hundred " + helper(remain));
+                }
             }
             if (num >= 20) {
-                return (tens[num / 10] + " " + helper(num % 10)).trim();
+                int val = num / 10;
+                int remain = num % 10;
+                if(remain == 0) {
+                    return tens[num / 10];
+                } else {
+                    return tens[num / 10] + " " + helper(num % 10);
+                }
             }
             return ones[num];
-        }
-    }
-
-    class Solution2 {
-
-        final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-        final String[] TENS = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
-        final String[] THOUSANDS = {"Billion", "Million", "Thousand", ""};
-        final int[] radix = {1000000000, 1000000, 1000, 1};
-
-        public String numberToWords(int num) {
-            if (num == 0) return "Zero";
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < radix.length; i++) {
-                if (num / radix[i] == 0) continue;
-                sb.append(trans(num / radix[i])).append(THOUSANDS[i]).append(' ');
-                num %= radix[i];
-            }
-            return sb.toString().trim();
-        }
-
-        private String trans(int num) {
-            if (num == 0) return "";
-            if (num < 20) return LESS_THAN_20[num] + " ";
-            if (num < 100) return TENS[num / 10] + " " + trans(num % 10);
-            return LESS_THAN_20[num / 100] + " Hundred " + trans(num % 100);
         }
     }
 }
