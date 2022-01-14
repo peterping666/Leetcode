@@ -6,7 +6,6 @@ public class _56_MergeIntervals {
     /**
      * Time O(nlogn)
      * Space O(1)
-     * @return
      */
     class Solution1 {
         public int[][] merge(int[][] intervals) {

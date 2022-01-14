@@ -8,19 +8,23 @@ public class _57_InsertInterval {
      */
     class Solution {
         public int[][] insert(int[][] intervals, int[] newInterval) {
-            int index = 0, n = intervals.length;
+            int i = 0, n = intervals.length;
             List<int[]> res = new ArrayList<>();
-            while(index < n && intervals[index][1] < newInterval[0]) {
-                res.add(intervals[index++]);
+            while(i < n && intervals[i][1] < newInterval[0]) {
+                res.add(intervals[i++]);
             }
-            while(index < n && intervals[index][0] <= newInterval[1]) {
-                newInterval[0] = Math.min(newInterval[0], intervals[index][0]);
-                newInterval[1] = Math.max(newInterval[1], intervals[index][1]);
-                index++;
+
+            int left = newInterval[0];
+            int right = newInterval[1];
+            while(i < n && right >= intervals[i][0]) {
+                left = Math.min(left, intervals[i][0]);
+                right = Math.max(right, intervals[i][1]);
+                i++;
             }
-            res.add(newInterval);
-            while(index < n) {
-                res.add(intervals[index++]);
+            res.add(new int[]{left, right});
+
+            while(i < n) {
+                res.add(intervals[i++]);
             }
             return res.toArray(new int[0][]);
         }
